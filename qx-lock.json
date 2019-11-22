@@ -1,0 +1,13 @@
+{
+  "libraries": [
+    {
+      "library_name": "UploadMgr",
+      "library_version": "1.0.4",
+      "path": "qx_packages/johnspackman_UploadMgr_v1_0_4",
+      "uri": "johnspackman/UploadMgr",
+      "repo_name": "johnspackman/UploadMgr",
+      "repo_tag": "v1.0.4"
+    }
+  ],
+  "version": "2.1.0"
+}

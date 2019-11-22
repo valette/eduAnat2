@@ -1,0 +1,73 @@
+{
+  "name": "EduAnat2",
+  "productName": "EduAnat2",
+  "description": "EduAnat2",
+  "author": "Remi AGIER <remi@aigen.fr> (http://www.aigen.fr), Sebastien Valette <sebastien.valette@creatis.insa-lyon.fr> (http://www.creatis.insa-lyon.fr/~valette)",
+  "license": "CECILL-B",
+  "version": "2.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/valette/desk-ui.git"
+  },
+  "main": "script.js",
+  "dependencies": {
+    "concat-stream": "2.0.0"
+  },
+  "devDependencies": {
+    "@qooxdoo/compiler": "1.0.0-beta.20191105-1146",
+    "@qooxdoo/framework": "6.0.0-beta-20191031-1343",
+    "ace-builds": "1.4.7",
+    "acorn": "7.1.0",
+    "async": "3.1.0",
+    "bluebird": "3.7.1",
+    "c3": "0.7.11",
+    "chalk": "2.4.2",
+    "chroma-js": "2.1.0",
+    "css-loader": "3.2.0",
+    "d3": "5.12.0",
+    "electron": "7.1.2",
+    "electron-builder": "22.1.0",
+    "electron-packager": "14.1.0",
+    "heap": "0.2.6",
+    "jssha": "2.3.1",
+    "jstat": "1.9.2",
+    "kdt": "0.1.0",
+    "lodash": "4.17.15",
+    "numeric": "1.2.6",
+    "operative": "0.4.6",
+    "papaya-viewer": "1.0.1449",
+    "random-js": "2.1.0",
+    "script-loader": "0.7.2",
+    "socket.io-client": "2.3.0",
+    "style-loader": "1.0.0",
+    "terser": "4.3.9",
+    "three": "0.105.2",
+    "ttest": "2.1.0",
+    "url-loader": "2.2.0",
+    "webpack": "4.41.2",
+    "webpack-cli": "3.3.10",
+    "webworkify-webpack": "2.1.5",
+    "xterm": "4.2.0-vscode1"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run buildApps && npm run package",
+    "buildApps": "node source/build-worker.js && npm run qooxdoo && npm run bundle && ./extra.sh",
+    "bundle": "webpack && npm run terser",
+    "clean": "rm -rf qx* && rm -rf compiled && rm -rf dist && rm -rf EduAnat2-*",
+    "clean-bin": "npm run clean-bin1 && npm run clean-bin2",
+    "clean-bin1": "for i in ./EduAnat2-*; do rm -rf \"$i/swiftshader\"; done",
+    "clean-bin2": "for i in ./EduAnat2-*; do rm -rf \"$i/resources/inspector\"; done",
+    "compile": "qx compile --target source && qx compile --target build",
+    "package": "npm run package-bin && npm run clean-bin && npm run package-exe-deb-rpm && npm run zip",
+    "package-bin": "electron-packager --all --overwrite --prune=true --icon=icon.ico --azar=true compiled/build/ EduAnat2",
+    "package-exe-deb-rpm": "electron-builder build -wl --config builder-effective-config.yaml",
+    "qooxdoo": "qx package update && qx package install && npm run compile",
+    "start": "electron .",
+    "terser": "terser compiled/source/eduAnat2/bundle.js --mangle -o compiled/build/eduAnat2/bundle.js",
+    "updateAll": "rm -rf node_modules && git pull && npm install && npm run build",
+    "zip": "for i in ./EduAnat2-*; do zip -rqy \"dist/${i%/}.zip\" \"$i\"; done"
+  }
+}

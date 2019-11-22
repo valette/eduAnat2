@@ -1,0 +1,41 @@
+{
+ "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/source/resource/qx/tool/schema/Manifest-1-0-0.json",
+  "info" :
+  {
+    "name" : "eduAnat2",
+
+    "summary" : "Medical Image Visualization for education",
+    "description" : "",
+
+    "homepage" : "",
+
+    "license" : "Cecill-B",
+    "authors" : [
+      {
+        "name": "Sebastien Valette",
+        "email": "sebastien.valette@creatis.insa-lyon.fr"
+      },
+      {
+        "name": "Remi AGIER",
+        "email": "remi@aigen.fr"
+      }
+],
+
+    "version" : "1.0.0"
+  },
+
+  "provides" :
+  {
+    "namespace"   : "eduAnat2",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation"
+  },
+
+  "requires": {
+    "johnspackman/UploadMgr": "^1.0.4",
+    "@qooxdoo/framework": "^6.0.0-beta-20191031-1343",
+    "@qooxdoo/compiler" : "^1.0.0-beta.20191105-1146"
+  }
+}
