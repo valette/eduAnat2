@@ -210,7 +210,7 @@ qx.Class.define("eduAnat2.Container", {
 
             //container.add(new qx.ui.core.Widget().set({height:1, backgroundColor:"gray"}));
             
-            var burger = this.__burger = new qx.ui.basic.Image("resource/ife/menu_left.png");
+            var burger = this.__burger = new qx.ui.basic.Image("resource/eduAnat2/menu_left.png");
             burger.setAlignX("right");
             burger.setCursor("pointer");
             var tooltip = new qx.ui.tooltip.ToolTip("Réduire le menu");
@@ -232,7 +232,7 @@ qx.Class.define("eduAnat2.Container", {
                   
                   if (that.__sideViewer.isVisible())
                   { //compare mode
-                    burger.setSource("resource/ife/menu_top.png");
+                    burger.setSource("resource/eduAnat2/menu_top.png");
                     that.__menu.exclude();
                     that.__sideViewer.getChildren()[1].exclude();
                     that.add(burger);
@@ -240,7 +240,7 @@ qx.Class.define("eduAnat2.Container", {
                   }
                   else 
                   { //single mode
-                    burger.setSource("resource/ife/menu_right.png");  
+                    burger.setSource("resource/eduAnat2/menu_right.png");  
                     that.__menu.exclude();
                     that.addAt(burger, 0); 
                   }
@@ -251,7 +251,7 @@ qx.Class.define("eduAnat2.Container", {
                   burger.getToolTip().setLabel("Réduire le menu");
                   if (that.__sideViewer.isVisible())
                   { //compare mode
-                    burger.setSource("resource/ife/menu_bottom.png");
+                    burger.setSource("resource/eduAnat2/menu_bottom.png");
                     that.getChildren()[1].show();
                     that.remove(burger);
                     that.getChildren()[1].add(burger);
@@ -260,7 +260,7 @@ qx.Class.define("eduAnat2.Container", {
                   }
                   else
                   { //single mode
-                    burger.setSource("resource/ife/menu_left.png");
+                    burger.setSource("resource/eduAnat2/menu_left.png");
                     that.__menu.show();
                     that.remove(burger);
                     that.__menu.addAt(burger, 0);
@@ -287,11 +287,11 @@ qx.Class.define("eduAnat2.Container", {
                       that.getChildren()[1].exclude();
                       that.add(burger);
                       that.getMainViewer().getChildren()[1].exclude();
-                      burger.setSource("resource/ife/menu_top.png");                      
+                      burger.setSource("resource/eduAnat2/menu_top.png");                      
                       that.getMainViewer().add(phantom);
                       
                     } else {
-                      burger.setSource("resource/ife/menu_right.png");                      
+                      burger.setSource("resource/eduAnat2/menu_right.png");                      
                       that.__menu.exclude();
                       that.addAt(burger, 0);
                     }
@@ -301,14 +301,14 @@ qx.Class.define("eduAnat2.Container", {
                     menuVisible = true;
                     burger.getToolTip().setLabel("Réduire le menu");
                     if (!that.__sideViewer) {
-                      burger.setSource("resource/ife/menu_bottom.png");
+                      burger.setSource("resource/eduAnat2/menu_bottom.png");
                       that.getChildren()[1].show();
                       that.remove(burger);
                       that.getChildren()[1].add(burger);
                       that.getMainViewer().getChildren()[1].show();
                       that.getMainViewer().remove(phantom);
                     } else {
-                      burger.setSource("resource/ife/menu_left.png");
+                      burger.setSource("resource/eduAnat2/menu_left.png");
                       that.__menu.show();
                       that.remove(burger);
                       that.__menu.addAt(burger, 0);
@@ -406,7 +406,7 @@ qx.Class.define("eduAnat2.Container", {
 
 
         createAbout : function () {
-            var button = new qx.ui.form.Button(this.tr("A propos de ")+" EduAnat2 v2.0", "resource/ife/about.png").set({decorator: null});
+            var button = new qx.ui.form.Button(this.tr("A propos de ")+" EduAnat2 v2.0", "resource/eduAnat2/about.png").set({decorator: null});
 
             var win = new qx.ui.window.Window(this.tr("A propos de ")+" EduAnat2 v2.0");
             win.set({
@@ -467,20 +467,20 @@ qx.Class.define("eduAnat2.Container", {
             var logos = new qx.ui.container.Composite(layout);
 
             //logos.add(new qx.ui.core.Spacer(), {flex: 1});
-            var im = new qx.ui.basic.Image("resource/ife/logo/ife.jpg");
+            var im = new qx.ui.basic.Image("resource/eduAnat2/logo/ife.jpg");
             im.set({scale:true});
             logos.add(  im);
             
-            im = new qx.ui.basic.Image("resource/ife/logo/ens.jpg");
+            im = new qx.ui.basic.Image("resource/eduAnat2/logo/ens.jpg");
             im.set({scale:true});
             logos.add(  im);
             
-            im = new qx.ui.basic.Image("resource/ife/logo/labexCortex.png");
+            im = new qx.ui.basic.Image("resource/eduAnat2/logo/labexCortex.png");
             im.set({scale:true});
             logos.add(  im);
             
             
-            im = new qx.ui.basic.Image("resource/ife/logo/labexPrimes.png");
+            im = new qx.ui.basic.Image("resource/eduAnat2/logo/labexPrimes.png");
             im.set({scale:true});
             logos.add(  im);
             
@@ -746,7 +746,7 @@ qx.Class.define("eduAnat2.Container", {
         },
 
         createCollapseButton: function() {
-            var button = new qx.ui.basic.Image("resource/ife/left.png");
+            var button = new qx.ui.basic.Image("resource/eduAnat2/left.png");
             button.set({
                 width: 16,
                 scale:true
@@ -760,74 +760,106 @@ qx.Class.define("eduAnat2.Container", {
                 var target = that.getChildren()[0];
                 if (target.isVisible()) {
                     target.exclude();
-                    button.setSource("resource/ife/right.png");
+                    button.setSource("resource/eduAnat2/right.png");
                 } else {
                     target.show();
-                    button.setSource("resource/ife/left.png");
+                    button.setSource("resource/eduAnat2/left.png");
                 }
             });
             return container;
         },
 
-        createMPR: function() {
-            //MPR container
-            var options = {
-                workerSlicer: true,
-                alwaysDisplaySlider: true,
-                zoomOnWheel: true,
-                maxZoom:2000,
-                minZoom:30
-            };
+		createMPR: function() {
 
-            var MPR = new desk.MPRContainer(null, options);
-            
+			//MPR container
+			var options = {
+				workerSlicer: true,
+				alwaysDisplaySlider: true,
+				zoomOnWheel: true,
+				maxZoom:2000,
+				minZoom:30
+			};
 
-            var meshViewer = this.__meshViewer = new desk.SceneContainer({
-                  noOpts:true,
-                  sliceOnWheel:false,
-                  maxZoom:2000,
-                  minZoom:30,
-                  cameraFov : 35});
+			var MPR = new desk.MPRContainer(null, options);
 
-            var button = new qx.ui.form.Button(null, "resource/ife/reset.png").set({decorator: null});
-            meshViewer.add (button, {right : 3, bottom : 3});
-            var that = this;
-            
-            button.addListener("execute", function () {
-              that.resetMeshView();
-            });
+			for ( let sliceView of MPR.getViewers() ) {
 
+				for ( let child of sliceView.getRightContainer().getChildren() ) {
+					console.log( child );
+					if ( child.setOpacity ) child.setOpacity( 1 ) ;
+				}
 
-            var screenshot = new qx.ui.form.Button(null, "resource/ife/screenshot.png").set({decorator: null});
-            meshViewer.add (screenshot, {right : 38, bottom : 3});
-            
-            
-            
-            
-            screenshot.addListener("execute", async function () {
-              var el = MPR.getContentElement().getDomElement(); 
+			}
 
-              var rect = el.getBoundingClientRect();
-              rect.y = rect.top;
-              rect.x = rect.left;
+			var meshViewer = this.__meshViewer = new desk.SceneContainer({
+				noOpts:true,
+				sliceOnWheel:false,
+				maxZoom:2000,
+				minZoom:30,
+				cameraFov : 35});
 
-              var remote = require('electron').remote;
-              var webContents = remote.getCurrentWebContents();
-              var image = await webContents.capturePage(rect);
-              var dialog = remote.dialog;
-              var fn = await dialog.showSaveDialog({
-                defaultPath: 'capture.png',
-                filters : [{name: 'Image', extensions: ['png']}]
-              });
-              if ( fn.canceled ) return;
-              console.log('yes');
-              remote.require('fs').writeFile(fn.filePath, image.toPNG(), function () {});
-            });
+			var button = new qx.ui.form.Button(null, "resource/eduAnat2/reset.png").set({decorator: null});
+			meshViewer.add (button, {right : 3, bottom : 3});
 
-            MPR.setCustomContainer(meshViewer);
+			button.addListener( "execute", function () {
+				this.resetMeshView();
+			}, this );
 
-            this.__MPR = MPR;
-            return MPR;
+			// screenshot button for mesh viewer;
+			var screenshot = new qx.ui.form.Button(null, "resource/eduAnat2/screenshot.png").set({decorator: null});
+			meshViewer.add (screenshot, {right : 38, bottom : 3});
+
+			async function capture( element ) {
+
+				var el = element.getContentElement().getDomElement(); 
+				var rect = el.getBoundingClientRect();
+				rect.y = rect.top;
+				rect.x = rect.left;
+				var remote = require('electron').remote;
+				var webContents = remote.getCurrentWebContents();
+				var image = await webContents.capturePage(rect);
+				var dialog = remote.dialog;
+				var fn = await dialog.showSaveDialog({
+					defaultPath: 'capture.png',
+					filters : [{name: 'Image', extensions: ['png']}]
+				});
+
+				if ( fn.canceled ) return;
+				remote.require('fs').writeFile(fn.filePath, image.toPNG(), function () {});
+
+			}
+
+			screenshot.addListener("execute", async function () {
+				capture( MPR );
+			});
+
+			MPR.setCustomContainer(meshViewer);
+
+			// screenShot for sliceView;
+			var sButton = 0;
+
+			MPR.addListener( "switchFullScreen", function ( e ) {
+
+				var sliceView = e.getData();
+				if ( !sliceView ) {
+
+					if ( sButton ) sButton.destroy();
+					return;
+
+				}
+
+				sButton = new qx.ui.form.Button(null, "resource/eduAnat2/screenshot.png");
+				sButton.set({opacity: 0.75, padding: 2});
+				sliceView.getRightContainer().addAt(sButton, 2);
+
+				sButton.addListener("execute", function () {
+					capture( sliceView );
+				});
+
+			} );
+
+			this.__MPR = MPR;
+			return MPR;
 
         },
 
@@ -856,8 +888,7 @@ qx.Class.define("eduAnat2.Container", {
 
             /* Button Open Anat */
 
-            var buttonOpenAnat = this.__buttonOpenAnat = new qx.ui.form.Button(this.tr("Ouvrir une image anatomique"), 'resource/ife/anat.png');
-            console.log(buttonOpenAnat);
+            var buttonOpenAnat = this.__buttonOpenAnat = new qx.ui.form.Button(this.tr("Ouvrir une image anatomique"), 'resource/eduAnat2/anat.png');
 
             buttonOpenAnat.getChildControl("label").setAllowGrowX(true);
             buttonOpenAnat.getChildControl("label").setTextAlign("left");
@@ -866,7 +897,7 @@ qx.Class.define("eduAnat2.Container", {
 
             container.add(buttonOpenAnat);
 
-            var buttonOpenFunc = this.__buttonOpenFunc = new qx.ui.form.Button(this.tr("Ouvrir un calque fonctionnel"), 'resource/ife/func.png');
+            var buttonOpenFunc = this.__buttonOpenFunc = new qx.ui.form.Button(this.tr("Ouvrir un calque fonctionnel"), 'resource/eduAnat2/func.png');
 
             buttonOpenFunc.getChildControl("label").setAllowGrowX(true);
             buttonOpenFunc.getChildControl("label").setTextAlign("left");
@@ -874,7 +905,7 @@ qx.Class.define("eduAnat2.Container", {
             container.add(buttonOpenFunc);
 
             /* Button Close all */
-            var buttonCloseAll = this.__buttonCloseAll = new qx.ui.form.Button(this.tr("Fermer cette image"), 'resource/ife/close.png');
+            var buttonCloseAll = this.__buttonCloseAll = new qx.ui.form.Button(this.tr("Fermer cette image"), 'resource/eduAnat2/close.png');
             buttonCloseAll.getChildControl("label").setAllowGrowX(true);
             buttonCloseAll.getChildControl("label").setTextAlign("left");
             buttonCloseAll.addListener("execute", this.removeAll.bind(this));
@@ -885,7 +916,7 @@ qx.Class.define("eduAnat2.Container", {
 
             /* Button compare */
             if (that.__sideViewer) {
-                var buttonCompare = new qx.ui.form.Button(this.tr("Comparer deux images"), 'resource/ife/compare.png');
+                var buttonCompare = new qx.ui.form.Button(this.tr("Comparer deux images"), 'resource/eduAnat2/compare.png');
                 buttonCompare.getChildControl("label").setAllowGrowX(true);
                 buttonCompare.getChildControl("label").setTextAlign("left");
             
@@ -932,13 +963,13 @@ qx.Class.define("eduAnat2.Container", {
                 menu.setPadding(5);
                 
                 menu.addAt(this.__burger, 0);
-                this.__burger.setSource("resource/ife/menu_left.png");
+                this.__burger.setSource("resource/eduAnat2/menu_left.png");
                 parent = new qx.ui.container.Scroll().set({});
                 target = new qx.ui.container.Composite(new qx.ui.layout.VBox().set({spacing:20}));
                 parent.add(target, {flex: 1});
             }
             else { //compare mode
-                this.__burger.setSource("resource/ife/menu_bottom.png");
+                this.__burger.setSource("resource/eduAnat2/menu_bottom.png");
                 parent = new qx.ui.container.Scroll().set({ maxHeight: 200 });
                 target = new qx.ui.container.Composite(new qx.ui.layout.VBox().set({spacing:10}));
 
@@ -993,7 +1024,7 @@ qx.Class.define("eduAnat2.Container", {
                 titleContainer.add(new qx.ui.core.Spacer(), {flex: 1});
 
 /*
-                var button_meta = this.__anatButtonMeta = new qx.ui.form.Button(null, 'resource/ife/info_small.png').set({
+                var button_meta = this.__anatButtonMeta = new qx.ui.form.Button(null, 'resource/eduAnat2/info_small.png').set({
                     decorator: null
                 });
                 titleContainer.add(button_meta);

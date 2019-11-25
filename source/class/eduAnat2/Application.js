@@ -10,7 +10,7 @@
 ************************************************************************ */
 
 /**
- * @asset(desk/*)
+ * @asset(eduAnat2/*)
  * @ignore (async)
  * @ignore (async*)
  * @ignore (desk_startup_script)
@@ -58,11 +58,10 @@ qx.Class.define("eduAnat2.Application",
 			this.__promisifyAll();
 
 			var actions = desk.Actions.getInstance()
-//			desk.Actions.init(afterActionsInitialized);
-			var savedDesk = window.desk;
-afterActionsInitialized();
+			desk.Actions.init(afterActionsInitialized);
+
 			function afterActionsInitialized () {
-				if ( !window.desk.FileSystem ) window.desk = savedDesk; // #BUG this happens whith webpack
+
 				actions.debug("actions initialized!");
 				desk.auto = false;
 				// first try to automatically launch startup script if it exists

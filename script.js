@@ -8,10 +8,10 @@ electron.app.commandLine.appendSwitch('ignore-gpu-blacklist', 'true');
 electron.Menu.setApplicationMenu( null );
 
 electron.app.on('ready', () => {
-console.log("here");
+
 	const win = new electron.BrowserWindow( {
 
-		icon: 'icon.png',
+		icon: 'file://' + __dirname + '/icon.png',
 		title:'EduAnat2',
 		webPreferences: { nodeIntegration: true },
 		show:false

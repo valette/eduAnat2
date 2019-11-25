@@ -25,8 +25,8 @@ qx.Theme.define("eduAnat2.theme.Font",
           family : "FiraSans-Regular",
           source:
           [
-            "resource/ife/fira-sans/FiraSans-Regular.woff2",
-            //"resource/ife/fira-sans/FiraSans-ExtraLightItalic.woff2"
+            "resource/eduAnat2/fira-sans/FiraSans-Regular.woff2",
+            //"resource/eduAnat2/fira-sans/FiraSans-ExtraLightItalic.woff2"
           ]
         }
       ]

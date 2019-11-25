@@ -105,7 +105,6 @@ function next() {
 	    };
 
         that.slicer = new PapayaSlicer(progressFunc);
-
         if (opts.local) {
             if (typeof volume == "string") {
               //fs = require("fs");

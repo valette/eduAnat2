@@ -19,7 +19,7 @@
       "qx.icontheme": "Tango"
   },
   "libraries" : [
-    "../eduAnat2-merged",
+    "../desk-ui",
     "."
   ],
   "applications": [

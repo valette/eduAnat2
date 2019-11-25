@@ -72,7 +72,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
               titleContainer.add(new qx.ui.core.Spacer(), {flex: 1});
 /*
-              var button_meta = this.__funcButtonMeta = new qx.ui.form.Button(null, 'resource/ife/info_small.png').set({
+              var button_meta = this.__funcButtonMeta = new qx.ui.form.Button(null, 'resource/eduAnat2/info_small.png').set({
                   decorator: null
               });
               titleContainer.add(button_meta);
@@ -80,33 +80,32 @@ qx.Class.define("eduAnat2.FuncLayer", {
                   that.showMeta(that.volumeFunc);
               });
 */
-              var button_hide = new qx.ui.form.Button(null, 'resource/ife/show.png').set({
+              var button_hide = new qx.ui.form.Button(null, 'resource/eduAnat2/show.png').set({
                   decorator: null
               });
               
               var tooltip = new qx.ui.tooltip.ToolTip("Masquer");
               button_hide.setToolTip(tooltip);
               
-              console.log(button_hide);
               titleContainer.add(button_hide);
               var imageVisible = true;
               button_hide.addListener("execute", function () {
                 if (imageVisible) {
                   imageVisible = false;
                   that.__MPR.setVolumeOpacity(that.volumeFunc, 0);
-                  button_hide.getChildControl('icon').setSource('resource/ife/hide.png');
+                  button_hide.getChildControl('icon').setSource('resource/eduAnat2/hide.png');
                   button_hide.getToolTip().setLabel("Démasquer");
                 }
                 else {
                   imageVisible = true;
                   that.__MPR.setVolumeOpacity(that.volumeFunc, 0.7);
-                  button_hide.getChildControl('icon').setSource('resource/ife/show.png');
+                  button_hide.getChildControl('icon').setSource('resource/eduAnat2/show.png');
                   button_hide.getToolTip().setLabel("Masquer");
                 }
               });
 
 
-              var button_close = new qx.ui.form.Button(null, 'resource/ife/close_small.png').set({
+              var button_close = new qx.ui.form.Button(null, 'resource/eduAnat2/close_small.png').set({
                   decorator: null
               });
               titleContainer.add(button_close);
@@ -169,9 +168,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
           selectBox.addListener("changeSelection", function(e) {
               var index = selectBox.getSelectables().indexOf(e.getData()[0]);
-              console.log(index);
               that.__colors = lutArray[index]();
-              console.log(that.__colors);
               if (that.volumeFunc)
                   that.__MPR.setVolumeLUT(that.volumeFunc, that.__colors);
           });
@@ -342,7 +339,6 @@ qx.Class.define("eduAnat2.FuncLayer", {
             var oReq = new XMLHttpRequest();
             oReq.onload = function (res) {
                volume.setUserData("metadonnees", this.responseText);
-               console.log("HERE !!!");
                callback(null, this.responseText);
             };
 
