@@ -782,14 +782,8 @@ qx.Class.define("eduAnat2.Container", {
 
 			var MPR = new desk.MPRContainer(null, options);
 
-			for ( let sliceView of MPR.getViewers() ) {
-
-				for ( let child of sliceView.getRightContainer().getChildren() ) {
-					console.log( child );
-					if ( child.setOpacity ) child.setOpacity( 1 ) ;
-				}
-
-			}
+			for ( let sliceView of MPR.getViewers() )
+				sliceView.getRightContainer().getChildren()[1].setOpacity( 1 ) ;
 
 			var meshViewer = this.__meshViewer = new desk.SceneContainer({
 				noOpts:true,
