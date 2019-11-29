@@ -16,7 +16,7 @@
       "qx.icontheme": "Tango"
   },
   "libraries" : [
-    "../desk-ui",
+    "node_modules/desk-ui",
     "."
   ],
   "applications": [
