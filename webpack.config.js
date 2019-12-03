@@ -1,7 +1,7 @@
 
 module.exports = {
   mode: 'development',
-  entry: __dirname + '/source/bundleIndex.js',
+  entry: __dirname + '/node_modules/desk-ui/source/bundleIndex.js',
 
   output: {
     path: __dirname + '/compiled/source/eduAnat2/',

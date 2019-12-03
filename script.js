@@ -7,11 +7,16 @@ const debug = process.argv[2] === "debug";
 electron.app.commandLine.appendSwitch('ignore-gpu-blacklist', 'true');
 electron.Menu.setApplicationMenu( null );
 
-electron.app.on('ready', () => {
 
+electron.app.on('ready', () => {
+console.log("HERE!" + electron.app.getAppPath());
+
+const image = electron.nativeImage.createFromPath(
+  electron.app.getAppPath() + "/icon.icns");
+console.log(image);
 	const win = new electron.BrowserWindow( {
 
-		icon: 'file://' + __dirname + '/icon.png',
+		icon: image, //'file://' + __dirname + '/icon.png',
 		title:'EduAnat2',
 		webPreferences: { nodeIntegration: true },
 		show:false
