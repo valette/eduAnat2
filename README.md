@@ -2,13 +2,13 @@ EduAnat2
 ======
 
 ### Dependencies ###
-To build desk-ui on your computer, you need:
+To build EduAnat2 on your computer, you need:
 * git
 * node.js
 
 ### How to build
 ```
-git clone https://github.com/valette/desk-ui.git -b eduAnat2-merged
+git clone https://github.com/valette/eduAnat2
 cd desk-ui
 npm install
 npm run build
