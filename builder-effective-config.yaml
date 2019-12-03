@@ -21,7 +21,7 @@ mac:
   category: public.app-category.education
   target : 
     - target: dmg
-  icon : compiled/icon.icns
+  icon : compiled/build/icon.icns
   type : distribution
 linux:
   category : Education
