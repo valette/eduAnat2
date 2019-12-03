@@ -1,0 +1,35 @@
+directories:
+  output: dist
+  buildResources: compiled/build
+  app: compiled/build
+appId: com.ife.eduanat2
+compression: maximum
+productName: Eduanat2
+win:
+  target:
+    - target: nsis
+      arch:
+        - ia32
+nsis:
+  perMachine: false
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  runAfterFinish: false
+  allowElevation: true
+  packElevateHelper: true
+mac:
+  category: public.app-category.education
+  target:
+    - target: dmg
+  icon: compiled/build/icon.icns
+  type: distribution
+linux:
+  category: Education
+  target:
+    - deb
+    - rpm
+deb:
+  packageCategory: Education
+rpm:
+  packageCategory: Education
+electronVersion: 7.1.3
