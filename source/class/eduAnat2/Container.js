@@ -408,8 +408,9 @@ qx.Class.define("eduAnat2.Container", {
         createAbout : function () {
 
 			var read = require('fs').readFileSync;
-			var version = JSON.parse( '' + read( './package.json' ) ).version;
-			var buildDate = '' + read( './buildDate.txt' );
+			var root = require( 'electron' ).remote.app.getAppPath();
+			var version = JSON.parse( '' + read( root + '/package.json' ) ).version;
+			var buildDate = '' + read( root + '/buildDate.txt' );
 			var txt = this.tr( "A propos de " )	+ " EduAnat2 v" + version;
 
             var button = new qx.ui.form.Button( txt, "eduAnat2/about.png" )
