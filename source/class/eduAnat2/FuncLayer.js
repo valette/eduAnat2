@@ -1,6 +1,6 @@
 
 /**
- * @ignore (ImageData)<
+ * @ignore (ImageData.*)
  * @ignore (THREE*)
  * @ignore (chroma*)
  * @ignore (require*)

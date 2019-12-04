@@ -1,10 +1,10 @@
 
 /**
- * @ignore (ImageData)<
- * @ignore (THREE*)
- * @ignore (chroma*)
- * @ignore (require*)
- * @ignore (performance*)
+ * @ignore (chroma.*)
+ * @ignore (performance.*)
+ * @ignore (process.*)
+ * @ignore (require)
+ * @ignore (THREE.*)
   * @ignore (_*)
  */
 
@@ -406,9 +406,17 @@ qx.Class.define("eduAnat2.Container", {
 
 
         createAbout : function () {
-            var button = new qx.ui.form.Button(this.tr("A propos de ")+" EduAnat2 v2.0", "resource/eduAnat2/about.png").set({decorator: null});
 
-            var win = new qx.ui.window.Window(this.tr("A propos de ")+" EduAnat2 v2.0");
+			var read = require('fs').readFileSync;
+			var version = JSON.parse( '' + read( './package.json' ) ).version;
+			var buildDate = '' + read( './buildDate.txt' );
+			var txt = this.tr( "A propos de " )	+ " EduAnat2 v" + version;
+
+            var button = new qx.ui.form.Button( txt, "eduAnat2/about.png" )
+				.set( { decorator: null } );
+
+            var win = new qx.ui.window.Window( txt );
+
             win.set({
                 width : 750,
                 height : 600,
@@ -422,6 +430,7 @@ qx.Class.define("eduAnat2.Container", {
                 allowMinimize : false,
                 allowClose : true,
                 resizable : false
+
             });
 
             win.setLayout(new qx.ui.layout.VBox(10));
@@ -432,7 +441,7 @@ qx.Class.define("eduAnat2.Container", {
             win.add(scroll);
               
             scrollContainer.add( new qx.ui.basic.Label([
-                "<h3>EduAnat2</h3><em>Version 2.0 novembre 2018</em><br>",
+                "<h3>EduAnat2</h3><em>Version " + version + " " + buildDate + "</em><br>",
                 "EduAnat2 est un visualiseur 3D conçu pour enseigner les neurosciences et l’anatomie. EduAnat2 utilise la banque d’images AnaPeda spécialement développée pour des usages pédagogiques.",
                 "",
                 "<u>Avertissement :</u> ",

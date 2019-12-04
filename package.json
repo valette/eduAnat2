@@ -65,7 +65,7 @@
     "package": "npm run package-bin && npm run clean-bin && npm run package-exe-deb-rpm && npm run zip",
     "package-bin": "electron-packager --all --overwrite --prune=true --icon=icon.ico --azar=true compiled/build/ EduAnat2",
     "package-exe-deb-rpm": "electron-builder build -wl --config builder-effective-config.yaml",
-    "qooxdoo": "qx package update && qx package install && npm run compile",
+    "qooxdoo": "date > buildDate.txt && qx package update && qx package install && npm run compile",
     "start": "electron .",
     "terser": "terser compiled/source/eduAnat2/bundle.js --mangle -o compiled/build/eduAnat2/bundle.js",
     "updateAll": "rm -rf node_modules && git pull && npm install && npm run build",

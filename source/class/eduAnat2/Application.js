@@ -11,6 +11,8 @@
 
 /**
  * @asset(eduAnat2/*)
+ * @ignore (require)
+ * @ignore (WEBGL.*)
  */
 
 qx.Class.define("eduAnat2.Application", {
