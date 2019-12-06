@@ -14,7 +14,7 @@ To build EduAnat2 on your computer, you need:
 ### How to build
 ```
 git clone https://github.com/valette/eduAnat2
-cd desk-ui
+cd eduAnat2
 npm install
 npm run build
 ```
