@@ -62,6 +62,8 @@ qx.Class.define("eduAnat2.Container", {
         __volumeAnat: null,
         __mesh3DModel : null,
 
+		__aboutWindow : null,
+
         __buttonOpenAnat: null,
         __buttonOpenFunc: null,
         __buttonCloseAll : null,
@@ -404,19 +406,15 @@ qx.Class.define("eduAnat2.Container", {
 
         },
 
+		getAboutWindow : async function () {
 
-        createAbout : function () {
+			if ( this.__aboutWindow ) return this.__aboutWindow;
+			const version = await eduAnat2.Quircks.getVersion();
+			const buildDate = await eduAnat2.Quircks.readFile(
+				'buildDate.txt' );
 
-			var read = require('fs').readFileSync;
-			var root = require( 'electron' ).remote.app.getAppPath();
-			var version = JSON.parse( '' + read( root + '/package.json' ) ).version;
-			var buildDate = '' + read( root + '/buildDate.txt' );
 			var txt = this.tr( "A propos de " )	+ " EduAnat2 v" + version;
-
-            var button = new qx.ui.form.Button( txt, "eduAnat2/about.png" )
-				.set( { decorator: null } );
-
-            var win = new qx.ui.window.Window( txt );
+            var win = this.__aboutWindow = new qx.ui.window.Window( txt );
 
             win.set({
                 width : 750,
@@ -492,25 +490,32 @@ qx.Class.define("eduAnat2.Container", {
             
             im = new qx.ui.basic.Image("resource/eduAnat2/logo/labexPrimes.png");
             im.set({scale:true});
-            logos.add(  im);
-            
-            
-            
+            logos.add( im);
             scrollContainer.add(logos);
-
-            
-            
-            
-                        // "ok" button to close the window
+            // "ok" button to close the window
             var alertBtn = new qx.ui.form.Button("OK");
-
             alertBtn.addListener("execute", win.close.bind(win));
-
-            win.add(alertBtn);
-
+            win.add( alertBtn );
             qx.core.Init.getApplication().getRoot().add(win, {left:20, top:20});
+			return win;
 
-            button.addListener("execute", win.open.bind(win));
+		},
+
+        createAbout : function () {
+
+			var txt = this.tr( "A propos de " )	+ " EduAnat2";
+
+			const button = new qx.ui.form.Button( txt, "eduAnat2/about.png" )
+				.set( { decorator: null } );
+
+			eduAnat2.Quircks.getVersion().then( v =>
+				button.setLabel( txt + " v " + v ) );
+
+            button.addListener("execute", async () => {
+
+				( await this.getAboutWindow() ).open();
+
+			});
 
             return button;
         },
@@ -555,30 +560,27 @@ qx.Class.define("eduAnat2.Container", {
         },
 
         addAnatFile: async function(evt) {
-            var dialog = require('electron').remote.dialog;
-            var win = await dialog.showOpenDialog({
-              filters : [
-                {name: 'Anat Nifti Image', extensions: ['anat.nii.gz']},
-                {name: 'Nifti Image', extensions: ['nii.gz']},
-                {name: 'All Files', extensions: ['*']}
 
-              ],
-              properties: ['openFile']
-            });
-
-			if ( win.canceled ) return;
-            var filesList = win.filePaths;
-            var name = require("path").basename(filesList[0]);
+			const selection = await eduAnat2.Quircks.selectFile();
+			if ( selection.canceled ) return;
+			console.log( { selection } );
+ 
+			const file = selection.file;
+            const name = file.split( '/' ).pop();
             var that = this;
 
             if (name.substr(name.length -7) !== ".nii.gz") {
-                dialog.showMessageBox({
+
+
+					alert( "Erreur : ne sont acceptés que les fichiers Nifti compressés (.nii.gz)." );
+
+/*                dialog.showMessageBox({
                   type : "error",
                   title : "Erreur : type de fichier",
                   message : "Ne sont acceptés que les fichiers Nifti compressés (.nii.gz).",
                   buttons : ['Ok']
                 });
-
+*/
                 return;
             }
 
@@ -588,82 +590,82 @@ qx.Class.define("eduAnat2.Container", {
                 that.__buttonOpenAnat.setEnabled(false);
             }, 1);
 
-            this.__MPR.addVolume(filesList[0], {
-                workerSlicer: true,
-                noworker: true
-            }, function(err, volume) {
-                that.__volumeAnat = volume;
-                volume.setUserData("path", filesList[0]);
+            const volume = await this.__MPR.addVolumeAsync( file, {
+                workerSlicer: eduAnat2.Quircks.workerSlicer,
+                noworker: true,
+                format : 0
+            } );
+			that.__volumeAnat = volume;
+			volume.setUserData("path", file );
 /*
-                that.__anatButtonMeta.exclude();
-                that.loadMeta(volume, function (err, meta) {
-                  if (err === null) { //show info button
-                    that.__anatButtonMeta.show();
-                  }
-                  else { //show info button
-                    that.__anatButtonMeta.exclude();
-                  }
-                });
+			that.__anatButtonMeta.exclude();
+			that.loadMeta(volume, function (err, meta) {
+			  if (err === null) { //show info button
+				that.__anatButtonMeta.show();
+			  }
+			  else { //show info button
+				that.__anatButtonMeta.exclude();
+			  }
+			});
 */
 
-                var volSlice = that.__MPR.getVolumeSlices(volume);
-                var meshes = that.__meshViewer.attachVolumeSlices(volSlice);
+			var volSlice = that.__MPR.getVolumeSlices(volume);
+			var meshes = that.__meshViewer.attachVolumeSlices(volSlice);
 
-                that.__IRMAnatName.setValue(name.split(".")[0]);
-                that.__buttonOpenFunc.setEnabled(true);
-                that.__buttonOpenAnat.setEnabled(true);
-                that.__subMenuAnat.show();
+			that.__IRMAnatName.setValue(name.split(".")[0]);
+			that.__buttonOpenFunc.setEnabled(true);
+			that.__buttonOpenAnat.setEnabled(true);
+			that.__subMenuAnat.show();
 
-                that.__buttonCloseAll.setEnabled(true);
+			that.__buttonCloseAll.setEnabled(true);
 
-                var bbox = new THREE.Box3();
-                meshes.forEach( function (obj) {
-                    bbox.union( new THREE.Box3().setFromObject(obj) );
-                });
+			var bbox = new THREE.Box3();
+			meshes.forEach( function (obj) {
+				bbox.union( new THREE.Box3().setFromObject(obj) );
+			});
 
-                that.resetMeshView();
-                var group = new THREE.Group();
-                that.__meshViewer.addMesh(group);
+			that.resetMeshView();
+			var group = new THREE.Group();
+			that.__meshViewer.addMesh(group);
 
-                var center = bbox.max.add(bbox.min).divideScalar ( 2 ) ;
-                var l = new THREE.Vector3().copy(bbox.max).sub(bbox.min);
-                var maxSize = Math.max(l.x, l.y, l.z);
+			var center = bbox.max.add(bbox.min).divideScalar ( 2 ) ;
+			var l = new THREE.Vector3().copy(bbox.max).sub(bbox.min);
+			var maxSize = Math.max(l.x, l.y, l.z);
 
-                //var size = 25;
-                var size = 0.2*maxSize;
+			//var size = 25;
+			var size = 0.2*maxSize;
 
-                group.add( that.createSprite("droite",  size, new THREE.Vector3(2*bbox.max.x-bbox.min.x+size*1.5, center.y, center.z)) );
-                group.add( that.createSprite("gauche",  size, new THREE.Vector3(bbox.min.x-size*1.85, center.y, center.z)) );
-                group.add( that.createSprite("ventre",  size, new THREE.Vector3(center.x, bbox.max.y*2+size*1.5, center.z)) );
-                group.add( that.createSprite("dos",     size, new THREE.Vector3(center.x, bbox.min.y-size*1.25, center.z)) );
-                group.add( that.createSprite("avant",   size, new THREE.Vector3(center.x, center.y, bbox.max.z*2+size*1.25)) );
-                group.add( that.createSprite("arrière", size, new THREE.Vector3(center.x, center.y, bbox.min.z-size*1.25)) );
+			group.add( that.createSprite("droite",  size, new THREE.Vector3(2*bbox.max.x-bbox.min.x+size*1.5, center.y, center.z)) );
+			group.add( that.createSprite("gauche",  size, new THREE.Vector3(bbox.min.x-size*1.85, center.y, center.z)) );
+			group.add( that.createSprite("ventre",  size, new THREE.Vector3(center.x, bbox.max.y*2+size*1.5, center.z)) );
+			group.add( that.createSprite("dos",     size, new THREE.Vector3(center.x, bbox.min.y-size*1.25, center.z)) );
+			group.add( that.createSprite("avant",   size, new THREE.Vector3(center.x, center.y, bbox.max.z*2+size*1.25)) );
+			group.add( that.createSprite("arrière", size, new THREE.Vector3(center.x, center.y, bbox.min.z-size*1.25)) );
 
-                //Update Zoom Limite
-                that.__MPR.getViewers().concat(that.__meshViewer).forEach(function (viewer) {
-                  viewer.getControls().setMinZoom(0.3*maxSize);
-                  viewer.getControls().setMaxZoom(20*maxSize);
-                });
+			//Update Zoom Limite
+			that.__MPR.getViewers().concat(that.__meshViewer).forEach(function (viewer) {
+			  viewer.getControls().setMinZoom(0.3*maxSize);
+			  viewer.getControls().setMaxZoom(20*maxSize);
+			});
 
-                var path = filesList[0];
-                if (path) {
-                    var meshPath;
-                    if (name.substr(name.length -12) == ".anat.nii.gz") {
-                        meshPath = path.substr(0, path.length-12) + ".stl";
-                    }
-                    else if (name.substr(name.length -7) == ".nii.gz") {
-                      var meshPath = path.substr(0, path.length-7) + ".stl";
-                    }
+			const path = file;
+			var meshPath;
 
-                    var oReq = new XMLHttpRequest();
-                    oReq.responseType = "arraybuffer";
-                    oReq.onload = function (res) {
-                       that.addMesh(oReq.response);
-                    };
-                    oReq.open("get", meshPath, true);
-                    oReq.send();
-                }
-            });
+			if (name.substr(name.length -12) == ".anat.nii.gz") {
+				meshPath = path.substr(0, path.length-12) + ".stl";
+			}
+			else if (name.substr(name.length -7) == ".nii.gz") {
+			  var meshPath = path.substr(0, path.length-7) + ".stl";
+			}
+
+			var oReq = new XMLHttpRequest();
+			oReq.responseType = "arraybuffer";
+			oReq.onload = function (res) {
+			   that.addMesh(oReq.response, volume);
+			};
+			oReq.open("get", eduAnat2.Quircks.getFileURL( meshPath ), true);
+			oReq.send();
+
         },
 
 
@@ -698,9 +700,9 @@ qx.Class.define("eduAnat2.Container", {
             reader.readAsArrayBuffer(file.getBrowserObject());
         },
 
-        addMesh : function (arrayBuffer) {
-            var loader = new THREE.STLLoader();
+        addMesh : function (arrayBuffer, volume) {
 
+            var loader = new THREE.STLLoader();
             var geometry = loader.parse( arrayBuffer );
 
             //https://stackoverflow.com/questions/35843167/three-js-smoothing-normals-using-mergevertices
@@ -725,9 +727,19 @@ qx.Class.define("eduAnat2.Container", {
 
             mesh.scale.set(-1, 1, 1);
 
-            var prop = this.__volumeAnat.getUserData('workerSlicer').properties;
-            var offsetX = prop.dimensions[0] * prop.spacing[0];
-            mesh.position.set(offsetX, 0, 0);
+            var workerSlicer = this.__volumeAnat.getUserData('workerSlicer');
+            if ( workerSlicer ) {
+				const prop = workerSlicer.properties
+				var offsetX = prop.dimensions[0] * prop.spacing[0];
+				mesh.position.set(offsetX, 0, 0);
+		} else {
+
+			const volumeSlice = this.__MPR.getVolumeSlices( volume )[ 0 ];
+			const spacing = volumeSlice.getSpacing();
+			const dimensions = volumeSlice.getDimensions();
+			mesh.position.set( dimensions[ 0 ]*spacing[ 0 ] , 0, 0);
+
+		}
 
 
             //mesh.flipSided = true;

@@ -1,6 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style type="text/css">
+/*this is what we want the div to look like
+when it is not showing*/
+div.loading-invisible{
+	/*make invisible*/
+	display:none;
+}
+
+/*this is what we want the div to look like
+when it IS showing*/
+div.loading-visible{
+	/*make visible*/
+	display:block;
+
+	/*position it 200px down the screen*/
+	position:absolute;
+	top:200px;
+	left:0;
+	width:100%;
+	text-align:center;
+}
+</style>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
@@ -46,5 +68,8 @@
 
  </head>
 <body>
+<div id="loading" class="loading-visible">
+  <p>Loading, please wait...</p>
+</div>
 </body>
 </html>

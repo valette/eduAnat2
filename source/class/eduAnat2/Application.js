@@ -21,7 +21,7 @@ qx.Class.define("eduAnat2.Application", {
 
 	members : {
 
-		main : function() {
+		main : async function() {
 
 			// Call super class
 			this.base(arguments);
@@ -34,56 +34,61 @@ qx.Class.define("eduAnat2.Application", {
 				qx.log.appender.Console;
 			}
 
-			var actions = desk.Actions.getInstance()
-			desk.Actions.init( afterActionsInitialized );
+			desk.AddPromises.getInstance();
+			await desk.Actions.initAsync();
+			eduAnat2.Quircks.getInstance();
+			document.getElementById("loading").className = "loading-invisible";
 
-			function afterActionsInitialized () {
+			//desk.auto = true;
+			const qxRoot = qx.core.Init.getApplication().getRoot();
+			//qx.locale.Manager.getInstance().setLocale("en");
 
-				//desk.auto = true;
-				var qxRoot = qx.core.Init.getApplication().getRoot();
-				//qx.locale.Manager.getInstance().setLocale("en");
+			if ( !WEBGL.isWebGLAvailable() ) {
 
-				if ( !WEBGL.isWebGLAvailable() ) {
+				console.log("WebGLUnavalable");
+				const win = new qx.ui.window.Window( qxRoot.tr("Erreur : WebGL non supporté") );
+				win.setLayout( new qx.ui.layout.VBox( 10 ) );
 
-					console.log("WebGLUnavalable");
-					var win = new qx.ui.window.Window( qxRoot.tr("Erreur : WebGL non supporté") );
-					win.setLayout( new qx.ui.layout.VBox( 10 ) );
+				win.set( {
+					width : 400,
+					alwaysOnTop : true,
+					showMinimize : false,
+					showMaximize : false,
+					showClose : false,
+					centerOnAppear : true,
+					modal : true,
+					movable : false,
+					resizable : false,
+					allowClose : false,
+					allowMaximize : false,
+					allowMinimize : false
+				} );
 
-					win.set( {
-						width : 400,
-						alwaysOnTop : true,
-						showMinimize : false,
-						showMaximize : false,
-						showClose : false,
-						centerOnAppear : true,
-						modal : true,
-						movable : false,
-						resizable : false,
-						allowClose : false,
-						allowMaximize : false,
-						allowMinimize : false
-					} );
-
-					// label to show the e.g. the alert message
-					win.add( new qx.ui.basic.Label(qxRoot.tr("WebGL n'est pas supporté par votre système.") ) );
-					qxRoot.add( win );
-					win.open();
-					return;
-
-				}
-
-				var container = new qx.ui.splitpane.Pane( "horizontal" );
-				container.getChildControl("splitter").setBackgroundColor( "#C0C0C0" );
-				qxRoot.add( container, { width : "100%", height : "100%" } );
-				var sideViewer = new eduAnat2.Container();
-				var mainViewer = new eduAnat2.Container( sideViewer );
-				sideViewer.setMainViewer( mainViewer );
-				container.add( mainViewer );
-				container.add( sideViewer );
-				sideViewer.exclude();
-				require( "electron" ).ipcRenderer.send( 'qx-ready' );
+				// label to show the e.g. the alert message
+				win.add( new qx.ui.basic.Label(qxRoot.tr("WebGL n'est pas supporté par votre système.") ) );
+				qxRoot.add( win );
+				win.open();
+				return;
 
 			}
+
+			const container = new qx.ui.splitpane.Pane( "horizontal" );
+			container.getChildControl("splitter").setBackgroundColor( "#C0C0C0" );
+
+			const width = desk.Actions.getEngine() === "node" ?
+				"90%" : "100%";
+
+			qxRoot.add( container, { width, height : "100%" } );
+			const sideViewer = new eduAnat2.Container();
+			const mainViewer = new eduAnat2.Container( sideViewer );
+			sideViewer.setMainViewer( mainViewer );
+			container.add( mainViewer );
+			container.add( sideViewer );
+			sideViewer.exclude();
+
+			if ( desk.Actions.getEngine() === "electron" )
+				require( "electron" ).ipcRenderer.send( 'qx-ready' );
+
 
 		}
 

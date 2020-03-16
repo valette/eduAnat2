@@ -182,6 +182,9 @@ qx.Class.define("eduAnat2.FuncLayer", {
       },
 
       addFuncFile: async function(cbBefore, cbAfter) {
+
+		const selection = await eduAnat2.Quircks.selectFile();
+/*
           var dialog = require('electron').remote.dialog;
           var win = await dialog.showOpenDialog({
             filters : [
@@ -195,16 +198,23 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
           var filesList = win.filePaths;
           if (!filesList || !filesList.length) return;
-          var name = require("path").basename(filesList[0]);
+  */
+ 
+		if ( selection.canceled ) return;
+		const file = selection.file;
+		const name = file.split( '/' ).pop();
+//          var name = require("path").basename(filesList[0]);
 
           if (name.substr(name.length -7) !== ".nii.gz") {
-              dialog.showMessageBox({
+
+				alert( 'Erreur : Ne sont acceptés que les fichiers Nifti compressés (.nii.gz). ');
+/*              dialog.showMessageBox({
                 type : "error",
                 title : "Erreur : type de fichier",
                 message : "Ne sont acceptés que les fichiers Nifti compressés (.nii.gz).",
                 buttons : ['Ok']
               });
-
+*/
               return;
           }
 
@@ -214,7 +224,8 @@ qx.Class.define("eduAnat2.FuncLayer", {
           this.removeFunc();
 
           var properties = {
-              workerSlicer: true,
+              workerSlicer: eduAnat2.Quircks.workerSlicer,
+              format : 0,
               noworker: true,
               colors: that.__colors,
               linearFilter : false,
@@ -229,10 +240,13 @@ qx.Class.define("eduAnat2.FuncLayer", {
               }
           };
 
-          this.__MPR.addVolume(filesList[0], properties, function(err, volume) {
-              var prop = volume.getUserData("workerSlicer").properties;
+          this.__MPR.addVolume(file , properties, function(err, volume) {
+//              var prop = volume.getUserData("workerSlicer").properties;
+              const scalarBounds = that.__MPR.getVolumeSlices(
+				volume )[ 0 ].getScalarBounds();
+				const prop = { scalarBounds };
               that.volumeFunc = volume;
-              volume.setUserData("path", filesList[0]);
+              volume.setUserData("path", file );
 /*
               that.__funcButtonMeta.exclude();
               that.loadMeta(volume, function (err, meta) {
