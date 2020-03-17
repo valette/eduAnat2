@@ -654,7 +654,7 @@ qx.Class.define("eduAnat2.Container", {
 				meshPath = path.substr(0, path.length-12) + ".stl";
 			}
 			else if (name.substr(name.length -7) == ".nii.gz") {
-			  var meshPath = path.substr(0, path.length-7) + ".stl";
+			    meshPath = path.substr(0, path.length-7) + ".stl";
 			}
 
 			var oReq = new XMLHttpRequest();
