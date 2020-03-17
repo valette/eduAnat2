@@ -37,6 +37,7 @@ qx.Class.define("eduAnat2.Application", {
 			desk.AddPromises.getInstance();
 			await desk.Actions.initAsync();
 			eduAnat2.Quircks.getInstance();
+
 			document.getElementById("loading").className = "loading-invisible";
 
 			//desk.auto = true;
@@ -86,9 +87,9 @@ qx.Class.define("eduAnat2.Application", {
 			container.add( sideViewer );
 			sideViewer.exclude();
 
-			if ( desk.Actions.getEngine() === "electron" )
+			try {
 				require( "electron" ).ipcRenderer.send( 'qx-ready' );
-
+			} catch ( e ) {}
 
 		}
 

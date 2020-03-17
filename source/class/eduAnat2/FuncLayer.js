@@ -183,7 +183,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
       addFuncFile: async function(cbBefore, cbAfter) {
 
-		const selection = await eduAnat2.Quircks.selectFile();
+		const selection = await eduAnat2.Quircks.selectFile( true );
 /*
           var dialog = require('electron').remote.dialog;
           var win = await dialog.showOpenDialog({

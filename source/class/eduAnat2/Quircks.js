@@ -18,14 +18,19 @@ qx.Class.define("eduAnat2.Quircks", {
 
 	    this.base(arguments);
 
-		switch ( desk.Actions.getEngine() ) {
+		try {
 
-			case "electron":
-				console.log( "Not Tested" );
-				eduAnat2.Quircks.workerSlicer = true;
-				eduAnat2.Quircks.appRoot = require( 'electron' ).remote.app.getAppPath() + "/";
-				eduAnat2.Quircks.readFile = eduAnat2.Quircks.readFileElectron;
-				break;
+			const electron = require( 'electron' );
+			eduAnat2.Quircks.workerSlicer = true;
+			eduAnat2.Quircks.appRoot = electron.remote.app.getAppPath() + "/";
+			eduAnat2.Quircks.readFile = eduAnat2.Quircks.readFileElectron;
+			eduAnat2.Quircks.selectFile = this.__selectFileElectron;
+			return;
+
+		} catch ( e ) { }
+
+
+		switch ( desk.Actions.getEngine() ) {
 
 			case "node":
 
@@ -43,8 +48,6 @@ qx.Class.define("eduAnat2.Quircks", {
 				eduAnat2.Quircks.selectFile = this.__selectFileNode;
 
 				break;
-
-
 
 		}
 
@@ -89,7 +92,11 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		getFileURL : function( path ) {
 
-			if ( desk.Actions.getEngine() === "electron" ) return path;
+			try {
+				require ("electron" )
+				return path;
+			} catch ( e ) {};
+
 			return encodeURI( desk.FileSystem.getFileURL( path ) );
 
 		},
@@ -195,20 +202,29 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		},
 
-		__selectFileElectron : async function () {
+		__selectFileElectron : async function ( func ) {
 /// TODO!
-            var dialog = require('electron').remote.dialog;
-            var win = await dialog.showOpenDialog({
-              filters : [
-                {name: 'Anat Nifti Image', extensions: ['anat.nii.gz']},
-                {name: 'Nifti Image', extensions: ['nii.gz']},
-                {name: 'All Files', extensions: ['*']}
 
-              ],
-              properties: ['openFile']
-            });
+			const filters = func ?
+				[
+					{name: 'Fonc Nifti Image', extensions: ['fonc.nii.gz']},
+					{name: 'Nifti Image', extensions: ['nii.gz']},
+					{name: 'All Files', extensions: ['*']}
 
-			if ( win.canceled ) return;
+					]
+				: [
+					{name: 'Anat Nifti Image', extensions: ['anat.nii.gz']},
+					{name: 'Nifti Image', extensions: ['nii.gz']},
+					{name: 'All Files', extensions: ['*']}
+
+				];
+
+            const dialog = require('electron').remote.dialog;
+            const win = await dialog.showOpenDialog({
+              filters, properties: [ 'openFile' ] } );
+
+			if ( win.canceled ) return { canceled : true };
+			return { file : win.filePaths[ 0 ] };
 
 		}
 

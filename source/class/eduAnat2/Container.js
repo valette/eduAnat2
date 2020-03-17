@@ -563,7 +563,6 @@ qx.Class.define("eduAnat2.Container", {
 
 			const selection = await eduAnat2.Quircks.selectFile();
 			if ( selection.canceled ) return;
-			console.log( { selection } );
  
 			const file = selection.file;
             const name = file.split( '/' ).pop();
@@ -649,7 +648,7 @@ qx.Class.define("eduAnat2.Container", {
 			});
 
 			const path = file;
-			var meshPath;
+			let meshPath;
 
 			if (name.substr(name.length -12) == ".anat.nii.gz") {
 				meshPath = path.substr(0, path.length-12) + ".stl";
