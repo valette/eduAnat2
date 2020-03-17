@@ -592,7 +592,7 @@ qx.Class.define("eduAnat2.Container", {
             const volume = await this.__MPR.addVolumeAsync( file, {
                 workerSlicer: eduAnat2.Quircks.workerSlicer,
                 noworker: true,
-                format : 0
+                format : eduAnat2.Quircks.anatImagesFormat
             } );
 			that.__volumeAnat = volume;
 			volume.setUserData("path", file );

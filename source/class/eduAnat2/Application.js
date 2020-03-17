@@ -11,6 +11,8 @@
 
 /**
  * @asset(eduAnat2/*)
+ * @asset(desk/img.png)
+ * @asset(desk/tris.png)
  * @ignore (require)
  * @ignore (WEBGL.*)
  */

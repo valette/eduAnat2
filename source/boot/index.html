@@ -62,14 +62,14 @@ div.loading-visible{
   <noscript>
     <meta http-equiv="refresh" content="0; url=nojs.html"/>
   </noscript>
-  <script type="text/javascript" src="${appPath}bundle.js"></script>
-  ${preBootJs}
-  <script type="text/javascript" src="${appPath}boot.js"></script>
 
  </head>
 <body>
 <div id="loading" class="loading-visible">
   <p>Loading, please wait...</p>
 </div>
+  <script type="text/javascript" src="${appPath}bundle.js"></script>
+  ${preBootJs}
+  <script type="text/javascript" src="${appPath}boot.js"></script>
 </body>
 </html>

@@ -29,6 +29,15 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		} catch ( e ) { }
 
+		let formatButton;
+
+		function updateFormatButtonLabel() {
+
+			if ( !formatButton ) return;
+			formatButton.setLabel( eduAnat2.Quircks.anatImagesFormat ?
+				"Low Res Anat" : "Hi Res Anat" );
+
+		}
 
 		switch ( desk.Actions.getEngine() ) {
 
@@ -39,9 +48,31 @@ qx.Class.define("eduAnat2.Quircks", {
 				root.add( button, { right : 0, top : 200 } );
 				button.addListener( 'execute', this.__loop, this );
 				desk.Actions.getInstance().statifyCode= "home/git/eduAnat2/compiled/build";
+				formatButton = new qx.ui.form.Button( "Hi Res Anat" );
+				updateFormatButtonLabel();
+
+				formatButton.addListener( 'execute', () => {
+
+					eduAnat2.Quircks.anatImagesFormat = 1 - eduAnat2.Quircks.anatImagesFormat;
+
+					updateFormatButtonLabel();
+
+				} );
+
+				root.add( formatButton, { right : 0, top : 260 } );
 
 
 			default:
+
+				desk.FileSystem.readFile( eduAnat2.Quircks.formatFile,
+					( err, res ) => {
+
+					if ( err ) return;
+					eduAnat2.Quircks.anatImagesFormat = JSON.parse( res );
+					updateFormatButtonLabel();
+
+				} );
+
 				eduAnat2.Quircks.workerSlicer = false;
 				eduAnat2.Quircks.appRoot = "";
 				eduAnat2.Quircks.readFile = eduAnat2.Quircks.readFileNode;
@@ -61,6 +92,7 @@ qx.Class.define("eduAnat2.Quircks", {
 
     statics : {
 
+		formatFile : "data/format.json",
 		getVersion : async function () {
 
 			return JSON.parse( await eduAnat2.Quircks.readFile(
@@ -101,7 +133,9 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		},
 
-		appRoot : null
+		appRoot : null,
+
+		anatImagesFormat : 0,
 
 	},
 
@@ -111,6 +145,12 @@ qx.Class.define("eduAnat2.Quircks", {
 
 			const volumes = [];
 			const meshes = [];
+
+			await desk.FileSystem.writeFileAsync( eduAnat2.Quircks.formatFile,
+				JSON.stringify( eduAnat2.Quircks.anatImagesFormat ) )
+
+			desk.FileSystem.getFileURL( eduAnat2.Quircks.formatFile );
+
 
 			await desk.FileSystem.traverseAsync( this.__anaPedaRoot, f => {
 
@@ -122,18 +162,16 @@ qx.Class.define("eduAnat2.Quircks", {
 //			volumes.length = meshes.length = 3;
 
 			console.log( { volumes, meshes } );
-
-			for ( let mesh of meshes ) {
-
-				desk.FileSystem.getFileURL( mesh );
-
-			}
+			for ( let mesh of meshes ) desk.FileSystem.getFileURL( mesh );
 
 			const volumeViewer = new desk.VolumeViewer();
+
 			for ( let volume of volumes ) {
 
-				await volumeViewer.addVolumeAsync( volume,
-					{ format : 0 } );
+				const format = volume.endsWith( ".fonc.nii.gz" ) ?
+					0 : eduAnat2.Quircks.anatImagesFormat;
+
+				await volumeViewer.addVolumeAsync( volume, { format } );
 				await new Promise ( res => setTimeout( res, 500 ) );
 				volumeViewer.removeAllVolumes();
 
