@@ -258,7 +258,8 @@ qx.Class.define("eduAnat2.Quircks", {
 
 				win = new qx.ui.window.Window();
 				win.set( { width : 600, height : 500,
-					layout : new qx.ui.layout.VBox() } );
+					layout : new qx.ui.layout.VBox(),
+					showMinimize : false } );
 
 				const fileBrowser = new desk.FileBrowser( self.__anaPedaRoot );
 				fileBrowser.setContextMenu( new qx.ui.menu.Menu() );
@@ -266,30 +267,41 @@ qx.Class.define("eduAnat2.Quircks", {
 				self.____selectFileWindow = win;
 				win.center();
 				fileBrowser.setFileHandler( () => {} );
+				const button = new qx.ui.form.Button( "Ouvrir" );
+				win.add( button );
 
 			}
 
 
 			win.open();
 
-			let closeHandler;
+			let closeHandler, buttonHandler, selectionHandler;
 			const fileBrowser = win.getChildren()[ 0 ];
+			const button = win.getChildren()[ 1 ];
+			button.setEnabled( false );
 
 			const filterValue = ( func ? ".fonc" : ".anat")	+ ".nii.gz"
 			fileBrowser.getFileFilter().setValue( filterValue );
-			fileBrowser.getTree().refresh();
+			const tree = fileBrowser.getTree();
+			tree.refresh();
 
 			const caption = func ? "Sélectionnez un calque"
 				: "Sélectionnez une image";
 
 			win.setCaption( caption );
 
+			selectionHandler =tree.addListener( 'changeSelection',
+				() => {
+					button.setEnabled(
+						fileBrowser.getSelectedFiles()[ 0 ].endsWith( filterValue ));
+				} );
+
 			const result = await Promise.race( [
 
 				new Promise( res => {
 					fileBrowser.setFileHandler( file => {
 
-						if ( closeHandler ) win.removeListenerById( closeHandler );
+						if ( !file.endsWith( filterValue ) ) return;
 						res( { file } );
 
 					} )
@@ -299,8 +311,17 @@ qx.Class.define("eduAnat2.Quircks", {
 
 					closeHandler = win.addListenerOnce( "close", () => {
 
-						closeHandler = null;
-						res ( { canceled : true } );
+						res( { canceled : true } );
+
+					} );
+
+				} ),
+
+				new Promise( res => {
+
+					buttonHandler = button.addListenerOnce( "execute", () => {
+
+						res( { file : fileBrowser.getSelectedFiles()[ 0 ] } );
 
 					} );
 
@@ -308,10 +329,12 @@ qx.Class.define("eduAnat2.Quircks", {
 
 			] );
 
+			tree.removeListenerById( selectionHandler );
+			win.removeListenerById( closeHandler );
+			button.removeListenerById( buttonHandler );
 			fileBrowser.setFileHandler( () => {} );
 			win.close();
 			return result;
-
 
 		},
 
