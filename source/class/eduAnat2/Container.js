@@ -131,7 +131,7 @@ qx.Class.define("eduAnat2.Container", {
                       that.__buttonOpenFunc.setEnabled(true);
                       that.__buttonOpenAnat.setEnabled(true);
                       that.__buttonCloseAll.setEnabled(true);
-                  });
+                  }, that.__VolumeCenter);
                 }
                 
                 /*
@@ -593,7 +593,9 @@ qx.Class.define("eduAnat2.Container", {
                 that.__buttonOpenAnat.setEnabled(false);
             }, 1);
 
-            const volume = await this.__MPR.addVolumeAsync( file, {
+			const fixedFile = await eduAnat2.Quircks.flipVolume( file );
+
+            const volume = await this.__MPR.addVolumeAsync( fixedFile, {
                 workerSlicer: eduAnat2.Quircks.workerSlicer,
                 noworker: true,
                 format : eduAnat2.Quircks.anatImagesFormat
@@ -621,29 +623,28 @@ qx.Class.define("eduAnat2.Container", {
 			that.__subMenuAnat.show();
 
 			that.__buttonCloseAll.setEnabled(true);
-
 			var bbox = new THREE.Box3();
-			meshes.forEach( function (obj) {
-				bbox.union( new THREE.Box3().setFromObject(obj) );
-			});
+			meshes.forEach( mesh => bbox.expandByObject( mesh ) );
+			this.__VolumeCenter = bbox.getCenter( new THREE.Vector3() ).toArray();
 
 			that.resetMeshView();
 			var group = new THREE.Group();
 			that.__meshViewer.addMesh(group);
 
-			var center = bbox.max.add(bbox.min).divideScalar ( 2 ) ;
+			var center = bbox.getCenter( new THREE.Vector3() );
 			var l = new THREE.Vector3().copy(bbox.max).sub(bbox.min);
 			var maxSize = Math.max(l.x, l.y, l.z);
 
 			//var size = 25;
 			var size = 0.2*maxSize;
+			var sSize = 0.5 * size;
 
-			group.add( that.createSprite("droite",  size, new THREE.Vector3(2*bbox.max.x-bbox.min.x+size*1.5, center.y, center.z)) );
-			group.add( that.createSprite("gauche",  size, new THREE.Vector3(bbox.min.x-size*1.85, center.y, center.z)) );
-			group.add( that.createSprite("ventre",  size, new THREE.Vector3(center.x, bbox.max.y*2+size*1.5, center.z)) );
-			group.add( that.createSprite("dos",     size, new THREE.Vector3(center.x, bbox.min.y-size*1.25, center.z)) );
-			group.add( that.createSprite("avant",   size, new THREE.Vector3(center.x, center.y, bbox.max.z*2+size*1.25)) );
-			group.add( that.createSprite("arrière", size, new THREE.Vector3(center.x, center.y, bbox.min.z-size*1.25)) );
+			group.add( that.createSprite("droite", sSize, new THREE.Vector3(bbox.max.x+size, center.y, center.z)) );
+			group.add( that.createSprite("gauche", sSize, new THREE.Vector3(bbox.min.x-size, center.y, center.z)) );
+			group.add( that.createSprite("ventre", sSize, new THREE.Vector3(center.x, bbox.max.y+size, center.z)) );
+			group.add( that.createSprite("dos",    sSize, new THREE.Vector3(center.x, bbox.min.y-size, center.z)) );
+			group.add( that.createSprite("avant",  sSize, new THREE.Vector3(center.x, center.y, bbox.max.z+size)) );
+			group.add( that.createSprite("arrière",sSize, new THREE.Vector3(center.x, center.y, bbox.min.z-size)) );
 
 			//Update Zoom Limite
 			that.__MPR.getViewers().concat(that.__meshViewer).forEach(function (viewer) {
@@ -740,7 +741,20 @@ qx.Class.define("eduAnat2.Container", {
 			const volumeSlice = this.__MPR.getVolumeSlices( volume )[ 0 ];
 			const spacing = volumeSlice.getSpacing();
 			const dimensions = volumeSlice.getDimensions();
-			mesh.position.set( dimensions[ 0 ]*spacing[ 0 ] , 0, 0);
+			const origin = volumeSlice.getOrigin();
+			mesh.geometry.computeBoundingBox();
+			const meshCenter = mesh.geometry.boundingBox.getCenter( new THREE.Vector3() ).toArray();
+
+			for ( let i = 0; i < 3; i++ ) {
+
+				const center = origin[ i ] +	spacing[ i ] * 0.5 * dimensions[ i ];
+				const length = spacing[ i ] * dimensions[ i ];
+				const diff = Math.round( 2 * ( center - meshCenter[ i ] ) / length );
+				mesh.position.setComponent( i, 0.5 * length * diff );
+
+			}
+
+			mesh.position.x += ( dimensions[ 0 ]*spacing[ 0 ] );
 
 		}
 

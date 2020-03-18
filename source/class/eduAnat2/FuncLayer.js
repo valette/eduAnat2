@@ -181,7 +181,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
       },
 
-      addFuncFile: async function(cbBefore, cbAfter) {
+      addFuncFile: async function(cbBefore, cbAfter, center) {
 
 		const selection = await eduAnat2.Quircks.selectFile( true );
 /*
@@ -225,6 +225,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
           var properties = {
               workerSlicer: eduAnat2.Quircks.workerSlicer,
+              center,
               format : 0,
               noworker: true,
               colors: that.__colors,
@@ -240,7 +241,9 @@ qx.Class.define("eduAnat2.FuncLayer", {
               }
           };
 
-          this.__MPR.addVolume(file , properties, function(err, volume) {
+          const fixedFile = await eduAnat2.Quircks.flipVolume( file );
+
+          this.__MPR.addVolume(fixedFile , properties, function(err, volume) {
 //              var prop = volume.getUserData("workerSlicer").properties;
               const scalarBounds = that.__MPR.getVolumeSlices(
 				volume )[ 0 ].getScalarBounds();

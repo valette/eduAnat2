@@ -135,6 +135,27 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		appRoot : null,
 
+		flipVolume : async function ( file ) {
+
+			try {
+
+				require( 'electron' );
+				return file;
+
+			} catch ( e ) { }
+
+			const flip = await desk.Actions.executeAsync( {
+
+				action : "flipToRAS",
+				inputVolume : file,
+				outputFileName : "output.nii.gz"
+
+			} );
+
+			return flip.outputDirectory + "output.nii.gz";
+
+		},
+
 		anatImagesFormat : 0,
 
 		capture : async function ( element ) {
@@ -210,14 +231,17 @@ qx.Class.define("eduAnat2.Quircks", {
 
 			for ( let volume of volumes ) {
 
+				const fixedFile = await eduAnat2.Quircks.flipVolume( volume );
 				const format = volume.endsWith( ".fonc.nii.gz" ) ?
 					0 : eduAnat2.Quircks.anatImagesFormat;
 
-				await volumeViewer.addVolumeAsync( volume, { format } );
+				await volumeViewer.addVolumeAsync( fixedFile, { format } );
 				await new Promise ( res => setTimeout( res, 500 ) );
 				volumeViewer.removeAllVolumes();
 
 			}
+
+			alert( 'loop done' );
 
 		},
 
