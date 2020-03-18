@@ -25,6 +25,9 @@ qx.Class.define("eduAnat2.Application", {
 
 		main : async function() {
 
+			const waitELement = document.getElementById( "loading" );
+			waitELement.innerHTML = "<p>C'est bientôt fini</p>";
+
 			// Call super class
 			this.base(arguments);
 
@@ -39,8 +42,6 @@ qx.Class.define("eduAnat2.Application", {
 			desk.AddPromises.getInstance();
 			await desk.Actions.initAsync();
 			eduAnat2.Quircks.getInstance();
-
-			document.getElementById("loading").className = "loading-invisible";
 
 			//desk.auto = true;
 			const qxRoot = qx.core.Init.getApplication().getRoot();
@@ -81,6 +82,7 @@ qx.Class.define("eduAnat2.Application", {
 			const width = desk.Actions.getEngine() === "node" ?
 				"90%" : "100%";
 
+			waitELement.className = "loading-invisible";
 			qxRoot.add( container, { width, height : "100%" } );
 			const sideViewer = new eduAnat2.Container();
 			const mainViewer = new eduAnat2.Container( sideViewer );

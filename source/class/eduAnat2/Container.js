@@ -559,12 +559,16 @@ qx.Class.define("eduAnat2.Container", {
 
         },
 
-        addAnatFile: async function(evt) {
+		selectAnatFile : async function() {
 
 			const selection = await eduAnat2.Quircks.selectFile();
 			if ( selection.canceled ) return;
- 
-			const file = selection.file;
+			this.addAnatFile( selection.file );
+
+		},
+
+        addAnatFile: async function( file ) {
+
             const name = file.split( '/' ).pop();
             var that = this;
 
@@ -908,7 +912,7 @@ qx.Class.define("eduAnat2.Container", {
             buttonOpenAnat.getChildControl("label").setAllowGrowX(true);
             buttonOpenAnat.getChildControl("label").setTextAlign("left");
 
-            buttonOpenAnat.addListener("execute", this.addAnatFile.bind(this));
+            buttonOpenAnat.addListener("execute", this.selectAnatFile, this);
 
             container.add(buttonOpenAnat);
 

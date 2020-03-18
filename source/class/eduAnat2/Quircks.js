@@ -183,7 +183,7 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		__selectFileWindow : null,
 
-		__selectFileNode : async function () {
+		__selectFileNode : async function ( func ) {
 
 			const self = eduAnat2.Quircks.getInstance();
 
@@ -208,6 +208,15 @@ qx.Class.define("eduAnat2.Quircks", {
 
 			let closeHandler;
 			const fileBrowser = win.getChildren()[ 0 ];
+
+			const filterValue = ( func ? ".fonc" : ".anat")	+ ".nii.gz"
+			fileBrowser.getFileFilter().setValue( filterValue );
+			fileBrowser.getTree().refresh();
+
+			const caption = func ? "Sélectionnez un calque"
+				: "Sélectionnez un image";
+
+			win.setCaption( caption );
 
 			const result = await Promise.race( [
 
