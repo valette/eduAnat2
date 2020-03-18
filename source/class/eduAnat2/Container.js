@@ -756,6 +756,31 @@ qx.Class.define("eduAnat2.Container", {
 
 			mesh.position.x += ( dimensions[ 0 ]*spacing[ 0 ] );
 
+			const finalBox = new THREE.Box3().expandByObject( mesh );
+			for ( let i = 0; i < 3; i++ ) {
+
+				const boxMin = finalBox.min.getComponent( i );
+				const boxMax = finalBox.max.getComponent( i );
+				const meshCoord = mesh.position.getComponent( i );
+				const max = origin[ i ] + spacing[ i ] * dimensions[ i ];
+
+				if ( boxMin < origin[ i ] ) {
+
+					mesh.position.setComponent( i, meshCoord
+						+ origin[ i ] - boxMin );
+
+				}
+
+				if ( boxMax > max ) {
+
+					mesh.position.setComponent( i, meshCoord
+						+ max - boxMax );
+
+				}
+
+
+			}
+
 		}
 
 
