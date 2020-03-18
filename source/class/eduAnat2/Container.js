@@ -824,58 +824,44 @@ qx.Class.define("eduAnat2.Container", {
 				this.resetMeshView();
 			}, this );
 
-			// screenshot button for mesh viewer;
-			var screenshot = new qx.ui.form.Button(null, "resource/eduAnat2/screenshot.png").set({decorator: null});
-			meshViewer.add (screenshot, {right : 38, bottom : 3});
-
-			async function capture( element ) {
-
-				var el = element.getContentElement().getDomElement(); 
-				var rect = el.getBoundingClientRect();
-				rect.y = rect.top;
-				rect.x = rect.left;
-				var remote = require('electron').remote;
-				var webContents = remote.getCurrentWebContents();
-				var image = await webContents.capturePage(rect);
-				var dialog = remote.dialog;
-				var fn = await dialog.showSaveDialog({
-					defaultPath: 'capture.png',
-					filters : [{name: 'Image', extensions: ['png']}]
-				});
-
-				if ( fn.canceled ) return;
-				remote.require('fs').writeFile(fn.filePath, image.toPNG(), function () {});
-
-			}
-
-			screenshot.addListener("execute", async function () {
-				capture( MPR );
-			});
 
 			MPR.setCustomContainer(meshViewer);
-
 			// screenShot for sliceView;
 			var sButton = 0;
 
-			MPR.addListener( "switchFullScreen", function ( e ) {
+			try { // create snapshot button only for electron version for now...
 
-				var sliceView = e.getData();
-				if ( !sliceView ) {
+				require( 'electron' );
+				// screenshot button for mesh viewer;
+				var screenshot = new qx.ui.form.Button(null, "resource/eduAnat2/screenshot.png").set({decorator: null});
+				meshViewer.add (screenshot, {right : 38, bottom : 3});
 
-					if ( sButton ) sButton.destroy();
-					return;
-
-				}
-
-				sButton = new qx.ui.form.Button(null, "resource/eduAnat2/screenshot.png");
-				sButton.set({opacity: 0.75, padding: 2});
-				sliceView.getRightContainer().addAt(sButton, 2);
-
-				sButton.addListener("execute", function () {
-					capture( sliceView );
+				screenshot.addListener("execute", async function () {
+					eduAnat2.Quircks.capture( MPR );
 				});
 
-			} );
+				MPR.addListener( "switchFullScreen", function ( e ) {
+
+					var sliceView = e.getData();
+					if ( !sliceView ) {
+
+						if ( sButton ) sButton.destroy();
+						return;
+
+					}
+
+					sButton = new qx.ui.form.Button(null, "resource/eduAnat2/screenshot.png");
+					sButton.set({opacity: 0.75, padding: 2});
+					sliceView.getRightContainer().addAt(sButton, 2);
+
+					sButton.addListener("execute", function () {
+						eduAnat2.Quircks.capture( sliceView );
+					});
+
+				} );
+
+
+			} catch ( e ) {};
 
 			this.__MPR = MPR;
 			return MPR;

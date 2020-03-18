@@ -137,9 +137,51 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		anatImagesFormat : 0,
 
+		capture : async function ( element ) {
+
+			const that = eduAnat2.Quircks.getInstance();
+
+			try {
+				require( "electron" );
+				
+			} catch ( e ) {
+
+				that.__captureWeb( element );
+				return;
+
+			}
+
+			that.__captureElectron( element );
+
+		}
+
 	},
 
 	members : {
+
+		__captureWeb : async function ( element ) {
+// TODO!
+		},
+
+		__captureElectron : async function ( element ) {
+
+			var el = element.getContentElement().getDomElement(); 
+			var rect = el.getBoundingClientRect();
+			rect.y = rect.top;
+			rect.x = rect.left;
+			var remote = require('electron').remote;
+			var webContents = remote.getCurrentWebContents();
+			var image = await webContents.capturePage(rect);
+			var dialog = remote.dialog;
+			var fn = await dialog.showSaveDialog({
+				defaultPath: 'capture.png',
+				filters : [{name: 'Image', extensions: ['png']}]
+			});
+
+			if ( fn.canceled ) return;
+			remote.require('fs').writeFile(fn.filePath, image.toPNG(), function () {});
+
+		},
 
 		__loop : async function () {
 
@@ -214,7 +256,7 @@ qx.Class.define("eduAnat2.Quircks", {
 			fileBrowser.getTree().refresh();
 
 			const caption = func ? "Sélectionnez un calque"
-				: "Sélectionnez un image";
+				: "Sélectionnez une image";
 
 			win.setCaption( caption );
 
