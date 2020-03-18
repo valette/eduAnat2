@@ -22,6 +22,8 @@ self.THREE            =	require('three');
 	require('desk-ui/source/ext/VTKLoader.js');
 	require('desk-ui/source/ext/TrackballControls2.js');
 
+self.Terminal = require( 'xterm' ).Terminal;
+require ('xterm/css/xterm.css');
 self.bluebird = self.Promise = require('bluebird');
 self.chalk            = require('chalk');
 

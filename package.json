@@ -19,6 +19,7 @@
     "async": "3.2.0",
     "bluebird": "3.7.2",
     "chroma-js": "2.1.0",
+    "css-loader": "3.4.2",
     "desk-ui": "2.2.1",
     "electron": "8.1.1",
     "electron-builder": "22.4.1",
@@ -35,7 +36,8 @@
     "url-loader": "3.0.0",
     "webpack": "4.42.0",
     "webpack-cli": "3.3.11",
-    "webworkify-webpack": "2.1.5"
+    "webworkify-webpack": "2.1.5",
+    "xterm": "4.4.0"
   },
   "engines": {
     "node": ">=8.0.0"
