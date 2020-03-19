@@ -571,6 +571,7 @@ qx.Class.define("eduAnat2.Container", {
 
             const name = file.split( '/' ).pop();
             var that = this;
+			console.log( name );
 
             if (name.substr(name.length -7) !== ".nii.gz") {
 

@@ -206,6 +206,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
       addFuncFile : async function ( file, cbBefore, cbAfter, center ) {
 		const name = file.split( '/' ).pop();
+		console.log( name );
 //          var name = require("path").basename(filesList[0]);
 
           if (name.substr(name.length -7) !== ".nii.gz") {
