@@ -28,6 +28,17 @@ qx.Class.define("eduAnat2.Application", {
 			const waitELement = document.getElementById( "loading" );
 			waitELement.innerHTML = "<p>C'est bientôt fini</p>";
 
+			function getParameter( parameterName ) {
+				parameterName = parameterName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+				var regex = new RegExp( "[\\?&]" + parameterName + "=([^&#]*)" );
+				var results = regex.exec( window.location.href );
+				if (results == null) {
+					return null;
+				} else {
+					return results[1];
+				}
+			}
+
 			// Call super class
 			this.base(arguments);
 
@@ -90,6 +101,77 @@ qx.Class.define("eduAnat2.Application", {
 			container.add( mainViewer );
 			container.add( sideViewer );
 			sideViewer.exclude();
+			const toLoad = getParameter( 'fichiers' );
+
+			if ( toLoad ) {
+
+				let anatCount = -1;
+				let funcCount = -1;
+				const containers = [ mainViewer, sideViewer];
+				const allFiles = {};
+
+				await desk.FileSystem.traverseAsync(
+					eduAnat2.Quircks.getInstance().anaPedaRoot, f => {
+						allFiles[ f.split( "/" ).pop() ] = f;
+					} );
+
+				const files = toLoad.split( ',' );
+
+				if ( files.filter( f => f.endsWith( ".anat.nii.gz" ) ).length > 1 ) {
+
+					mainViewer.compareButton.fireEvent( "execute" );
+
+				}
+
+				for ( let file of files ) {
+
+					const path = allFiles[ file ];
+
+					if ( !path ) {
+
+						alert( 'Erreur : fichier ' + file + 'inconnu' );
+						continue;
+
+					}
+
+					if ( file.endsWith( ".anat.nii.gz" ) ) {
+
+						anatCount++;
+						if ( anatCount > 1 ) {
+
+							alert( "trop d'images à charger!" );
+							return;
+
+						}
+
+						funcCount = -1;
+						await containers[ anatCount ].addAnatFile( path );
+
+					} else if ( file.endsWith( ".fonc.nii.gz" ) ) {
+
+						funcCount++;
+						if ( funcCount > 2 ) {
+							alert( "trop de calques functionnels!" );
+							return;
+						}
+
+						const anatContainer = containers[ anatCount ];
+						const funcContainer = anatContainer.funcLayers[ funcCount ];
+
+						await funcContainer.addFuncFile( path, () => {}, () => {},
+							containers[ anatCount ].volumeCenter);
+
+						const parent = funcContainer.getLayoutParent();
+						try { parent.remove(funcContainer); }
+						catch ( e ) {console.log( e )};
+						parent.add(funcContainer, {flex:1});
+						funcContainer.show();
+
+					}
+
+				}
+
+			}
 
 			try {
 				require( "electron" ).ipcRenderer.send( 'qx-ready' );

@@ -181,7 +181,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
       },
 
-      addFuncFile: async function(cbBefore, cbAfter, center) {
+      selectFuncFile: async function(cbBefore, cbAfter, center) {
 
 		const selection = await eduAnat2.Quircks.selectFile( true );
 /*
@@ -201,7 +201,10 @@ qx.Class.define("eduAnat2.FuncLayer", {
   */
  
 		if ( selection.canceled ) return;
-		const file = selection.file;
+		this.addFuncFile( selection.file, cbBefore, cbAfter, center ); 
+      },
+
+      addFuncFile : async function ( file, cbBefore, cbAfter, center ) {
 		const name = file.split( '/' ).pop();
 //          var name = require("path").basename(filesList[0]);
 

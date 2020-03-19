@@ -113,7 +113,7 @@ qx.Class.define("eduAnat2.Container", {
                       buttons : ['Ok']
                     });
                 } else {
-                  target.addFuncFile(function () {
+                  target.selectFuncFile(function () {
                       //Before
                     window.setTimeout(function() {
                         that.__buttonOpenAnat.setEnabled(false);
@@ -131,7 +131,7 @@ qx.Class.define("eduAnat2.Container", {
                       that.__buttonOpenFunc.setEnabled(true);
                       that.__buttonOpenAnat.setEnabled(true);
                       that.__buttonCloseAll.setEnabled(true);
-                  }, that.__VolumeCenter);
+                  }, that.volumeCenter);
                 }
                 
                 /*
@@ -336,7 +336,7 @@ qx.Class.define("eduAnat2.Container", {
             target.add(this.__subMenuAnat);
             
             
-            this.__subMenuFunc = [];
+            this.__subMenuFunc = this.funcLayers = [];
             this.__subMenuFunc[0] = new eduAnat2.FuncLayer(this.__MPR, this.__meshViewer);
             target.add(this.__subMenuFunc[0], {flex: 1});
             this.__subMenuFunc[1] = new eduAnat2.FuncLayer(this.__MPR, this.__meshViewer);
@@ -625,7 +625,7 @@ qx.Class.define("eduAnat2.Container", {
 			that.__buttonCloseAll.setEnabled(true);
 			var bbox = new THREE.Box3();
 			meshes.forEach( mesh => bbox.expandByObject( mesh ) );
-			this.__VolumeCenter = bbox.getCenter( new THREE.Vector3() ).toArray();
+			this.volumeCenter = bbox.getCenter( new THREE.Vector3() ).toArray();
 
 			that.resetMeshView();
 			var group = new THREE.Group();
@@ -960,7 +960,7 @@ qx.Class.define("eduAnat2.Container", {
 
             /* Button compare */
             if (that.__sideViewer) {
-                var buttonCompare = new qx.ui.form.Button(this.tr("Comparer deux images"), 'resource/eduAnat2/compare.png');
+                var buttonCompare = this.compareButton = new qx.ui.form.Button(this.tr("Comparer deux images"), 'resource/eduAnat2/compare.png');
                 buttonCompare.getChildControl("label").setAllowGrowX(true);
                 buttonCompare.getChildControl("label").setTextAlign("left");
             

@@ -215,7 +215,7 @@ qx.Class.define("eduAnat2.Quircks", {
 			desk.FileSystem.getFileURL( eduAnat2.Quircks.formatFile );
 
 
-			await desk.FileSystem.traverseAsync( this.__anaPedaRoot, f => {
+			await desk.FileSystem.traverseAsync( this.anaPedaRoot, f => {
 
 				if ( f.endsWith( "stl" ) ) meshes.push( f );
 				if ( f.endsWith( ".nii.gz" ) ) volumes.push( f );
@@ -245,7 +245,7 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		},
 
-		__anaPedaRoot : "data/AnaPeda",
+		anaPedaRoot : "data/AnaPeda",
 
 		__selectFileWindow : null,
 
@@ -261,7 +261,7 @@ qx.Class.define("eduAnat2.Quircks", {
 					layout : new qx.ui.layout.VBox(),
 					showMinimize : false } );
 
-				const fileBrowser = new desk.FileBrowser( self.__anaPedaRoot );
+				const fileBrowser = new desk.FileBrowser( self.anaPedaRoot );
 				fileBrowser.setContextMenu( new qx.ui.menu.Menu() );
 				win.add( fileBrowser, { flex : 1 } );
 				self.____selectFileWindow = win;
