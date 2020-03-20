@@ -667,6 +667,7 @@ qx.Class.define("eduAnat2.Container", {
 			var oReq = new XMLHttpRequest();
 			oReq.responseType = "arraybuffer";
 			oReq.onload = function (res) {
+			   if ( oReq.status != 200 ) return;
 			   that.addMesh(oReq.response, volume);
 			};
 			oReq.open("get", eduAnat2.Quircks.getFileURL( meshPath ), true);
@@ -990,7 +991,7 @@ qx.Class.define("eduAnat2.Container", {
                 container.add(buttonCompare);
             }
 
-            var buttonShare = this.__buttonShare = new qx.ui.form.Button(this.tr("Partager"), 'resource/eduAnat2/share.png' );
+            var buttonShare = this.__buttonShare = new qx.ui.form.Button(this.tr("Partager via un lien"), 'resource/eduAnat2/share.png' );
             buttonShare.getChildControl("label").setAllowGrowX(true);
             buttonShare.getChildControl("label").setTextAlign("left");
             container.add(buttonShare);

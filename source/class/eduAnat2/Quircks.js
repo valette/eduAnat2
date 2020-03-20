@@ -266,11 +266,14 @@ qx.Class.define("eduAnat2.Quircks", {
 				win.add( fileBrowser, { flex : 1 } );
 				self.____selectFileWindow = win;
 				win.center();
-				fileBrowser.getTree().setHideRoot( true );
-				fileBrowser.getTree().setFont( new qx.bom.Font( 20 ) );
+				const tree = fileBrowser.getTree();
+				tree.setHideRoot( true );
+				tree.setOpenMode( "tap" );
+				const font = new qx.bom.Font( 20, ["sans-serif"] )
+				tree.setFont( font );
 				fileBrowser.setFileHandler( () => {} );
 				const button = new qx.ui.form.Button( "Ouvrir" );
-				button.getChildControl("label").setFont( new qx.bom.Font( 20 ) );
+				button.getChildControl("label").setFont( font );
 				button.setHeight( 50 );
 				win.add( button );
 
@@ -281,7 +284,7 @@ qx.Class.define("eduAnat2.Quircks", {
 
 			let closeHandler, buttonHandler, selectionHandler;
 			const fileBrowser = win.getChildren()[ 0 ];
-			const button = win.getChildren()[ 1 ];
+			const button = win.getChildren().slice().pop();
 			button.setEnabled( false );
 
 			const filterValue = ( func ? ".fonc" : ".anat")	+ ".nii.gz"
@@ -292,13 +295,16 @@ qx.Class.define("eduAnat2.Quircks", {
 			const caption = func ? "Sélectionnez un calque"
 				: "Sélectionnez une image";
 
-			win.setCaption( caption );
+			function onChange() {
+				const file = fileBrowser.getSelectedFiles()[ 0 ];
+				const valid = ( file || false ) && file.endsWith( filterValue );
+				button.setEnabled( valid );
+				button.setBackgroundColor( valid ? "#dddddd" : "white" );
+			} 
 
-			selectionHandler =tree.addListener( 'changeSelection',
-				() => {
-					button.setEnabled(
-						fileBrowser.getSelectedFiles()[ 0 ].endsWith( filterValue ));
-				} );
+			win.setCaption( caption );
+			selectionHandler = tree.addListener( 'changeSelection', onChange );
+			onChange();
 
 			const result = await Promise.race( [
 
