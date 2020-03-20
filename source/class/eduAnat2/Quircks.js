@@ -266,8 +266,12 @@ qx.Class.define("eduAnat2.Quircks", {
 				win.add( fileBrowser, { flex : 1 } );
 				self.____selectFileWindow = win;
 				win.center();
+				fileBrowser.getTree().setHideRoot( true );
+				fileBrowser.getTree().setFont( new qx.bom.Font( 20 ) );
 				fileBrowser.setFileHandler( () => {} );
 				const button = new qx.ui.form.Button( "Ouvrir" );
+				button.getChildControl("label").setFont( new qx.bom.Font( 20 ) );
+				button.setHeight( 50 );
 				win.add( button );
 
 			}
