@@ -438,7 +438,7 @@ qx.Class.define("eduAnat2.Container", {
             var scrollContainer = new qx.ui.container.Composite(new qx.ui.layout.VBox().set({spacing:20}));
             scroll.add(scrollContainer);
             win.add(scroll);
-              
+
             scrollContainer.add( new qx.ui.basic.Label([
                 "<h3>EduAnat2</h3><em>Version " + version + " " + buildDate + "</em><br>",
                 "EduAnat2 est un visualiseur 3D conçu pour enseigner les neurosciences et l’anatomie. EduAnat2 utilise la banque d’images AnaPeda spécialement développée pour des usages pédagogiques.",
@@ -589,6 +589,7 @@ qx.Class.define("eduAnat2.Container", {
             }
 
             this.removeAll();
+            this.openedFile = name;
 
             window.setTimeout(function() {
                 that.__buttonOpenAnat.setEnabled(false);
@@ -989,6 +990,52 @@ qx.Class.define("eduAnat2.Container", {
                 container.add(buttonCompare);
             }
 
+            var buttonShare = this.__buttonShare = new qx.ui.form.Button(this.tr("Partager"), 'resource/eduAnat2/share.png' );
+            buttonShare.getChildControl("label").setAllowGrowX(true);
+            buttonShare.getChildControl("label").setTextAlign("left");
+            container.add(buttonShare);
+            buttonShare.addListener( 'execute' , function () {
+
+				const mainViewer =  this.getMainViewer() || this;
+				console.log( mainViewer.openedFile, mainViewer.__sideViewer.openedFile )
+
+				const files = [];
+
+
+				for ( let viewer of [ mainViewer, mainViewer.__sideViewer ] ) {
+
+					if ( !viewer.isVisible() ) continue;
+					if ( !viewer.openedFile ) continue;
+					files.push( viewer.openedFile );
+
+					const container = viewer.funcLayers[ 0 ].getLayoutParent();
+
+					for ( let layer of container.getChildren() ) {
+
+						if ( !layer.isVisible() ) continue;
+						if ( !layer.openedFile ) continue;
+						files.push( layer.openedFile );
+
+					}
+
+				}
+
+				const h = window.location.href.split( "?" )[ 0 ] + "?fichiers=" + files.join( ',' );
+
+				const win = new qx.ui.window.Window( "Lien pour partage" );
+				win.setLayout( new qx.ui.layout.VBox() );
+				const text = "Ce lien vous permet de charger automatiquement les images actuelles";
+				const label = new qx.ui.embed.Html( '<a href="' + h +
+					'"> ' + text + "</a>");
+				label.setNativeContextMenu( true );
+				label.setWidth( 300 );
+				win.add( label, { flex : 1 } );
+				win.open();
+				win.center();
+
+
+			}, this );
+
             return container;
 
         },
@@ -1005,6 +1052,7 @@ qx.Class.define("eduAnat2.Container", {
 
             var target, parent;
             if (vertical) {
+                this.__buttonShare.setVisibility( "visible" );
                 menu.setPadding(5);
                 
                 menu.addAt(this.__burger, 0);
@@ -1014,6 +1062,7 @@ qx.Class.define("eduAnat2.Container", {
                 parent.add(target, {flex: 1});
             }
             else { //compare mode
+                if ( this.__sideViewer ) this.__buttonShare.setVisibility( "excluded" );
                 this.__burger.setSource("resource/eduAnat2/menu_bottom.png");
                 parent = new qx.ui.container.Scroll().set({ maxHeight: 200 });
                 target = new qx.ui.container.Composite(new qx.ui.layout.VBox().set({spacing:10}));
@@ -1039,6 +1088,7 @@ qx.Class.define("eduAnat2.Container", {
             {
               menu.add(this.createAbout());
               this.__burger.setAlignY("top");
+
             }
             else if (this.__sideViewer) 
             {

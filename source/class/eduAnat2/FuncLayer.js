@@ -206,6 +206,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
       addFuncFile : async function ( file, cbBefore, cbAfter, center ) {
 		const name = file.split( '/' ).pop();
+		this.openedFile = name;
 		console.log( name );
 //          var name = require("path").basename(filesList[0]);
 
