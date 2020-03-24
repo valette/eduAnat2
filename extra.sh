@@ -6,6 +6,3 @@ cp script.js $outpuPath
 cp package.json $outpuPath
 cp buildDate.txt $outpuPath
 done
-cd compiled/build
-npm install --production
-cd ../..
