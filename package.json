@@ -20,7 +20,7 @@
     "bluebird": "3.7.2",
     "chroma-js": "2.1.0",
     "css-loader": "3.4.2",
-    "desk-ui": "2.2.1",
+    "desk-ui": "valette/desk-ui",
     "electron": "8.1.1",
     "electron-builder": "22.4.1",
     "electron-packager": "14.2.1",
