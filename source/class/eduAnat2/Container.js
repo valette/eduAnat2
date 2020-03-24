@@ -600,6 +600,7 @@ qx.Class.define("eduAnat2.Container", {
             const volume = await this.__MPR.addVolumeAsync( fixedFile, {
                 workerSlicer: eduAnat2.Quircks.workerSlicer,
                 noworker: true,
+                linearFilter : true,
                 format : eduAnat2.Quircks.anatImagesFormat
             } );
 			that.__volumeAnat = volume;

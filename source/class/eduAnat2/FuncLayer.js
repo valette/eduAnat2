@@ -234,7 +234,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
               format : 0,
               noworker: true,
               colors: that.__colors,
-              linearFilter : false,
+              linearFilter : true,
               opacity: 0.7,
               postProcessFunction : function (texture, workerSlicer) {
               /*  var prop = workerSlicer.properties;
