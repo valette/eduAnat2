@@ -152,7 +152,26 @@ qx.Class.define("eduAnat2.Quircks", {
 
 			} );
 
-			return flip.outputDirectory + "output.nii.gz";
+			const RASFile =  flip.outputDirectory + "output.nii.gz";
+
+			switch( file.split( '/' ).pop() ) {
+
+				case "IRMsujet12222PathologieTumeurAudition-T1-HD.anat.nii.gz":
+					const flipY = await desk.Actions.executeAsync( {
+
+						action : "c3d",
+						inputVolume : RASFile,
+						command : "-flip",
+						option : "xy",
+						outputVolume : "output.nii.gz"
+
+					} );
+
+					return flipY.outputDirectory + "output.nii.gz";
+
+			}
+
+			return RASFile;
 
 		},
 
@@ -206,6 +225,7 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		__loop : async function () {
 
+			console.clear();
 			const volumes = [];
 			const meshes = [];
 
@@ -257,16 +277,18 @@ qx.Class.define("eduAnat2.Quircks", {
 			if ( !win ) {
 
 				win = new qx.ui.window.Window();
-				win.set( { width : 600, height : 500,
+				const minSize = Math.round(Math.min(window.innerWidth, window.innerHeight) * 0.85);
+
+				win.set( { width : minSize, height : minSize,
 					layout : new qx.ui.layout.VBox(),
 					showMinimize : false } );
 
 				const fileBrowser = new desk.FileBrowser( self.anaPedaRoot );
-				fileBrowser.setContextMenu( new qx.ui.menu.Menu() );
 				win.add( fileBrowser, { flex : 1 } );
 				self.____selectFileWindow = win;
 				win.center();
 				const tree = fileBrowser.getTree();
+				tree.setContextMenu( new qx.ui.menu.Menu() );
 				tree.setHideRoot( true );
 				tree.setOpenMode( "tap" );
 				const font = new qx.bom.Font( 20, ["sans-serif"] )
