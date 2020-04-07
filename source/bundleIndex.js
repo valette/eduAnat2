@@ -25,7 +25,19 @@ self.THREE            =	require('three');
 self.Terminal = require( 'xterm' ).Terminal;
 require ('xterm/css/xterm.css');
 self.bluebird = self.Promise = require('bluebird');
-self.chalk            = require('chalk');
+
+// replace chalk.js hack with simple function
+self.chalk = {
+	Instance : function () {
+
+		this.keyword = function ( color ) {
+
+			return ( msg => msg );
+
+		};
+
+	}
+}
 
 THREE.CTMLoader.prototype.createWorker = function () {
 	return work(require.resolve('desk-ui/source/ext/CTMWorker.js'), { all : true } );
