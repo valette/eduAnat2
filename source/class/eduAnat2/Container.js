@@ -1026,11 +1026,14 @@ qx.Class.define("eduAnat2.Container", {
 
 				const win = new qx.ui.window.Window( "Lien pour partage" );
 				win.setLayout( new qx.ui.layout.VBox() );
-				const text = "Ce lien vous permet de charger automatiquement les images actuelles";
-				const label = new qx.ui.embed.Html( '<a href="' + h +
-					'"> ' + text + "</a>");
+				const text = "Ce lien vous permet de charger automatiquement les images actuelles : ";
+				const label = new qx.ui.embed.Html(
+					'<P><a href="' + h + '"> ' + text + "</a></p>"
+					+ '<p><a class="dont-break-out" href="' + h + '"> ' + h + "</a></p>"
+					+" <p>Note : il est possible de copier le lien avec un clic droit.<p>");
 				label.setNativeContextMenu( true );
-				label.setWidth( 300 );
+				label.setWidth( 600 );
+				label.setHeight( 200 );
 				win.add( label, { flex : 1 } );
 				win.open();
 				win.center();
