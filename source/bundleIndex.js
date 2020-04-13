@@ -25,6 +25,7 @@ self.THREE            =	require('three');
 self.Terminal = require( 'xterm' ).Terminal;
 require ('xterm/css/xterm.css');
 self.bluebird = self.Promise = require('bluebird');
+self.numeric = require( 'numeric' );
 
 // replace chalk.js hack with simple function
 self.chalk = {
