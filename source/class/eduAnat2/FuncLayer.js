@@ -228,7 +228,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
           cbBefore();
           this.removeFunc();
 
-          var properties = {
+          const defaultOpts = {
               workerSlicer: eduAnat2.Quircks.workerSlicer,
               center,
               format : 0,
@@ -246,9 +246,11 @@ qx.Class.define("eduAnat2.FuncLayer", {
               }
           };
 
-          const fixedFile = await eduAnat2.Quircks.flipVolume( file );
+          const flip = await eduAnat2.Quircks.flipVolume( file );
+          const fixedFile = flip.file;
+          const opts = Object.assign( defaultOpts, flip.opts );
 
-          this.__MPR.addVolume(fixedFile , properties, function(err, volume) {
+          this.__MPR.addVolume(fixedFile , defaultOpts, function(err, volume) {
 //              var prop = volume.getUserData("workerSlicer").properties;
               const scalarBounds = that.__MPR.getVolumeSlices(
 				volume )[ 0 ].getScalarBounds();

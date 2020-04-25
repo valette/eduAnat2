@@ -595,14 +595,19 @@ qx.Class.define("eduAnat2.Container", {
                 that.__buttonOpenAnat.setEnabled(false);
             }, 1);
 
-			const fixedFile = await eduAnat2.Quircks.flipVolume( file );
+			const flip = await eduAnat2.Quircks.flipVolume( file );
+			const fixedFile = flip.file;
 
-            const volume = await this.__MPR.addVolumeAsync( fixedFile, {
+			const defaultOpts = {
                 workerSlicer: eduAnat2.Quircks.workerSlicer,
                 noworker: true,
                 linearFilter : true,
                 format : eduAnat2.Quircks.anatImagesFormat
-            } );
+            };
+
+			const opts = Object.assign( defaultOpts, flip.opts );
+
+            const volume = await this.__MPR.addVolumeAsync( fixedFile, opts );
 			that.__volumeAnat = volume;
 			volume.setUserData("path", file );
 /*

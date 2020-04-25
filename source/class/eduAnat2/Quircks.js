@@ -140,7 +140,7 @@ qx.Class.define("eduAnat2.Quircks", {
 			try {
 
 				require( 'electron' );
-				return file;
+				return { file };
 
 			} catch ( e ) { }
 
@@ -162,16 +162,19 @@ qx.Class.define("eduAnat2.Quircks", {
 						action : "c3d",
 						inputVolume : RASFile,
 						command : "-flip",
-						option : "xy",
+						option : "y",
 						outputVolume : "output.nii.gz"
 
 					} );
 
-					return flipY.outputDirectory + "output.nii.gz";
+					return { file : flipY.outputDirectory + "output.nii.gz",
+						opts : {
+							center : [ 1, 4, 36.89310249999998 ]
+						} };
 
 			}
 
-			return RASFile;
+			return  { file : RASFile };
 
 		},
 
@@ -251,7 +254,8 @@ qx.Class.define("eduAnat2.Quircks", {
 
 			for ( let volume of volumes ) {
 
-				const fixedFile = await eduAnat2.Quircks.flipVolume( volume );
+				const flip = await eduAnat2.Quircks.flipVolume( volume );
+				const fixedFile = flip.file;
 				const format = volume.endsWith( ".fonc.nii.gz" ) ?
 					0 : eduAnat2.Quircks.anatImagesFormat;
 
