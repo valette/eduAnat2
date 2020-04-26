@@ -93,9 +93,10 @@ qx.Class.define("eduAnat2.Container", {
         createUI: function() {
             var that = this;
             var MPR = this.createMPR();
-
+			const scroll = this.__scroll = new qx.ui.container.Scroll();
             var menu = this.__menu = this.createMenu();
-            this.add(menu, { flex:0 });
+            scroll.add( menu );
+            this.add(scroll, { flex:0 });
 
             //this.__collapseButton = this.createCollapseButton();
             //this.add(this.__collapseButton, { flex: 0 });
@@ -235,7 +236,7 @@ qx.Class.define("eduAnat2.Container", {
                   if (that.__sideViewer.isVisible())
                   { //compare mode
                     burger.setSource("resource/eduAnat2/menu_top.png");
-                    that.__menu.exclude();
+                    that.__scroll.exclude();
                     that.__sideViewer.getChildren()[1].exclude();
                     that.add(burger);
                     that.__sideViewer.add(phantom);
@@ -243,7 +244,7 @@ qx.Class.define("eduAnat2.Container", {
                   else 
                   { //single mode
                     burger.setSource("resource/eduAnat2/menu_right.png");  
-                    that.__menu.exclude();
+                    that.__scroll.exclude();
                     that.addAt(burger, 0); 
                   }
                 }
@@ -254,16 +255,16 @@ qx.Class.define("eduAnat2.Container", {
                   if (that.__sideViewer.isVisible())
                   { //compare mode
                     burger.setSource("resource/eduAnat2/menu_bottom.png");
-                    that.getChildren()[1].show();
+                    that.__scroll.show();
                     that.remove(burger);
-                    that.getChildren()[1].add(burger);
+                    that.__menu.add(burger);
                     that.__sideViewer.getChildren()[1].show();
                     that.__sideViewer.remove(phantom);
                   }
                   else
                   { //single mode
                     burger.setSource("resource/eduAnat2/menu_left.png");
-                    that.__menu.show();
+                    that.__scroll.show();
                     that.remove(burger);
                     that.__menu.addAt(burger, 0);
                   }
@@ -1054,9 +1055,11 @@ qx.Class.define("eduAnat2.Container", {
             var layout = vertical ? new qx.ui.layout.HBox() : new qx.ui.layout.VBox();
             this.setLayout(layout);
 
-            this.remove(this.__menu);
+            this.remove(this.__scroll);
 
             var menu = this.__menu = new qx.ui.container.Composite(vertical ? new qx.ui.layout.VBox() : new qx.ui.layout.HBox()).set({height:210, backgroundColor: this.__backgroundColor});
+			const scroll = this.__scroll = new qx.ui.container.Scroll();
+			scroll.add( menu );
             menu.add(new qx.ui.core.Spacer(), {flex: 1});
             menu.add(this.__subMenuButtons);
 
@@ -1092,7 +1095,7 @@ qx.Class.define("eduAnat2.Container", {
 
             menu.add(new qx.ui.core.Spacer(), {flex: 1});
 
-            this.addAt(menu, vertical?0:1);
+            this.addAt(scroll, vertical?0:1);
 
             if (vertical) 
             {
