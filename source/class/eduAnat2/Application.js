@@ -31,7 +31,7 @@ qx.Class.define("eduAnat2.Application", {
 			function getParameter( parameterName ) {
 				parameterName = parameterName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
 				var regex = new RegExp( "[\\?&]" + parameterName + "=([^&#]*)" );
-				var results = regex.exec( window.location.href );
+				var results = regex.exec( unescape( window.location.href ) );
 				if (results == null) {
 					return null;
 				} else {
