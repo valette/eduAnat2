@@ -25,7 +25,7 @@
     "electron-builder": "22.4.1",
     "electron-packager": "14.2.1",
     "jssha": "3.0.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "numeric": "1.2.6",
     "papaya-viewer": "1.0.1449",
     "random-js": "2.1.0",
