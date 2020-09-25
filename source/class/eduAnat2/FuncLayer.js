@@ -80,7 +80,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
                   that.showMeta(that.volumeFunc);
               });
 */
-              var button_hide = new qx.ui.form.Button(null, 'resource/eduAnat2/show.png').set({
+              var button_hide = new qx.ui.form.Button(null, 'eduAnat2/show.png').set({
                   decorator: null
               });
               
@@ -93,19 +93,19 @@ qx.Class.define("eduAnat2.FuncLayer", {
                 if (imageVisible) {
                   imageVisible = false;
                   that.__MPR.setVolumeOpacity(that.volumeFunc, 0);
-                  button_hide.getChildControl('icon').setSource('resource/eduAnat2/hide.png');
+                  button_hide.getChildControl('icon').setSource('eduAnat2/hide.png');
                   button_hide.getToolTip().setLabel("Démasquer");
                 }
                 else {
                   imageVisible = true;
                   that.__MPR.setVolumeOpacity(that.volumeFunc, 0.7);
-                  button_hide.getChildControl('icon').setSource('resource/eduAnat2/show.png');
+                  button_hide.getChildControl('icon').setSource('eduAnat2/show.png');
                   button_hide.getToolTip().setLabel("Masquer");
                 }
               });
 
 
-              var button_close = new qx.ui.form.Button(null, 'resource/eduAnat2/close_small.png').set({
+              var button_close = new qx.ui.form.Button(null, 'eduAnat2/close_small.png').set({
                   decorator: null
               });
               titleContainer.add(button_close);
