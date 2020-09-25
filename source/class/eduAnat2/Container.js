@@ -412,7 +412,7 @@ qx.Class.define("eduAnat2.Container", {
 			if ( this.__aboutWindow ) return this.__aboutWindow;
 			const version = await eduAnat2.Quircks.getVersion();
 			const buildDate = await eduAnat2.Quircks.readFile(
-				'buildDate.txt' );
+				'resource/eduAnat2/buildDate.txt' );
 
 			var txt = this.tr( "A propos de " )	+ " EduAnat2 v" + version;
             var win = this.__aboutWindow = new qx.ui.window.Window( txt );

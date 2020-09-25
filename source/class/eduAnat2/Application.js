@@ -11,6 +11,7 @@
 
 /**
  * @asset(eduAnat2/*)
+ * @asset(webpack-bundle/bundle.js)
  * @asset(desk/img.png)
  * @asset(desk/tris.png)
  * @ignore (require)
