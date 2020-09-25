@@ -1,4 +1,6 @@
 import work from 'webworkify-webpack'
+import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
+import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 
 require( 'desk-ui/source/ext/WebGL.js');
 self.chroma = require( 'chroma-js' );
@@ -16,11 +18,12 @@ self.EventEmitter     = require('events');
 self.jsSHA            = require("jssha");
 self.randomJS         = require('random-js');
 self.THREE            =	require('three');
-	require('three/examples/js/controls/TransformControls.js');
-	require('three/examples/js/loaders/STLLoader.js');
 	require('desk-ui/source/ext/CTMLoader.js');
 	require('desk-ui/source/ext/VTKLoader.js');
 	require('desk-ui/source/ext/TrackballControls2.js');
+
+self.THREE.STLLoader = STLLoader;
+self.THREE.TransformControls = TransformControls;
 
 self.Terminal = require( 'xterm' ).Terminal;
 require ('xterm/css/xterm.css');

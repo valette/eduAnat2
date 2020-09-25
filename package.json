@@ -32,6 +32,7 @@
     "random-js": "2.1.0",
     "script-loader": "0.7.2",
     "socket.io-client": "2.3.0",
+    "source-map-loader": "1.1.0",
     "style-loader": "1.2.1",
     "terser": "5.3.2",
     "three": "0.120.1",

@@ -62,7 +62,7 @@ div.loading-visible{
   <meta name="format-detection" content="telephone=no"/>
 
   <!-- Shortcut icon setup -->
-  <link rel="icon" href="icon.png"/>
+  <link rel="icon" href="${resourcePath}eduAnat2/icon.png"/>
 
   <style>
     body {
@@ -83,12 +83,15 @@ div.loading-visible{
 
  </head>
 <body>
+  <script>
+  window.GLOBALCOMPILETIME = ${compileTime};
+  </script>
 <div id="loading" class="loading-visible">
-  <img src="splash.png" alt="EduAnat2" class="center">
+  <img src="${resourcePath}eduAnat2/splash.png" alt="EduAnat2" class="center">
   <p>Chargement, veuillez patienter...</p>
 </div>
-  <script type="text/javascript" src="${appPath}bundle.js"></script>
+  <script type="text/javascript" src="${resourcePath}webpack-bundle/bundle.js?nocache=${compileTime}"></script>
   ${preBootJs}
-  <script type="text/javascript" src="${appPath}boot.js"></script>
+  <script type="text/javascript" src="${appPath}index.js?nocache=${compileTime}"></script>
 </body>
 </html>

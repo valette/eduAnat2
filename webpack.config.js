@@ -24,8 +24,12 @@ module.exports = {
       {
         test: /\.css$/,
         use: [ "style-loader", "css-loader"]
+      },
+      {
+        test: /\.js$|\.mjs$/,
+        enforce: 'pre',
+        use: ['source-map-loader'],
       }
-
     ]
   },
 
