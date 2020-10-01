@@ -22,9 +22,8 @@ qx.Class.define("eduAnat2.Quircks", {
 
 			const electron = require( 'electron' );
 			eduAnat2.Quircks.workerSlicer = true;
-			eduAnat2.Quircks.appRoot = electron.remote.app.getAppPath() + "/";
-			eduAnat2.Quircks.readFile = eduAnat2.Quircks.readFileElectron;
 			eduAnat2.Quircks.selectFile = this.__selectFileElectron;
+			console.log( "yeah");
 			return;
 
 		} catch ( e ) { }
@@ -61,7 +60,6 @@ qx.Class.define("eduAnat2.Quircks", {
 
 				root.add( formatButton, { right : 0, top : 260 } );
 
-
 			default:
 
 				desk.FileSystem.readFile( eduAnat2.Quircks.formatFile,
@@ -74,8 +72,6 @@ qx.Class.define("eduAnat2.Quircks", {
 				} );
 
 				eduAnat2.Quircks.workerSlicer = false;
-				eduAnat2.Quircks.appRoot = "";
-				eduAnat2.Quircks.readFile = eduAnat2.Quircks.readFileNode;
 				eduAnat2.Quircks.selectFile = this.__selectFileNode;
 
 				break;
@@ -95,31 +91,11 @@ qx.Class.define("eduAnat2.Quircks", {
 		formatFile : "data/format.json",
 		getVersion : async function () {
 
-			return JSON.parse( await eduAnat2.Quircks.readFile(
-				eduAnat2.Quircks.appRoot + 'package.json' ) ).version
-
-		},
-
-		getBuildDate : async function () {
-
+			return ( await ( await fetch( 'package.json' ) ).json() ).version
 
 		},
 
 		selectFile : null,
-
-
-		readFileElectron : async function( file ) {
-
-			return await require('fs').promises.readFile( file );
-			
-
-		},
-
-		readFileNode : async function( file ) {
-
-			return await ( (await fetch( file ) ).text() );			
-
-		},
 
 
 		getFileURL : function( path ) {
@@ -132,8 +108,6 @@ qx.Class.define("eduAnat2.Quircks", {
 			return encodeURI( desk.FileSystem.getFileURL( path ) );
 
 		},
-
-		appRoot : null,
 
 		flipVolume : async function ( file ) {
 
@@ -375,7 +349,6 @@ qx.Class.define("eduAnat2.Quircks", {
 		},
 
 		__selectFileElectron : async function ( func ) {
-/// TODO!
 
 			const filters = func ?
 				[

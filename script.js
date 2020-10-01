@@ -14,7 +14,10 @@ electron.app.on('ready', () => {
 
 		icon: "icon.png",
 		title:'EduAnat2',
-		webPreferences: { nodeIntegration: true },
+		webPreferences: {
+			nodeIntegration: true,
+			enableRemoteModule: true,
+		},
 		show:false
 
 	} );

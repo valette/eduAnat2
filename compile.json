@@ -27,28 +27,6 @@
       "theme": "eduAnat2.theme.Theme",
       "name": "eduAnat2",
       "bootPath": "source/boot"
-    },
-    {
-      "class": "qxl.apiviewer.Application",
-      "theme": "qxl.apiviewer.Theme",
-      "name": "apiviewer",
-      "title": "Qooxdoo API Viewer",
-      "environment": {
-        "qx.icontheme": "Tango",
-        "qxl.apiviewer.applicationName": "",
-        "qxl.apiviewer.exclude": [
-          "qxl.apiviewer.*"
-        ],
-        "qxl.apiviewer.include": []
-      },
-      "include": [
-        "qx.*"
-      ],
-      "exclude": [
-        "qx.test.*",
-        "qx.module.Blocker",
-        "qx.module.Placement"
-      ]
     }
   ]
 }

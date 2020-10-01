@@ -1,6 +1,7 @@
 
 /**
  * @ignore (chroma.*)
+ * @ignore (fetch)
  * @ignore (performance.*)
  * @ignore (process.*)
  * @ignore (require)
@@ -411,8 +412,7 @@ qx.Class.define("eduAnat2.Container", {
 
 			if ( this.__aboutWindow ) return this.__aboutWindow;
 			const version = await eduAnat2.Quircks.getVersion();
-			const buildDate = await eduAnat2.Quircks.readFile(
-				'resource/eduAnat2/buildDate.txt' );
+			const buildDate = await ( await fetch( 'resource/eduAnat2/buildDate.txt' ) ).text();
 
 			var txt = this.tr( "A propos de " )	+ " EduAnat2 v" + version;
             var win = this.__aboutWindow = new qx.ui.window.Window( txt );
@@ -562,9 +562,17 @@ qx.Class.define("eduAnat2.Container", {
 
 		selectAnatFile : async function() {
 
-			const selection = await eduAnat2.Quircks.selectFile();
-			if ( selection.canceled ) return;
-			this.addAnatFile( selection.file );
+			try {
+
+				const selection = await eduAnat2.Quircks.selectFile();
+				if ( selection.canceled ) return;
+				await this.addAnatFile( selection.file );
+
+			} catch ( e ) {
+
+				console.warn ( e );
+
+			}
 
 		},
 
