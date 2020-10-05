@@ -579,7 +579,6 @@ qx.Class.define("eduAnat2.Container", {
         addAnatFile: async function( file ) {
 
             const name = file.split( '/' ).pop();
-            var that = this;
 			console.log( name );
 
             if (name.substr(name.length -7) !== ".nii.gz") {
@@ -600,9 +599,7 @@ qx.Class.define("eduAnat2.Container", {
             this.removeAll();
             this.openedFile = name;
 
-            window.setTimeout(function() {
-                that.__buttonOpenAnat.setEnabled(false);
-            }, 1);
+            window.setTimeout( () =>  this.__buttonOpenAnat.setEnabled(false) , 1);
 
 			const flip = await eduAnat2.Quircks.flipVolume( file );
 			const fixedFile = flip.file;
@@ -617,7 +614,7 @@ qx.Class.define("eduAnat2.Container", {
 			const opts = Object.assign( defaultOpts, flip.opts );
             const volume = await this.__MPR.addVolumeAsync( fixedFile, opts );
 
-			that.__volumeAnat = volume;
+			this.__volumeAnat = volume;
 			volume.setUserData("path", file );
 /*
 			that.__anatButtonMeta.exclude();
@@ -631,22 +628,22 @@ qx.Class.define("eduAnat2.Container", {
 			});
 */
 
-			var volSlice = that.__MPR.getVolumeSlices(volume);
-			var meshes = that.__meshViewer.attachVolumeSlices(volSlice);
+			var volSlice = this.__MPR.getVolumeSlices(volume);
+			var meshes = this.__meshViewer.attachVolumeSlices(volSlice);
 
-			that.__IRMAnatName.setValue(name.split(".")[0]);
-			that.__buttonOpenFunc.setEnabled(true);
-			that.__buttonOpenAnat.setEnabled(true);
-			that.__subMenuAnat.show();
+			this.__IRMAnatName.setValue(name.split(".")[0]);
+			this.__buttonOpenFunc.setEnabled(true);
+			this.__buttonOpenAnat.setEnabled(true);
+			this.__subMenuAnat.show();
 
-			that.__buttonCloseAll.setEnabled(true);
+			this.__buttonCloseAll.setEnabled(true);
 			var bbox = new THREE.Box3();
 			meshes.forEach( mesh => bbox.expandByObject( mesh ) );
 			this.volumeCenter = bbox.getCenter( new THREE.Vector3() ).toArray();
 
-			that.resetMeshView();
+			this.resetMeshView();
 			var group = new THREE.Group();
-			that.__meshViewer.addMesh(group);
+			this.__meshViewer.addMesh(group);
 
 			var center = bbox.getCenter( new THREE.Vector3() );
 			var l = new THREE.Vector3().copy(bbox.max).sub(bbox.min);
@@ -656,15 +653,15 @@ qx.Class.define("eduAnat2.Container", {
 			var size = 0.2*maxSize;
 			var sSize = 0.5 * size;
 
-			group.add( that.createSprite("droite", sSize, new THREE.Vector3(bbox.max.x+size, center.y, center.z)) );
-			group.add( that.createSprite("gauche", sSize, new THREE.Vector3(bbox.min.x-size, center.y, center.z)) );
-			group.add( that.createSprite("ventre", sSize, new THREE.Vector3(center.x, bbox.max.y+size, center.z)) );
-			group.add( that.createSprite("dos",    sSize, new THREE.Vector3(center.x, bbox.min.y-size, center.z)) );
-			group.add( that.createSprite("avant",  sSize, new THREE.Vector3(center.x, center.y, bbox.max.z+size)) );
-			group.add( that.createSprite("arrière",sSize, new THREE.Vector3(center.x, center.y, bbox.min.z-size)) );
+			group.add( this.createSprite("droite", sSize, new THREE.Vector3(bbox.max.x+size, center.y, center.z)) );
+			group.add( this.createSprite("gauche", sSize, new THREE.Vector3(bbox.min.x-size, center.y, center.z)) );
+			group.add( this.createSprite("ventre", sSize, new THREE.Vector3(center.x, bbox.max.y+size, center.z)) );
+			group.add( this.createSprite("dos",    sSize, new THREE.Vector3(center.x, bbox.min.y-size, center.z)) );
+			group.add( this.createSprite("avant",  sSize, new THREE.Vector3(center.x, center.y, bbox.max.z+size)) );
+			group.add( this.createSprite("arrière",sSize, new THREE.Vector3(center.x, center.y, bbox.min.z-size)) );
 
 			//Update Zoom Limite
-			that.__MPR.getViewers().concat(that.__meshViewer).forEach(function (viewer) {
+			this.__MPR.getViewers().concat(this.__meshViewer).forEach(function (viewer) {
 			  viewer.getControls().setMinZoom(0.3*maxSize);
 			  viewer.getControls().setMaxZoom(20*maxSize);
 			});
@@ -681,9 +678,9 @@ qx.Class.define("eduAnat2.Container", {
 
 			var oReq = new XMLHttpRequest();
 			oReq.responseType = "arraybuffer";
-			oReq.onload = function (res) {
+			oReq.onload = res => {
 			   if ( oReq.status != 200 ) return;
-			   that.addMesh(oReq.response, volume);
+			   this.addMesh(oReq.response, volume);
 			};
 			oReq.open("get", eduAnat2.Quircks.getFileURL( meshPath ), true);
 			oReq.send();
