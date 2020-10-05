@@ -692,7 +692,6 @@ qx.Class.define("eduAnat2.Container", {
         addMeshFile: function(evt) {
 
             var file = evt.getData();
-            var that = this;
             var name = file.getBrowserObject().name;
 
             if (name.substr(name.length -4) !== ".stl") {
@@ -709,11 +708,9 @@ qx.Class.define("eduAnat2.Container", {
             this.removeMesh();
 
             var reader = new FileReader();
-            reader.onload = function(e) {
-                that.addMesh(e.target.result);
-            }
-
+            reader.onload = e => this.addMesh( e.target.result );
             reader.readAsArrayBuffer(file.getBrowserObject());
+
         },
 
         addMesh : function (arrayBuffer, volume) {
