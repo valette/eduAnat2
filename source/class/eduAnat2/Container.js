@@ -609,7 +609,7 @@ qx.Class.define("eduAnat2.Container", {
 
 			const defaultOpts = {
                 workerSlicer: eduAnat2.Quircks.workerSlicer,
-                noworker: true,
+                worker: false,
                 linearFilter : true,
                 format : eduAnat2.Quircks.anatImagesFormat
             };
@@ -693,12 +693,10 @@ qx.Class.define("eduAnat2.Container", {
 
 
         addMeshFile: function(evt) {
+
             var file = evt.getData();
             var that = this;
-
-
             var name = file.getBrowserObject().name;
-
 
             if (name.substr(name.length -4) !== ".stl") {
                 require('electron').remote.dialog.showMessageBox({
@@ -710,7 +708,6 @@ qx.Class.define("eduAnat2.Container", {
 
                 return;
             }
-
 
             this.removeMesh();
 

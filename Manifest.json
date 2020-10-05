@@ -29,6 +29,7 @@
     "johnspackman/UploadMgr": "1.0.4",
     "qooxdoo/qxl.apiviewer": "1.0.11",
     "@qooxdoo/framework": "^6.0.0-beta-20200821-0855",
-    "@qooxdoo/compiler": "^1.0.0-beta"
+    "@qooxdoo/compiler": "^1.0.0-beta",
+    "bidefi-irhs/qxfileio": "^0.4.1"
   }
 }

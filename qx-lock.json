@@ -23,6 +23,14 @@
       "uri": "qooxdoo/qxl.versionlabel",
       "repo_name": "qooxdoo/qxl.versionlabel",
       "repo_tag": "v1.0.1"
+    },
+    {
+      "library_name": "qxfileio",
+      "library_version": "0.4.1",
+      "path": "qx_packages/bidefi-irhs_qxfileio_v0_4_1",
+      "uri": "bidefi-irhs/qxfileio",
+      "repo_name": "bidefi-irhs/qxfileio",
+      "repo_tag": "v0.4.1"
     }
   ],
   "version": "2.1.0"

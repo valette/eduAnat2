@@ -23,7 +23,6 @@ qx.Class.define("eduAnat2.Quircks", {
 			const electron = require( 'electron' );
 			eduAnat2.Quircks.workerSlicer = true;
 			eduAnat2.Quircks.selectFile = this.__selectFileElectron;
-			console.log( "yeah");
 			return;
 
 		} catch ( e ) { }
@@ -245,106 +244,10 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		anaPedaRoot : "data/AnaPeda",
 
-		__selectFileWindow : null,
-
 		__selectFileNode : async function ( func ) {
 
-			const self = eduAnat2.Quircks.getInstance();
-
-			let win = self.____selectFileWindow;
-			if ( !win ) {
-
-				win = new qx.ui.window.Window();
-				const minSize = Math.round(Math.min(window.innerWidth, window.innerHeight) * 0.85);
-
-				win.set( { width : minSize, height : minSize,
-					layout : new qx.ui.layout.VBox(),
-					showMinimize : false } );
-
-				const fileBrowser = new desk.FileBrowser( self.anaPedaRoot );
-				win.add( fileBrowser, { flex : 1 } );
-				self.____selectFileWindow = win;
-				win.center();
-				const tree = fileBrowser.getTree();
-				tree.setContextMenu( new qx.ui.menu.Menu() );
-				tree.setHideRoot( true );
-				tree.setOpenMode( "tap" );
-				const font = new qx.bom.Font( 20, ["sans-serif"] )
-				tree.setFont( font );
-				fileBrowser.setFileHandler( () => {} );
-				const button = new qx.ui.form.Button( "Ouvrir" );
-				button.getChildControl("label").setFont( font );
-				button.setHeight( 50 );
-				win.add( button );
-
-			}
-
-
-			win.open();
-
-			let closeHandler, buttonHandler, selectionHandler;
-			const fileBrowser = win.getChildren()[ 0 ];
-			const button = win.getChildren().slice().pop();
-			button.setEnabled( false );
-
-			const filterValue = ( func ? ".fonc" : ".anat")	+ ".nii.gz"
-			fileBrowser.getFileFilter().setValue( filterValue );
-			const tree = fileBrowser.getTree();
-			tree.refresh();
-
-			const caption = func ? "Sélectionnez un calque"
-				: "Sélectionnez une image";
-
-			function onChange() {
-				const file = fileBrowser.getSelectedFiles()[ 0 ];
-				const valid = ( file || false ) && file.endsWith( filterValue );
-				button.setEnabled( valid );
-				button.setBackgroundColor( valid ? "#dddddd" : "white" );
-			} 
-
-			win.setCaption( caption );
-			selectionHandler = tree.addListener( 'changeSelection', onChange );
-			onChange();
-
-			const result = await Promise.race( [
-
-				new Promise( res => {
-					fileBrowser.setFileHandler( file => {
-
-						if ( !file.endsWith( filterValue ) ) return;
-						res( { file } );
-
-					} )
-				} ),
-
-				new Promise( res => {
-
-					closeHandler = win.addListenerOnce( "close", () => {
-
-						res( { canceled : true } );
-
-					} );
-
-				} ),
-
-				new Promise( res => {
-
-					buttonHandler = button.addListenerOnce( "execute", () => {
-
-						res( { file : fileBrowser.getSelectedFiles()[ 0 ] } );
-
-					} );
-
-				} )
-
-			] );
-
-			tree.removeListenerById( selectionHandler );
-			win.removeListenerById( closeHandler );
-			button.removeListenerById( buttonHandler );
-			fileBrowser.setFileHandler( () => {} );
-			win.close();
-			return result;
+			const selector = eduAnat2.FileSelector.getInstance();
+			return await selector.getFile( func );
 
 		},
 

@@ -84,24 +84,37 @@ qx.Class.define("eduAnat2.FuncLayer", {
                   decorator: null
               });
               
-              var tooltip = new qx.ui.tooltip.ToolTip("Masquer");
+              var tooltip = new qx.ui.tooltip.ToolTip("Rendre transparent");
               button_hide.setToolTip(tooltip);
               
               titleContainer.add(button_hide);
-              var imageVisible = true;
+              var imageVisible = 2;
               button_hide.addListener("execute", function () {
-                if (imageVisible) {
-                  imageVisible = false;
-                  that.__MPR.setVolumeOpacity(that.volumeFunc, 0);
-                  button_hide.getChildControl('icon').setSource('eduAnat2/hide.png');
-                  button_hide.getToolTip().setLabel("Démasquer");
+				  switch ( imageVisible ) {
+
+					case 2:
+						imageVisible = 1;
+						that.__MPR.setVolumeOpacity(that.volumeFunc, 0.2);
+						button_hide.getChildControl('icon').setSource('eduAnat2/show.png');
+						button_hide.getToolTip().setLabel("Masquer");
+						break;
+
+					case 1:
+						imageVisible = 0;
+						that.__MPR.setVolumeOpacity(that.volumeFunc, 0);
+						button_hide.getChildControl('icon').setSource('eduAnat2/hide.png');
+						button_hide.getToolTip().setLabel("Masquer");
+						break;
+
+					case 0:
+						imageVisible = 2;
+						that.__MPR.setVolumeOpacity(that.volumeFunc, 0.7);
+						button_hide.getChildControl('icon').setSource('eduAnat2/show.png');
+						button_hide.getToolTip().setLabel("Rendre transpaent");
+
                 }
-                else {
-                  imageVisible = true;
-                  that.__MPR.setVolumeOpacity(that.volumeFunc, 0.7);
-                  button_hide.getChildControl('icon').setSource('eduAnat2/show.png');
-                  button_hide.getToolTip().setLabel("Masquer");
-                }
+
+
               });
 
 
@@ -232,7 +245,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
               workerSlicer: eduAnat2.Quircks.workerSlicer,
               center,
               format : 0,
-              noworker: true,
+              worker: false,
               colors: that.__colors,
               linearFilter : true,
               opacity: 0.7,
