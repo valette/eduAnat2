@@ -666,14 +666,13 @@ qx.Class.define("eduAnat2.Container", {
 			  viewer.getControls().setMaxZoom(20*maxSize);
 			});
 
-			const path = file;
 			let meshPath;
 
 			if (name.substr(name.length -12) == ".anat.nii.gz") {
-				meshPath = path.substr(0, path.length-12) + ".stl";
+				meshPath = file.substr(0, file.length-12) + ".stl";
 			}
 			else if (name.substr(name.length -7) == ".nii.gz") {
-			    meshPath = path.substr(0, path.length-7) + ".stl";
+			    meshPath = file.substr(0, file.length-7) + ".stl";
 			}
 
 			var oReq = new XMLHttpRequest();
