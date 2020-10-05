@@ -523,8 +523,8 @@ qx.Class.define("eduAnat2.Container", {
 
 
         profiling : function (volume) {
-                var slicer = volume.getUserData("workerSlicer").slicer;
-                var prop = volume.getUserData("workerSlicer").properties;
+                var slicer = volume.getUserData("slicer").slicer;
+                var prop = volume.getUserData("slicer").properties;
                 console.log(prop);
                 var dir = 0;
                 var slice = 0;
@@ -608,15 +608,15 @@ qx.Class.define("eduAnat2.Container", {
 			const fixedFile = flip.file;
 
 			const defaultOpts = {
-                workerSlicer: eduAnat2.Quircks.workerSlicer,
+                slicer: eduAnat2.Quircks.slicer,
                 worker: false,
                 linearFilter : true,
                 format : eduAnat2.Quircks.anatImagesFormat
             };
 
 			const opts = Object.assign( defaultOpts, flip.opts );
-
             const volume = await this.__MPR.addVolumeAsync( fixedFile, opts );
+
 			that.__volumeAnat = volume;
 			volume.setUserData("path", file );
 /*
@@ -746,9 +746,9 @@ qx.Class.define("eduAnat2.Container", {
 
             mesh.scale.set(-1, 1, 1);
 
-            var workerSlicer = this.__volumeAnat.getUserData('workerSlicer');
-            if ( workerSlicer ) {
-				const prop = workerSlicer.properties
+            var slicer = this.__volumeAnat.getUserData('slicer');
+            if ( slicer ) {
+				const prop = slicer.properties
 				var offsetX = prop.dimensions[0] * prop.spacing[0];
 				mesh.position.set(offsetX, 0, 0);
 		} else {
@@ -852,7 +852,7 @@ qx.Class.define("eduAnat2.Container", {
 
 			//MPR container
 			var options = {
-				workerSlicer: true,
+				slicer: true,
 				alwaysDisplaySlider: true,
 				zoomOnWheel: true,
 				maxZoom:2000,

@@ -21,7 +21,7 @@ qx.Class.define("eduAnat2.Quircks", {
 		try {
 
 			const electron = require( 'electron' );
-			eduAnat2.Quircks.workerSlicer = true;
+			eduAnat2.Quircks.slicer = true;
 			eduAnat2.Quircks.selectFile = this.__selectFileElectron;
 			return;
 
@@ -70,7 +70,7 @@ qx.Class.define("eduAnat2.Quircks", {
 
 				} );
 
-				eduAnat2.Quircks.workerSlicer = false;
+				eduAnat2.Quircks.slicer = false;
 				eduAnat2.Quircks.selectFile = this.__selectFileNode;
 
 				break;

@@ -242,15 +242,15 @@ qx.Class.define("eduAnat2.FuncLayer", {
           this.removeFunc();
 
           const defaultOpts = {
-              workerSlicer: eduAnat2.Quircks.workerSlicer,
+              slicer: eduAnat2.Quircks.slicer,
               center,
               format : 0,
               worker: false,
               colors: that.__colors,
               linearFilter : true,
               opacity: 0.7,
-              postProcessFunction : function (texture, workerSlicer) {
-              /*  var prop = workerSlicer.properties;
+              postProcessFunction : function (texture, slicer) {
+              /*  var prop = slicer.properties;
                 var v = prop.scalarBounds[0];
                 imgArray = texture.data;
 						    for (var i=imgArray.length; i-->0;)
@@ -264,7 +264,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
           const opts = Object.assign( defaultOpts, flip.opts );
 
           this.__MPR.addVolume(fixedFile , defaultOpts, function(err, volume) {
-//              var prop = volume.getUserData("workerSlicer").properties;
+//              var prop = volume.getUserData("slicer").properties;
               const scalarBounds = that.__MPR.getVolumeSlices(
 				volume )[ 0 ].getScalarBounds();
 				const prop = { scalarBounds };
