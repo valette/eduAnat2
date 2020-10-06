@@ -1,6 +1,6 @@
 directories:
   output: dist
-  buildResources: compiled/build
+  buildResources: compiled/dist
   app: compiled/build
 appId: com.ife.eduanat2
 compression: maximum

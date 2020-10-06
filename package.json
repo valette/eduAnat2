@@ -55,7 +55,7 @@
     "clean-bin2": "for i in ./EduAnat2-*; do rm -rf \"$i/resources/inspector\"; done",
     "compile": "qx compile --target source && qx compile --target build",
     "setDate" : "date > source/resource/eduAnat2/buildDate.txt",
-    "deploy": "qx deploy --clean --out dist",
+    "deploy": "qx deploy --clean --out compiled/dist",
     "dev": "qx compile --target source --watch",
     "package": "npm run package-bin && npm run clean-bin && npm run package-exe-deb-rpm && npm run zip",
     "package-bin": "electron-packager --all --overwrite --prune=true --icon=icon.ico --azar=true compiled/build/ EduAnat2",
