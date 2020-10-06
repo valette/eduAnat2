@@ -94,8 +94,8 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
 					case 2:
 						imageVisible = 1;
-						that.__MPR.setVolumeOpacity(that.volumeFunc, 0.2);
-						button_hide.getChildControl('icon').setSource('eduAnat2/show.png');
+						that.__MPR.setVolumeOpacity(that.volumeFunc, 0.25);
+						button_hide.getChildControl('icon').setSource('eduAnat2/transparent.png');
 						button_hide.getToolTip().setLabel("Masquer");
 						break;
 
@@ -114,9 +114,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
                 }
 
-
               });
-
 
               var button_close = new qx.ui.form.Button(null, 'eduAnat2/close_small.png').set({
                   decorator: null
