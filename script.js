@@ -24,7 +24,7 @@ electron.app.on('ready', () => {
 
 	const begin = 'file://' + __dirname + '/';
 	const url = !fs.existsSync( __dirname + "/compiled" ) ? begin + 'index.html'
-		: begin +  ( debug ? 'compiled/source' : 'compiled/build' ) + '/index.html';
+		: begin +  ( debug ? 'compiled/source' : 'compiled/dist' ) + '/index.html';
 
 	win.loadURL( url );
 

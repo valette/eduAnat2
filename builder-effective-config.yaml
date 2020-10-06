@@ -1,7 +1,7 @@
 directories:
   output: dist
   buildResources: compiled/dist
-  app: compiled/build
+  app: compiled/dist
 appId: com.ife.eduanat2
 compression: maximum
 productName: Eduanat2
@@ -21,7 +21,7 @@ mac:
   category: public.app-category.education
   target : 
     - target: dmg
-  icon : compiled/build/icon.icns
+  icon : compiled/dist/icon.icns
   type : distribution
 linux:
   category : Education
