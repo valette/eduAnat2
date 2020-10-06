@@ -68,7 +68,6 @@ qx.Class.define("eduAnat2.FileSelector", {
 
 				chooser.addListenerOnce( 'filesChange', () => {
 
-					console.log( chooser.getFiles()[ 0 ] );
 					this.fireDataEvent( "file", { file : chooser.getFiles()[ 0 ] } );
 
 				} );

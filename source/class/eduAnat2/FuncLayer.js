@@ -217,10 +217,21 @@ qx.Class.define("eduAnat2.FuncLayer", {
 		this.addFuncFile( selection.file, cbBefore, cbAfter, center ); 
       },
 
-      addFuncFile : async function ( file, cbBefore, cbAfter, center ) {
-		const name = file.split( '/' ).pop();
-		this.openedFile = name;
-		console.log( name );
+		addFuncFile : async function ( file, cbBefore, cbAfter, center ) {
+
+			let local;
+			let fileName = file;
+
+			if ( file.name ) {
+
+				fileName = file.name;
+				local = file;
+
+			}
+
+			const name = fileName.split( '/' ).pop();
+			this.openedFile = name;
+			console.log( name );
 //          var name = require("path").basename(filesList[0]);
 
           if (name.substr(name.length -7) !== ".nii.gz") {
@@ -241,9 +252,10 @@ qx.Class.define("eduAnat2.FuncLayer", {
           cbBefore();
           this.removeFunc();
 
-          const defaultOpts = {
-              slicer: eduAnat2.Quircks.slicer,
-              center,
+			let fixedFile = file;
+
+          let opts = {
+              slicer: true,
               format : 0,
               worker: false,
               colors: that.__colors,
@@ -259,11 +271,17 @@ qx.Class.define("eduAnat2.FuncLayer", {
               }
           };
 
-          const flip = await eduAnat2.Quircks.flipVolume( file );
-          const fixedFile = flip.file;
-          const opts = Object.assign( defaultOpts, flip.opts );
+			if ( !local ) {
 
-          this.__MPR.addVolume(fixedFile , defaultOpts, function(err, volume) {
+				const flip = await eduAnat2.Quircks.flipVolume( fileName );
+				fixedFile = flip.file;
+				opts = Object.assign( opts, flip.opts );
+				opts.center = center;
+				opts.slicer = eduAnat2.Quircks.slicer;
+
+			}
+console.log( opts )
+          this.__MPR.addVolume(fixedFile , opts, function(err, volume) {
 //              var prop = volume.getUserData("slicer").properties;
               const scalarBounds = that.__MPR.getVolumeSlices(
 				volume )[ 0 ].getScalarBounds();

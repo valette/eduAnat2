@@ -16,6 +16,7 @@
  * @asset(desk/tris.png)
  * @ignore (require)
  * @ignore (WEBGL.*)
+ * @ignore (THREE.*)
  */
 
 qx.Class.define("eduAnat2.Application", {
@@ -26,8 +27,7 @@ qx.Class.define("eduAnat2.Application", {
 
 		main : async function() {
 
-			const waitELement = document.getElementById( "loading" );
-			waitELement.innerHTML = "<p>C'est bientôt fini</p>";
+			THREE.useWebGL1 = true;
 
 			function getParameter( parameterName ) {
 				parameterName = parameterName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
@@ -94,7 +94,7 @@ qx.Class.define("eduAnat2.Application", {
 			const width = desk.Actions.getEngine() === "node" ?
 				"90%" : "100%";
 
-			waitELement.className = "loading-invisible";
+//			waitELement.className = "loading-invisible";
 			qxRoot.add( container, { width, height : "100%" } );
 			const sideViewer = new eduAnat2.Container();
 			const mainViewer = new eduAnat2.Container( sideViewer );

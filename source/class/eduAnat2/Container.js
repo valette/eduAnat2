@@ -578,7 +578,17 @@ qx.Class.define("eduAnat2.Container", {
 
         addAnatFile: async function( file ) {
 
-            const name = file.split( '/' ).pop();
+			let local;
+			let fileName = file;
+
+			if ( file.name ) {
+
+				fileName = file.name;
+				local = file;
+
+			}
+
+            const name = fileName.split( '/' ).pop();
 			console.log( name );
 
             if (name.substr(name.length -7) !== ".nii.gz") {
@@ -601,21 +611,27 @@ qx.Class.define("eduAnat2.Container", {
 
             window.setTimeout( () =>  this.__buttonOpenAnat.setEnabled(false) , 1);
 
-			const flip = await eduAnat2.Quircks.flipVolume( file );
-			const fixedFile = flip.file;
+			let fixedFile = file;
 
-			const defaultOpts = {
-                slicer: eduAnat2.Quircks.slicer,
+			let opts = {
+                slicer: true,
                 worker: false,
-                linearFilter : true,
-                format : eduAnat2.Quircks.anatImagesFormat
+                linearFilter : true
             };
 
-			const opts = Object.assign( defaultOpts, flip.opts );
-            const volume = await this.__MPR.addVolumeAsync( fixedFile, opts );
+			if ( !local ) {
 
+				const flip = await eduAnat2.Quircks.flipVolume( fileName );
+				fixedFile = flip.file;
+				opts = Object.assign( opts, flip.opts );
+				opts.slicer = eduAnat2.Quircks.slicer;
+				opts.format = eduAnat2.Quircks.anatImagesFormat;
+
+			}
+
+            const volume = await this.__MPR.addVolumeAsync( fixedFile, opts );
 			this.__volumeAnat = volume;
-			volume.setUserData("path", file );
+			volume.setUserData("path", fileName );
 /*
 			that.__anatButtonMeta.exclude();
 			that.loadMeta(volume, function (err, meta) {
@@ -662,17 +678,18 @@ qx.Class.define("eduAnat2.Container", {
 
 			//Update Zoom Limite
 			this.__MPR.getViewers().concat(this.__meshViewer).forEach(function (viewer) {
-			  viewer.getControls().setMinZoom(0.3*maxSize);
+			  viewer.getControls().setMinZoom(0.05*maxSize);
 			  viewer.getControls().setMaxZoom(20*maxSize);
 			});
 
 			let meshPath;
+			if ( local ) return;
 
 			if (name.substr(name.length -12) == ".anat.nii.gz") {
-				meshPath = file.substr(0, file.length-12) + ".stl";
+				meshPath = fileName.substr(0, fileName.length-12) + ".stl";
 			}
 			else if (name.substr(name.length -7) == ".nii.gz") {
-			    meshPath = file.substr(0, file.length-7) + ".stl";
+			    meshPath = fileName.substr(0, fileName.length-7) + ".stl";
 			}
 
 			var oReq = new XMLHttpRequest();
