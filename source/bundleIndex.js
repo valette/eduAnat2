@@ -4,6 +4,7 @@ import { TransformControls } from 'three/examples/jsm/controls/TransformControls
 
 require( 'desk-ui/source/ext/WebGL.js');
 self.chroma = require( 'chroma-js' );
+self.bowser = require( 'bowser' );
 require( 'desk-ui/source/ext/workerSlicer.worker.js' );
 
 function getCookie (name) {
