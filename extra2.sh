@@ -8,4 +8,5 @@ do
 cp splash.html $outpuPath
 cp script.js $outpuPath
 cp icon.icns $outpuPath
+cp splash.png $outpuPath
 done
