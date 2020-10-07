@@ -20,7 +20,7 @@ qx.Class.define("eduAnat2.FileSelector", {
 		this.set( { layout : new qx.ui.layout.VBox(),
 			showMinimize : false } );
 
-		const selectButton = this.__selectButton = new qx.ui.form.Button('Lire fichier local');
+		const selectButton = this.__selectButton = new qx.ui.form.Button('Lire un fichier local');
 		this.add( selectButton );
 
 		const fileBrowser = this.__fileBrowser = new desk.FileBrowser( eduAnat2.Quircks.getInstance().anaPedaRoot );
@@ -33,8 +33,12 @@ qx.Class.define("eduAnat2.FileSelector", {
 		tree.setFont( font );
 		fileBrowser.setFileHandler( () => {} );
 		const okButton = this.__okButton = new qx.ui.form.Button( "Ouvrir" );
-		okButton.getChildControl("label").setFont( font );
-		okButton.setHeight( 50 );
+
+		for ( let button of [ okButton, selectButton ] ) {
+			button.getChildControl("label").setFont( font );
+			button.setHeight( 50 );
+		}
+
 		this.add( okButton );
 		const root = qx.core.Init.getApplication().getRoot()
 		const blocker = this.__blocker = new qx.ui.core.Blocker( root );

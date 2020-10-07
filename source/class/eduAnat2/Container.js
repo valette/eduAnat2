@@ -679,7 +679,7 @@ qx.Class.define("eduAnat2.Container", {
 			//Update Zoom Limite
 			this.__MPR.getViewers().concat(this.__meshViewer).forEach(function (viewer) {
 			  viewer.getControls().setMinZoom(0.05*maxSize);
-			  viewer.getControls().setMaxZoom(20*maxSize);
+			  viewer.getControls().setMaxZoom(10*maxSize);
 			});
 
 			let meshPath;

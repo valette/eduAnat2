@@ -278,7 +278,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 				opts.slicer = eduAnat2.Quircks.slicer;
 
 			}
-console.log( opts )
+
           this.__MPR.addVolume(fixedFile , opts, function(err, volume) {
 //              var prop = volume.getUserData("slicer").properties;
               const scalarBounds = that.__MPR.getVolumeSlices(
