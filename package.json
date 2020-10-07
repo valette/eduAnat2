@@ -10,9 +10,7 @@
     "url": "git://github.com/valette/eduAnat2.git"
   },
   "main": "script.js",
-  "dependencies": {
-    "concat-stream": "2.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@qooxdoo/compiler": "1.0.0-beta-20201003-1033",
@@ -49,7 +47,7 @@
     "build": "npm run clean && npm run buildApps && npm run package",
     "buildApps": "npm run buildCore && ./extra2.sh",
     "buildCore": "node node_modules/desk-ui/source/build-worker.js && webpack && npm run qooxdoo",
-    "clean": "rm -rf compiled && rm -rf EduAnat2-*",
+    "clean": "rm -rf compiled && rm -rf dist && rm -rf EduAnat2-*",
     "compile": "qx compile --target source && qx compile --target build",
     "setDate": "date > source/resource/eduAnat2/buildDate.txt",
     "deploy": "qx deploy --clean --out compiled/dist",
