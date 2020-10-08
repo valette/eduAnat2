@@ -7,12 +7,15 @@ const debug = process.argv[2] === "debug";
 electron.app.commandLine.appendSwitch('ignore-gpu-blacklist', 'true');
 electron.Menu.setApplicationMenu( null );
 
+const rootPath = 'file://' + __dirname + '/';
+const basePath = !fs.existsSync( __dirname + "/compiled" ) ? rootPath
+	: rootPath +  ( debug ? 'compiled/source/' : 'compiled/dist/' );
 
 electron.app.on('ready', () => {
 
 	const win = new electron.BrowserWindow( {
 
-		icon: "icon.png",
+		icon: basePath + "resource/eduAnat2/icon.png",
 		title:'EduAnat2',
 		webPreferences: {
 			nodeIntegration: true,
@@ -22,9 +25,7 @@ electron.app.on('ready', () => {
 
 	} );
 
-	const begin = 'file://' + __dirname + '/';
-	const url = !fs.existsSync( __dirname + "/compiled" ) ? begin + 'index.html'
-		: begin +  ( debug ? 'compiled/source' : 'compiled/dist' ) + '/index.html';
+	const url = basePath + 'index.html';
 
 	win.loadURL( url );
 
@@ -45,7 +46,7 @@ electron.app.on('ready', () => {
 
 	}
 
-	splash.loadURL('file://' + __dirname + '/splash.html');
+	splash.loadURL( basePath + 'resource/eduAnat2/splash.html');
 
 	require("electron").ipcMain.once('qx-ready', function () {
 

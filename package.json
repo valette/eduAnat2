@@ -45,7 +45,7 @@
   },
   "scripts": {
     "build": "npm run clean && npm run buildApps && npm run package",
-    "buildApps": "npm run buildCore && ./extra2.sh",
+    "buildApps": "npm run buildCore && cp script.js compiled/dist",
     "buildCore": "node node_modules/desk-ui/source/build-worker.js && webpack && npm run qooxdoo",
     "clean": "rm -rf compiled && rm -rf dist && rm -rf EduAnat2-*",
     "compile": "qx compile --target source && qx compile --target build",
