@@ -46,21 +46,20 @@ qx.Class.define("eduAnat2.FuncLayer", {
 		__meshViewer: null,
 		__funcButtonMeta: null,
 		__IRMFuncName: null,
-		__seuilSlider: null,
+		__tresholdSlider: null,
 		__meshesFunc: null,
 		__colors: null,
 		__widthMenu: 220,
-
 
 		/**
 		 * create UI
 		 */
 		createUI: function() {
+
 			this.set({
 				minWidth: 200,
 				maxWidth: 250
 			});
-			var that = this;
 
 			var titleContainer = new qx.ui.container.Composite(new qx.ui.layout.HBox());
 
@@ -77,7 +76,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			                  decorator: null
 			              });
 			              titleContainer.add(button_meta);
-			              button_meta.addListener("execute", function() {
+			              button_meta.addListener("execute", () => {
 			                  that.showMeta(that.volumeFunc);
 			              });
 			*/
@@ -90,26 +89,26 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
 			titleContainer.add(button_hide);
 			var imageVisible = 2;
-			button_hide.addListener("execute", function() {
+			button_hide.addListener("execute", () => {
 				switch (imageVisible) {
 
 					case 2:
 						imageVisible = 1;
-						that.__MPR.setVolumeOpacity(that.volumeFunc, 0.25);
+						this.__MPR.setVolumeOpacity(this.volumeFunc, 0.25);
 						button_hide.getChildControl('icon').setSource('eduAnat2/transparent.png');
 						button_hide.getToolTip().setLabel("Masquer");
 						break;
 
 					case 1:
 						imageVisible = 0;
-						that.__MPR.setVolumeOpacity(that.volumeFunc, 0);
+						this.__MPR.setVolumeOpacity(this.volumeFunc, 0);
 						button_hide.getChildControl('icon').setSource('eduAnat2/hide.png');
 						button_hide.getToolTip().setLabel("Masquer");
 						break;
 
 					case 0:
 						imageVisible = 2;
-						that.__MPR.setVolumeOpacity(that.volumeFunc, 0.7);
+						this.__MPR.setVolumeOpacity(this.volumeFunc, 0.7);
 						button_hide.getChildControl('icon').setSource('eduAnat2/show.png');
 						button_hide.getToolTip().setLabel("Rendre transpaent");
 
@@ -138,26 +137,32 @@ qx.Class.define("eduAnat2.FuncLayer", {
 				rich: true
 			});
 			this.add(seuilLabel);
-			var seuilSlider = this.__seuilSlider = new qx.ui.form.Slider();
-			seuilSlider.setBackgroundColor("white");
+			var tresholdSlider = this.__tresholdSlider = new qx.ui.form.Slider();
+			tresholdSlider.setBackgroundColor("white");
 
-			seuilSlider.addListener("changeValue", function(e) {
-				var val = (seuilSlider.getValue() - seuilSlider.getMinimum()) / (seuilSlider.getMaximum() - seuilSlider.getMinimum()) * 100;
+			tresholdSlider.addListener("changeValue", e => {
+				var val = (tresholdSlider.getValue() - tresholdSlider.getMinimum()) / (tresholdSlider.getMaximum() - tresholdSlider.getMinimum()) * 100;
 				seuilLabel.setValue(this.tr("Seuil") + " : <b>" + Math.floor(val) + "</b>");
 
 				function updateSlice(slice) {
-					slice.material.uniforms.thresholdMin.value = seuilSlider.getValue() / 100;
+					slice.material.uniforms.thresholdMin.value = tresholdSlider.getValue() / 100;
 				}
-				that.__MPR.getVolumeMeshes(that.volumeFunc).forEach(updateSlice);
-				that.__meshesFunc.forEach(updateSlice);
-				that.__meshViewer.render();
-				that.__MPR.render();
+				this.__MPR.getVolumeMeshes(this.volumeFunc).forEach(updateSlice);
+				this.__meshesFunc.forEach(updateSlice);
+				this.__meshViewer.render();
+				this.__MPR.render();
 			});
 
-			this.add(seuilSlider);
+			this.add(tresholdSlider);
 			this.add(new qx.ui.basic.Label(this.tr("Echelle de couleur : ")));
 
-			var lutArray = [
+			const generateChroma = scale => {
+				return imgData => {
+					return this.generateChromaLut.apply(undefined, [imgData, scale]);
+				}
+			};
+
+			const lutArray = [
 				generateChroma(chroma.scale(["#00f", "#0ff", "#0f0", "#ff0", "#f00"]).domain([0, 0.333, 0.5, 0.666, 1])),
 				generateChroma(chroma.scale("Spectral").domain([1, 0])),
 				generateChroma(chroma.scale(["blue", "#eee", "red"]).mode('lrgb')),
@@ -169,42 +174,34 @@ qx.Class.define("eduAnat2.FuncLayer", {
 				generateChroma(chroma.scale(["black", "white"]).gamma(1 / 2)),
 			];
 
-			function generateChroma(scale) {
-				return function(imgData) {
-					return that.generateChromaLut.apply(undefined, [imgData, scale]);
-				}
-			};
 
 			var selectBox = new qx.ui.form.SelectBox();
 
-			lutArray.forEach(function(generator) {
-				selectBox.add(new qx.ui.form.ListItem("", that.lutImage(generator)));
+			lutArray.forEach( generator => {
+				selectBox.add(new qx.ui.form.ListItem("", this.lutImage(generator)));
 			});
 
-			selectBox.addListener("changeSelection", function(e) {
+			selectBox.addListener("changeSelection", e => {
 				var index = selectBox.getSelectables().indexOf(e.getData()[0]);
-				that.__colors = lutArray[index]();
-				if (that.volumeFunc)
-					that.__MPR.setVolumeLUT(that.volumeFunc, that.__colors);
+				this.__colors = lutArray[index]();
+				if (this.volumeFunc)
+					this.__MPR.setVolumeLUT(this.volumeFunc, this.__colors);
 			});
+
 			this.add(selectBox);
-
-			//this.add(new qx.ui.core.Widget().set({height:1, backgroundColor:"gray"}));
-
 			this.__colors = this.generateLut();
-
 
 		},
 
-		selectFuncFile: async function(cbBefore, cbAfter, center) {
+		selectFuncFile: async function( center ) {
 
 			const selection = await eduAnat2.Quircks.selectFile(true);
 			if (selection.canceled) return false;
-			return await this.addFuncFile(selection.file, cbBefore, cbAfter, center);
+			return await this.addFuncFile(selection.file, center);
 
 		},
 
-		addFuncFile: async function(file, cbBefore, cbAfter, center) {
+		addFuncFile: async function(file, center) {
 
 			let local;
 			let fileName = file;
@@ -220,7 +217,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			this.openedFile = name;
 			console.log(name);
 
-			if (name.substr(name.length - 7) !== ".nii.gz") {
+			if ( !name.endsWith( ".nii.gz" ) ) {
 
 				alert('Erreur : Ne sont acceptés que les fichiers Nifti compressés (.nii.gz). ');
 				/*              dialog.showMessageBox({
@@ -233,7 +230,6 @@ qx.Class.define("eduAnat2.FuncLayer", {
 				return false;
 			}
 
-			cbBefore();
 			this.removeFunc();
 			let fixedFile = file;
 
@@ -256,7 +252,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
 			if (!local) {
 
-				const flip = await eduAnat2.Quircks.flipVolume(fileName);
+				const flip = await eduAnat2.Quircks.flipVolume( fileName );
 				fixedFile = flip.file;
 				opts = Object.assign(opts, flip.opts);
 				opts.center = center;
@@ -272,13 +268,13 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			this.volumeFunc = volume;
 			volume.setUserData("path", file);
 			/*
-						  that.__funcButtonMeta.exclude();
-						  that.loadMeta(volume, function (err, meta) {
+						  this.__funcButtonMeta.exclude();
+						  this.loadMeta(volume, function (err, meta) {
 							if (err === null) { //show info button
-							  that.__funcButtonMeta.show();
+							  this.__funcButtonMeta.show();
 							}
 							else { //show info button
-							  that.__funcButtonMeta.exclude();
+							  this.__funcButtonMeta.exclude();
 							}
 						  });
 			*/
@@ -291,25 +287,23 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			this.hackShaders(volumeSlice, slices);
 			this.hackShaders(volumeSlice, this.__meshesFunc);
 
-			this.__seuilSlider.set({
+			this.__tresholdSlider.set({
 				minimum: Math.floor(prop.scalarBounds[0] * 100),
 				maximum: Math.floor(prop.scalarBounds[1] * 99),
 				singleStep: 1,
 				value: Math.floor((prop.scalarBounds[0] + prop.scalarBounds[1]) * 50)
 			} );
 
-			slices.forEach(setMaxThreshold);
-			this.__meshesFunc.forEach(setMaxThreshold);
 
-			function setMaxThreshold(target) {
+			for ( let target of [...slices, ...this.__meshesFunc ] )
 				target.material.uniforms.thresholdMax.value = prop.scalarBounds[1];
-			}
 
-			const updateSlice = slice => {
-				slice.material.uniforms.thresholdMin.value = this.__seuilSlider.getValue() / 100;
+			for ( let slice of 
+				[ ...this.__MPR.getVolumeMeshes( this.volumeFunc ), ...this.__meshesFunc ] ) {
+				slice.material.uniforms.thresholdMin.value = this.__tresholdSlider.getValue() / 100;
+
 			}
-			this.__MPR.getVolumeMeshes(this.volumeFunc).forEach(updateSlice);
-			this.__meshesFunc.forEach(updateSlice);
+				
 			this.__meshViewer.render();
 			this.__MPR.render();
 
@@ -319,13 +313,12 @@ qx.Class.define("eduAnat2.FuncLayer", {
 				}
 			}, 50);
 
-			cbAfter();
 			return true;
 		},
 
 		showMeta: function(volume) {
-			var metadonnees = volume.getUserData("metadonnees");
-			var that = this;
+
+			const metadonnees = volume.getUserData("metadonnees");
 
 			if (!metadonnees) {
 				require('electron').remote.dialog.showMessageBox({
@@ -445,9 +438,10 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
 
 		hackShaders: function(volumeSlice, meshes) {
-			meshes.forEach(function(slice) {
-				var shader = slice.material.baseShader;
 
+			for ( let slice of meshes ) {
+
+				const shader = slice.material.baseShader;
 				slice.material.polygonOffset = true;
 				slice.material.polygonOffsetFactor = -1;
 				slice.material.polygonOffsetUnits = -4.0;
@@ -475,16 +469,19 @@ qx.Class.define("eduAnat2.FuncLayer", {
 					'}'
 				].join('\n'));
 				volumeSlice.updateMaterial(slice.material);
-			});
+
+			}
+
 		},
 
 		removeFunc: function() {
-			if (!this.volumeFunc) return;
 
+			if (!this.volumeFunc) return;
 			this.__MPR.removeVolume(this.volumeFunc);
 			this.__meshViewer.removeMeshes(this.__meshesFunc);
 			this.volumeFunc = undefined;
 			this.exclude();
+
 		},
 
 		generateChromaLut: function(imgData, scale) {

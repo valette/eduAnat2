@@ -81,52 +81,37 @@ qx.Class.define("eduAnat2.Container", {
 		 * create UI
 		 */
 		createUI: function() {
-			var that = this;
+
 			var MPR = this.createMPR();
 			const scroll = this.__scroll = new qx.ui.container.Scroll();
 			var menu = this.__menu = this.createMenu();
 			scroll.add(menu);
-			this.add(scroll, {
-				flex: 0
-			});
-			this.add(MPR, {
-				flex: 6
-			});
+			this.add(scroll, { flex: 0 } );
+			this.add(MPR, { flex: 6 } );
 
-			this.__buttonOpenFunc.addListener("execute", function() {
-				var target = _.find(that.__subMenuFunc, function(o) {
-					return !o.volumeFunc;
-				});
+			this.__buttonOpenFunc.addListener("execute", async () => {
+
+				const target = _.find( this.__subMenuFunc, o => !o.volumeFunc );
 
 				if (target === undefined) {
-					var index = require('electron').remote.dialog.showMessageBox({
+
+					require('electron').remote.dialog.showMessageBox( {
 						type: "warning",
 						title: "Echec de l'ouverture d'un nouveau calque",
 						message: "3 calques sont déjà ouverts, supprimer un calque afin de pouvoir en ouvrir un autre.",
 						buttons: ['Ok']
-					});
+					} );
+
 				} else {
-					target.selectFuncFile(function() {
-						//Before
-						window.setTimeout(function() {
-							that.__buttonOpenAnat.setEnabled(false);
-							that.__buttonOpenFunc.setEnabled(false);
-						}, 1);
 
-					}, function() {
-						//Show and move to the end
-						var parent = target.$$parent;
-						parent.remove(target);
-						parent.add(target, {
-							flex: 1
-						});
-						target.show();
+					if ( ! (await target.selectFuncFile( this.volumeCenter ) ) ) return;
 
-						//After
-						that.__buttonOpenFunc.setEnabled(true);
-						that.__buttonOpenAnat.setEnabled(true);
-						that.__buttonCloseAll.setEnabled(true);
-					}, that.volumeCenter);
+					this.__buttonCloseAll.setEnabled( true );
+					const parent = target.$$parent;
+					parent.remove( target );
+					parent.add(target, { flex: 1 } );
+					target.show();
+
 				}
 
 			});

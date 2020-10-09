@@ -162,7 +162,7 @@ qx.Class.define("eduAnat2.Application", {
 							const anatContainer = containers[anatCount];
 							const funcContainer = anatContainer.funcLayers[funcCount];
 
-							await funcContainer.addFuncFile(path, () => {}, () => {},
+							await funcContainer.addFuncFile(path,
 								containers[anatCount].volumeCenter);
 
 							const parent = funcContainer.getLayoutParent();
