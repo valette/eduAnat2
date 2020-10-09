@@ -40,10 +40,6 @@ qx.Class.define("eduAnat2.FileSelector", {
 		}
 
 		this.add( okButton );
-		const root = qx.core.Init.getApplication().getRoot()
-		const blocker = this.__blocker = new qx.ui.core.Blocker( root );
-		blocker.setOpacity( 0.5 );
-		blocker.setColor( "black" );
 
     },
 
@@ -80,7 +76,6 @@ qx.Class.define("eduAnat2.FileSelector", {
 
 			this.center();
 			this.open();
-			this.__blocker.block();
 			const okButton = this.__okButton;
 			okButton.setEnabled( false );
 
@@ -135,7 +130,6 @@ qx.Class.define("eduAnat2.FileSelector", {
 			okButton.removeListenerById( okButtonHandler );
 			this.__selectButton.removeListenerById( selectButtonHandler );
 			this.close();
-			this.__blocker.unblock();
 			return data;
 
 		}

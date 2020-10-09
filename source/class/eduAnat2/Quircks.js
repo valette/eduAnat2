@@ -18,6 +18,11 @@ qx.Class.define("eduAnat2.Quircks", {
 
 	    this.base(arguments);
 
+		const root = qx.core.Init.getApplication().getRoot()
+		const blocker = this.__blocker = new qx.ui.core.Blocker( root );
+		blocker.setOpacity( 0.5 );
+		blocker.setColor( "black" );
+
 		try {
 
 			const electron = require( 'electron' );
@@ -246,12 +251,18 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		__selectFileNode : async function ( func ) {
 
+			const self = eduAnat2.Quircks.getInstance();
+			self.__blocker.block();
 			const selector = eduAnat2.FileSelector.getInstance();
+			self.__blocker.unblock();
 			return await selector.getFile( func );
 
 		},
 
 		__selectFileElectron : async function ( func ) {
+
+			const self = eduAnat2.Quircks.getInstance();
+			self.__blocker.block();
 
 			const filters = func ?
 				[
@@ -271,6 +282,7 @@ qx.Class.define("eduAnat2.Quircks", {
             const win = await dialog.showOpenDialog({
               filters, properties: [ 'openFile' ] } );
 
+			self.__blocker.unblock();
 			if ( win.canceled ) return { canceled : true };
 			return { file : win.filePaths[ 0 ] };
 
