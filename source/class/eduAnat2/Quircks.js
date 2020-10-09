@@ -169,19 +169,17 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		capture: async function(element) {
 
-			const that = eduAnat2.Quircks.getInstance();
-
 			try {
 				require("electron");
 
 			} catch (e) {
 
-				that.__captureWeb(element);
+				eduAnat2.Quircks.getInstance().__captureWeb(element);
 				return;
 
 			}
 
-			that.__captureElectron(element);
+			eduAnat2.Quircks.getInstance().__captureElectron(element);
 
 		}
 

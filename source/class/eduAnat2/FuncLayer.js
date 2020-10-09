@@ -14,17 +14,14 @@ qx.Class.define("eduAnat2.FuncLayer", {
 	 * constructor
 	 */
 	construct: function(MPR, meshViewer) {
-		this.base(arguments);
 
+		this.base(arguments);
 		this.__MPR = MPR;
 		this.__meshViewer = meshViewer;
-
-		var layout = new qx.ui.layout.VBox();
-		this.setLayout(layout);
-
+		this.setLayout( new qx.ui.layout.VBox() );
 		this.createUI();
-
 		this.exclude();
+
 	},
 
 	destruct: function() {
@@ -56,28 +53,23 @@ qx.Class.define("eduAnat2.FuncLayer", {
 		 */
 		createUI: function() {
 
-			this.set({
-				minWidth: 200,
-				maxWidth: 250
-			});
+			this.set( { minWidth: 200, maxWidth: 250 } );
 
-			var titleContainer = new qx.ui.container.Composite(new qx.ui.layout.HBox());
+			const titleContainer = new qx.ui.container.Composite(new qx.ui.layout.HBox());
 
 			titleContainer.add(new qx.ui.basic.Label().set({
 				value: "<b>" + this.tr("Calque fonctionnel") + " : </b>",
 				rich: true
 			}));
 
-			titleContainer.add(new qx.ui.core.Spacer(), {
-				flex: 1
-			});
+			titleContainer.add(new qx.ui.core.Spacer(), { flex: 1 } );
 			/*
 			              var button_meta = this.__funcButtonMeta = new qx.ui.form.Button(null, 'resource/eduAnat2/info_small.png').set({
 			                  decorator: null
 			              });
 			              titleContainer.add(button_meta);
 			              button_meta.addListener("execute", () => {
-			                  that.showMeta(that.volumeFunc);
+			                  this.showMeta(that.volumeFunc);
 			              });
 			*/
 			var button_hide = new qx.ui.form.Button(null, 'eduAnat2/show.png').set({
@@ -175,11 +167,10 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			];
 
 
-			var selectBox = new qx.ui.form.SelectBox();
+			const selectBox = new qx.ui.form.SelectBox();
 
-			lutArray.forEach( generator => {
-				selectBox.add(new qx.ui.form.ListItem("", this.lutImage(generator)));
-			});
+			for ( let generator of lutArray )
+				selectBox.add( new qx.ui.form.ListItem("", this.lutImage( generator ) ) );
 
 			selectBox.addListener("changeSelection", e => {
 				var index = selectBox.getSelectables().indexOf(e.getData()[0]);
@@ -188,8 +179,9 @@ qx.Class.define("eduAnat2.FuncLayer", {
 					this.__MPR.setVolumeLUT(this.volumeFunc, this.__colors);
 			});
 
-			this.add(selectBox);
+			this.add( selectBox );
 			this.__colors = this.generateLut();
+			selectBox.fireDataEvent( "changeSelection", selectBox.getSelectables() );
 
 		},
 

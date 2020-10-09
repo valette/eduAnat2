@@ -120,7 +120,6 @@ qx.Class.define("eduAnat2.Container", {
 
 		createMenu: function() {
 
-			var that = this;
 			//Menu container
 			var layout = new qx.ui.layout.VBox();
 			layout.setSpacing(10);
@@ -144,141 +143,70 @@ qx.Class.define("eduAnat2.Container", {
 
 			container.add(burger);
 			var menuVisible = true;
-			var phantom = new qx.ui.core.Widget();
-
+			const phantom = new qx.ui.core.Widget();
 			phantom.setHeight(32);
 
-			//that.__sideViewer.isVisible()
 
-			burger.addListener("click", function() {
+			burger.addListener("click", () => {
 				if (menuVisible) { //Hide menu
 					menuVisible = false;
 					burger.getToolTip().setLabel("Afficher le menu");
 
-					if (that.__sideViewer.isVisible()) { //compare mode
+					if (this.__sideViewer.isVisible()) { //compare mode
 						burger.setSource("eduAnat2/menu_top.png");
-						that.__scroll.exclude();
-						that.__sideViewer.getChildren()[1].exclude();
-						that.add(burger);
-						that.__sideViewer.add(phantom);
+						this.__scroll.exclude();
+						this.__sideViewer.getChildren()[1].exclude();
+						this.add(burger);
+						this.__sideViewer.add(phantom);
 					} else { //single mode
 						burger.setSource("eduAnat2/menu_right.png");
-						that.__scroll.exclude();
-						that.addAt(burger, 0);
+						this.__scroll.exclude();
+						this.addAt(burger, 0);
 					}
 				} else { // Show menu
 					menuVisible = true;
 					burger.getToolTip().setLabel("Réduire le menu");
-					if (that.__sideViewer.isVisible()) { //compare mode
+					if (this.__sideViewer.isVisible()) { //compare mode
 						burger.setSource("eduAnat2/menu_bottom.png");
-						that.__scroll.show();
-						that.remove(burger);
-						that.__menu.add(burger);
-						that.__sideViewer.getChildren()[1].show();
-						that.__sideViewer.remove(phantom);
+						this.__scroll.show();
+						this.remove(burger);
+						this.__menu.add(burger);
+						this.__sideViewer.getChildren()[1].show();
+						this.__sideViewer.remove(phantom);
 					} else { //single mode
 						burger.setSource("eduAnat2/menu_left.png");
-						that.__scroll.show();
-						that.remove(burger);
-						that.__menu.addAt(burger, 0);
+						this.__scroll.show();
+						this.remove(burger);
+						this.__menu.addAt(burger, 0);
 					}
 				}
 
-
-
 			});
 
-
-
-
-			/*
-			
-			
-			burger.addListener("click", function () {
-			    if (menuVisible) {
-			        burger.getToolTip().setLabel("Afficher le menu");
-			        if (!that.__sideViewer) {
-			          that.getChildren()[1].exclude();
-			          that.add(burger);
-			          that.getMainViewer().getChildren()[1].exclude();
-			          burger.setSource("resource/eduAnat2/menu_top.png");                      
-			          that.getMainViewer().add(phantom);
-			          
-			        } else {
-			          burger.setSource("resource/eduAnat2/menu_right.png");                      
-			          that.__menu.exclude();
-			          that.addAt(burger, 0);
-			        }
-			        burger.setPadding(5);
-			        menuVisible = false;
-			    } else {
-			        menuVisible = true;
-			        burger.getToolTip().setLabel("Réduire le menu");
-			        if (!that.__sideViewer) {
-			          burger.setSource("resource/eduAnat2/menu_bottom.png");
-			          that.getChildren()[1].show();
-			          that.remove(burger);
-			          that.getChildren()[1].add(burger);
-			          that.getMainViewer().getChildren()[1].show();
-			          that.getMainViewer().remove(phantom);
-			        } else {
-			          burger.setSource("resource/eduAnat2/menu_left.png");
-			          that.__menu.show();
-			          that.remove(burger);
-			          that.__menu.addAt(burger, 0);
-			        }
-			        burger.setPadding(0);
-			    }
-			});
-			
-			*/
-
-			container.add(new qx.ui.core.Spacer(), {
-				flex: 1
-			});
-
+			container.add(new qx.ui.core.Spacer(), { flex: 1 } );
 			this.__subMenuButtons = this.createSubMenuButtons();
 			container.add(this.__subMenuButtons);
-
-			container.add(new qx.ui.core.Spacer(), {
-				flex: 1
-			});
-
+			container.add(new qx.ui.core.Spacer(), { flex: 1 } );
 			var scroll = new qx.ui.container.Scroll();
-			var target = new qx.ui.container.Composite(new qx.ui.layout.VBox().set({
+			var target = new qx.ui.container.Composite( new qx.ui.layout.VBox().set({
 				spacing: 20
 			}));
-			scroll.add(target);
 
+			scroll.add(target);
 			this.__subMenuAnat = this.createSubMenuAnat();
 			target.add(this.__subMenuAnat);
-
-
 			this.__subMenuFunc = this.funcLayers = [];
 			this.__subMenuFunc[0] = new eduAnat2.FuncLayer(this.__MPR, this.__meshViewer);
-			target.add(this.__subMenuFunc[0], {
-				flex: 1
-			});
+			target.add(this.__subMenuFunc[0], {	flex: 1	} );
 			this.__subMenuFunc[1] = new eduAnat2.FuncLayer(this.__MPR, this.__meshViewer);
-			target.add(this.__subMenuFunc[1], {
-				flex: 1
-			});
+			target.add(this.__subMenuFunc[1], {	flex: 1 } );
 			this.__subMenuFunc[2] = new eduAnat2.FuncLayer(this.__MPR, this.__meshViewer);
-			target.add(this.__subMenuFunc[2], {
-				flex: 1
-			});
-
+			target.add(this.__subMenuFunc[2], { flex: 1	} );
 			container.add(scroll);
-
-			container.add(new qx.ui.core.Spacer(), {
-				flex: 1
-			});
-
-			if (that.__sideViewer) {
-				container.add(this.createAbout());
-			}
-
+			container.add(new qx.ui.core.Spacer(), { flex: 1 } );
+			if (this.__sideViewer) container.add(this.createAbout());
 			return container;
+
 		},
 
 
@@ -579,13 +507,13 @@ qx.Class.define("eduAnat2.Container", {
 			this.__volumeAnat = volume;
 			volume.setUserData("path", fileName);
 			/*
-						that.__anatButtonMeta.exclude();
-						that.loadMeta(volume, function (err, meta) {
+						this.__anatButtonMeta.exclude();
+						this.loadMeta(volume, function (err, meta) {
 						  if (err === null) { //show info button
-							that.__anatButtonMeta.show();
+							this.__anatButtonMeta.show();
 						  }
 						  else { //show info button
-							that.__anatButtonMeta.exclude();
+							this.__anatButtonMeta.exclude();
 						  }
 						});
 			*/
@@ -790,9 +718,10 @@ qx.Class.define("eduAnat2.Container", {
 			layout.setAlignY("middle");
 			var container = new qx.ui.container.Composite(layout);
 			container.add(button);
-			var that = this;
-			button.addListener("click", function() {
-				var target = that.getChildren()[0];
+
+			button.addListener("click", () => {
+
+				var target = this.getChildren()[0];
 				if (target.isVisible()) {
 					target.exclude();
 					button.setSource("eduAnat2/right.png");
@@ -801,6 +730,7 @@ qx.Class.define("eduAnat2.Container", {
 					button.setSource("eduAnat2/left.png");
 				}
 			});
+
 			return container;
 		},
 
@@ -906,7 +836,6 @@ qx.Class.define("eduAnat2.Container", {
 
 
 		createSubMenuButtons: function() {
-			var that = this;
 
 			var layout = new qx.ui.layout.VBox();
 			var container = new qx.ui.container.Composite(layout);
@@ -944,28 +873,28 @@ qx.Class.define("eduAnat2.Container", {
 
 
 			/* Button compare */
-			if (that.__sideViewer) {
+			if (this.__sideViewer) {
 				var buttonCompare = this.compareButton = new qx.ui.form.Button(this.tr("Comparer deux images"), 'eduAnat2/compare.png');
 				buttonCompare.getChildControl("label").setAllowGrowX(true);
 				buttonCompare.getChildControl("label").setTextAlign("left");
 
-				buttonCompare.addListener("execute", function() {
-					if (that.__sideViewer.isVisible()) {
-						that.__sideViewer.exclude();
-						buttonCompare.setLabel(that.tr("Comparer deux images"));
-						//that.unlink();
+				buttonCompare.addListener("execute", () => {
+					if (this.__sideViewer.isVisible()) {
+						this.__sideViewer.exclude();
+						buttonCompare.setLabel(this.tr("Comparer deux images"));
+						//this.unlink();
 
-						that.switchMenu(true);
-						that.__sideViewer.switchMenu(true);
+						this.switchMenu(true);
+						this.__sideViewer.switchMenu(true);
 
 					} else {
-						that.__sideViewer.__MPR.resetMaximize();
-						that.__sideViewer.show();
-						buttonCompare.setLabel(that.tr("Fermer la comparaison"));
-						//that.link(that.__sideViewer);
+						this.__sideViewer.__MPR.resetMaximize();
+						this.__sideViewer.show();
+						buttonCompare.setLabel(this.tr("Fermer la comparaison"));
+						//this.link(this.__sideViewer);
 
-						that.switchMenu(false);
-						that.__sideViewer.switchMenu(false);
+						this.switchMenu(false);
+						this.__sideViewer.switchMenu(false);
 
 					}
 				});
@@ -1104,7 +1033,6 @@ qx.Class.define("eduAnat2.Container", {
 
 
 		createSubMenuAnat: function() {
-			var that = this;
 
 			var layout = new qx.ui.layout.VBox();
 			var container = new qx.ui.container.Composite(layout).set({
@@ -1121,9 +1049,7 @@ qx.Class.define("eduAnat2.Container", {
 				rich: true
 			}));
 
-			titleContainer.add(new qx.ui.core.Spacer(), {
-				flex: 1
-			});
+			titleContainer.add(new qx.ui.core.Spacer(), { flex: 1 });
 
 			/*
 			                var button_meta = this.__anatButtonMeta = new qx.ui.form.Button(null, 'eduAnat2/info_small.png').set({
@@ -1131,7 +1057,7 @@ qx.Class.define("eduAnat2.Container", {
 			                });
 			                titleContainer.add(button_meta);
 			                button_meta.addListener("execute", function() {
-			                    that.showMeta(that.__volumeAnat);
+			                    this.showMeta(this.__volumeAnat);
 			                });
 			*/
 
@@ -1147,37 +1073,36 @@ qx.Class.define("eduAnat2.Container", {
 
 			container.add(this.__IRMAnatName);
 
-
 			/* Gestion du contraste */
 			var contrastLabel = new qx.ui.basic.Label(this.tr("Contraste") + " : <b>1.00</b>").set({
 				rich: true
 			});
 			container.add(contrastLabel);
 			var contrastSlider = this.contrastSlider = new qx.ui.form.Slider();
+
 			contrastSlider.set({
 				minimum: -40,
 				maximum: 40,
 				singleStep: 1,
 				backgroundColor: "white"
 			});
-			contrastSlider.addListener("changeValue", function(e) {
+
+			contrastSlider.addListener("changeValue", e => {
 				var value = Math.pow(10, e.getData() / 40);
-				contrastLabel.setValue(that.tr("Contraste") + " : <b>" + value.toFixed(2) + "</b>");
-				if (that.__volumeAnat) {
-					that.__volumeAnat.getUserData('slices').forEach(function(volumeSlice) {
+				contrastLabel.setValue(this.tr("Contraste") + " : <b>" + value.toFixed(2) + "</b>");
+				if (this.__volumeAnat) {
+					this.__volumeAnat.getUserData('slices').forEach(function(volumeSlice) {
 						volumeSlice.setContrast(value);
 					});
 				}
 			});
-			container.add(contrastSlider);
-
+			container.add( contrastSlider );
 
 			/* Gestion de la luminosité */
-			var brightnessLabel = new qx.ui.basic.Label(this.tr("Luminosité") + " : <b>0.5</b>").set({
-				rich: true
-			});
+			var brightnessLabel = new qx.ui.basic.Label(this.tr("Luminosité") + " : <b>0.5</b>").set({ rich: true } );
 			container.add(brightnessLabel);
-			var brightnessSlider = this.brightnessSlider = new qx.ui.form.Slider();
+			const brightnessSlider = this.brightnessSlider = new qx.ui.form.Slider();
+
 			brightnessSlider.set({
 				minimum: 0,
 				maximum: 100,
@@ -1185,29 +1110,25 @@ qx.Class.define("eduAnat2.Container", {
 				value: 50,
 				backgroundColor: "white"
 			});
-			brightnessSlider.addListener("changeValue", function(e) {
+
+			brightnessSlider.addListener("changeValue", e => {
 				var value = e.getData() / 100;
-				brightnessLabel.setValue(that.tr("Luminosité") + " : <b>" + value.toFixed(2) + "</b>");
-				if (that.__volumeAnat) {
-					that.__volumeAnat.getUserData('slices').forEach(function(volumeSlice) {
+				brightnessLabel.setValue(this.tr("Luminosité") + " : <b>" + value.toFixed(2) + "</b>");
+				if (this.__volumeAnat) {
+					this.__volumeAnat.getUserData('slices').forEach(function(volumeSlice) {
 						volumeSlice.setBrightness((value - 0.5) * 2);
 					});
 				}
 			});
+
 			container.add(brightnessSlider);
-			container.add(new qx.ui.core.Spacer(), {
-				flex: 0.5
-			});
-			//container.add(new qx.ui.core.Widget().set({height:1, backgroundColor:"gray"}));
-			container.add(new qx.ui.core.Spacer(), {
-				flex: 0.5
-			});
+			container.add(new qx.ui.core.Spacer(), { flex: 0.5 } );
+			container.add(new qx.ui.core.Spacer(), { flex: 0.5 } );
 			return container;
 		},
 
 		showMeta: function(volume) {
 			var metadonnees = volume.getUserData("metadonnees");
-			var that = this;
 
 			if (!metadonnees) {
 				require('electron').remote.dialog.showMessageBox({
@@ -1248,15 +1169,10 @@ qx.Class.define("eduAnat2.Container", {
 			});
 
 			txt += "</ul>";
-
-
-			this.alert(txt, "Métadonnées", {
-				width: 800
-			});
+			this.alert(txt, "Métadonnées", { width: 800	} );
 
 
 		},
-
 
 		nl2br: function(str, is_xhtml) {
 			var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br ' + '/>' : '<br>';
@@ -1283,33 +1199,21 @@ qx.Class.define("eduAnat2.Container", {
 		},
 
 		removeAll: function() {
+
 			this.__subMenuFunc[0].removeFunc();
 			this.__subMenuFunc[1].removeFunc();
 			this.__subMenuFunc[2].removeFunc();
-
 			this.__MPR.removeAllVolumes();
 			this.__MPR.resetMaximize();
-			if (this.__sideViewer)
-				this.__sideViewer.__MPR.resetMaximize();
+			if (this.__sideViewer) this.__sideViewer.__MPR.resetMaximize();
 			this.__meshViewer.removeAllMeshes();
-
 			this.__IRMAnatName.setValue("");
-
 			this.__buttonOpenFunc.setEnabled(false);
-
 			this.__subMenuAnat.hide();
-
 			this.__volumeAnat = undefined;
-
 			this.__buttonCloseAll.setEnabled(false);
-
-			this.contrastSlider.set({
-				value: 0
-			});
-			this.brightnessSlider.set({
-				value: 50
-			});
-
+			this.contrastSlider.set( { value: 0	} );
+			this.brightnessSlider.set({	value: 50 } );
 
 		},
 
@@ -1361,8 +1265,6 @@ qx.Class.define("eduAnat2.Container", {
 			return mesh;
 		}
 
-
-
-
 	}
+
 });
