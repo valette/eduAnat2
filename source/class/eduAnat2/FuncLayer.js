@@ -199,24 +199,9 @@ qx.Class.define("eduAnat2.FuncLayer", {
 		selectFuncFile: async function(cbBefore, cbAfter, center) {
 
 			const selection = await eduAnat2.Quircks.selectFile(true);
-			/*
-			          var dialog = require('electron').remote.dialog;
-			          var win = await dialog.showOpenDialog({
-			            filters : [
-			              {name: 'Fonc Nifti Image', extensions: ['fonc.nii.gz']},
-			              {name: 'Nifti Image', extensions: ['nii.gz']},
-			              {name: 'All Files', extensions: ['*']}
+			if (selection.canceled) return false;
+			return await this.addFuncFile(selection.file, cbBefore, cbAfter, center);
 
-			            ],
-			            properties: ['openFile']
-			          });
-
-			          var filesList = win.filePaths;
-			          if (!filesList || !filesList.length) return;
-			  */
-
-			if (selection.canceled) return;
-			this.addFuncFile(selection.file, cbBefore, cbAfter, center);
 		},
 
 		addFuncFile: async function(file, cbBefore, cbAfter, center) {
@@ -234,7 +219,6 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			const name = fileName.split('/').pop();
 			this.openedFile = name;
 			console.log(name);
-			//          var name = require("path").basename(filesList[0]);
 
 			if (name.substr(name.length - 7) !== ".nii.gz") {
 
@@ -246,21 +230,18 @@ qx.Class.define("eduAnat2.FuncLayer", {
 				                buttons : ['Ok']
 				              });
 				*/
-				return;
+				return false;
 			}
 
-
-			var that = this;
 			cbBefore();
 			this.removeFunc();
-
 			let fixedFile = file;
 
 			let opts = {
 				slicer: true,
 				format: 0,
 				worker: false,
-				colors: that.__colors,
+				colors: this.__colors,
 				linearFilter: true,
 				opacity: 0.7,
 				postProcessFunction: function(texture, slicer) {
@@ -283,65 +264,63 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
 			}
 
-			this.__MPR.addVolume(fixedFile, opts, function(err, volume) {
-				//              var prop = volume.getUserData("slicer").properties;
-				const scalarBounds = that.__MPR.getVolumeSlices(
-					volume)[0].getScalarBounds();
-				const prop = {
-					scalarBounds
-				};
-				that.volumeFunc = volume;
-				volume.setUserData("path", file);
-				/*
-				              that.__funcButtonMeta.exclude();
-				              that.loadMeta(volume, function (err, meta) {
-				                if (err === null) { //show info button
-				                  that.__funcButtonMeta.show();
-				                }
-				                else { //show info button
-				                  that.__funcButtonMeta.exclude();
-				                }
-				              });
-				*/
-				that.__meshesFunc = that.__meshViewer.attachVolumeSlices(that.__MPR.getVolumeSlices(volume));
-				that.__IRMFuncName.setValue(name.split(".")[0]);
+			const volume = await this.__MPR.addVolumeAsync(fixedFile, opts);
+			const scalarBounds = this.__MPR.getVolumeSlices( volume )[0]
+				.getScalarBounds();
+
+			const prop = { scalarBounds };
+			this.volumeFunc = volume;
+			volume.setUserData("path", file);
+			/*
+						  that.__funcButtonMeta.exclude();
+						  that.loadMeta(volume, function (err, meta) {
+							if (err === null) { //show info button
+							  that.__funcButtonMeta.show();
+							}
+							else { //show info button
+							  that.__funcButtonMeta.exclude();
+							}
+						  });
+			*/
+			this.__meshesFunc = this.__meshViewer.attachVolumeSlices(this.__MPR.getVolumeSlices(volume));
+			this.__IRMFuncName.setValue(name.split(".")[0]);
 
 
-				var volumeSlice = that.__MPR.getVolumeSlices(volume)[0];
+			var volumeSlice = this.__MPR.getVolumeSlices(volume)[0];
+			var slices = this.__MPR.getVolumeMeshes(volume);
+			this.hackShaders(volumeSlice, slices);
+			this.hackShaders(volumeSlice, this.__meshesFunc);
 
-				var slices = that.__MPR.getVolumeMeshes(volume);
-				that.hackShaders(volumeSlice, slices);
-				that.hackShaders(volumeSlice, that.__meshesFunc);
-				that.__seuilSlider.set({
-					minimum: Math.floor(prop.scalarBounds[0] * 100),
-					maximum: Math.floor(prop.scalarBounds[1] * 99),
-					singleStep: 1,
-					value: Math.floor((prop.scalarBounds[0] + prop.scalarBounds[1]) * 50)
-				})
+			this.__seuilSlider.set({
+				minimum: Math.floor(prop.scalarBounds[0] * 100),
+				maximum: Math.floor(prop.scalarBounds[1] * 99),
+				singleStep: 1,
+				value: Math.floor((prop.scalarBounds[0] + prop.scalarBounds[1]) * 50)
+			} );
 
-				slices.forEach(setMaxThreshold);
-				that.__meshesFunc.forEach(setMaxThreshold);
+			slices.forEach(setMaxThreshold);
+			this.__meshesFunc.forEach(setMaxThreshold);
 
-				function setMaxThreshold(target) {
-					target.material.uniforms.thresholdMax.value = prop.scalarBounds[1];
+			function setMaxThreshold(target) {
+				target.material.uniforms.thresholdMax.value = prop.scalarBounds[1];
+			}
+
+			const updateSlice = slice => {
+				slice.material.uniforms.thresholdMin.value = this.__seuilSlider.getValue() / 100;
+			}
+			this.__MPR.getVolumeMeshes(this.volumeFunc).forEach(updateSlice);
+			this.__meshesFunc.forEach(updateSlice);
+			this.__meshViewer.render();
+			this.__MPR.render();
+
+			window.setTimeout( () => {
+				if (this.$$parent.$$parent.name == "qx.ui.core.scroll.ScrollPane") {
+					this.$$parent.$$parent.scrollByY(10000);
 				}
+			}, 50);
 
-				function updateSlice(slice) {
-					slice.material.uniforms.thresholdMin.value = that.__seuilSlider.getValue() / 100;
-				}
-				that.__MPR.getVolumeMeshes(that.volumeFunc).forEach(updateSlice);
-				that.__meshesFunc.forEach(updateSlice);
-				that.__meshViewer.render();
-				that.__MPR.render();
-
-				window.setTimeout(function() {
-					if (that.$$parent.$$parent.name == "qx.ui.core.scroll.ScrollPane") {
-						that.$$parent.$$parent.scrollByY(10000);
-					}
-				}, 50);
-
-				cbAfter();
-			});
+			cbAfter();
+			return true;
 		},
 
 		showMeta: function(volume) {
