@@ -11,36 +11,23 @@
 
 
 qx.Class.define("eduAnat2.Container", {
+
     extend: qx.ui.container.Composite,
 
     /**
      * constructor
      */
     construct: function(sideViewer) {
+
 	    this.base(arguments);
-
-	    //hack to include
-	    new desk.ProgressBar();
-
 	    this.__sideViewer = sideViewer;
-	    
-	    //if (sideViewer) {
-	    ///  this.__backgroundColor = "rgb(248, 252, 247)";
-	    //} else {
-	    //  this.__backgroundColor = "rgb(252, 247, 248)";
-	    //}
-
-
 	    this.__backgroundColor = "rgb(249, 250, 248)";
-	      
-	      
-	    var layout = new qx.ui.layout.HBox();
-        layout.setSpacing(1);
-
+	    const layout = new qx.ui.layout.HBox();
+        layout.setSpacing( 1 );
         this.setLayout(layout);
-
         this.createUI();
         this.removeAll();
+
     },
 
     destruct: function() {
@@ -52,10 +39,13 @@ qx.Class.define("eduAnat2.Container", {
     },
 
     properties: {
-		  mainViewer : { init : null}
+
+		  mainViewer : { init : null }
+
     },
 
     members: {
+
         __MPR: null,
         __meshViewer: null,
         __backgroundColor : "white",
@@ -98,10 +88,6 @@ qx.Class.define("eduAnat2.Container", {
             var menu = this.__menu = this.createMenu();
             scroll.add( menu );
             this.add(scroll, { flex:0 });
-
-            //this.__collapseButton = this.createCollapseButton();
-            //this.add(this.__collapseButton, { flex: 0 });
-
             this.add(MPR, { flex: 6 });
 
             this.__buttonOpenFunc.addListener("execute", function () {
@@ -135,65 +121,9 @@ qx.Class.define("eduAnat2.Container", {
                       that.__buttonCloseAll.setEnabled(true);
                   }, that.volumeCenter);
                 }
-                
-                /*
 
-                if (!that.__subMenuFunc[0].volumeFunc && !that.__subMenuFunc[1].volumeFunc) {
-                    //Aucun calque ouvert
-                    target = that.__subMenuFunc[0];
-                }
-                var dialog = require('electron').remote.dialog;
+            } );
 
-                if (that.__subMenuFunc[0].volumeFunc && !that.__subMenuFunc[1].volumeFunc) {
-                    //Calque ouvert sur le 1er slot
-                    var index = dialog.showMessageBox({
-                      type : "question",
-                      title : "Ouverture d'un calque fonctionnel",
-                      message : "Ajouter un second calque ou remplacer l'actuel?",
-                      buttons : ['Ajouter', 'Remplacer','Annuler'],
-                      defaultId : 2
-                    });
-
-                    if (index == 2) return;
-
-                    if (index == 1) target = that.__subMenuFunc[0];
-                      else target = that.__subMenuFunc[1];
-                }
-
-                if (!that.__subMenuFunc[0].volumeFunc && that.__subMenuFunc[1].volumeFunc) {
-                    //Calque ouvert sur le 1er slot
-                    var index = dialog.showMessageBox({
-                      type : "question",
-                      title : "Ouverture d'un calque fonctionnel",
-                      message : "Ajouter un second calque ou remplacer l'actuel?",
-                      buttons : ['Ajouter', 'Remplacer','Annuler'],
-                      defaultId : 2
-                    });
-
-                    if (index == 2) return;
-
-                    if (index == 1) target = that.__subMenuFunc[1];
-                      else target = that.__subMenuFunc[0];
-                }
-
-                if (that.__subMenuFunc[0].volumeFunc && that.__subMenuFunc[1].volumeFunc) {
-                  //Calque ouvert sur le 1er slot
-                  var index = dialog.showMessageBox({
-                    type : "question",
-                    title : "Ouverture d'un calque fonctionnel",
-                    message : "Remplacer quel calque fonctionnel?",
-                    buttons : ['Remplacer le 1er', 'Remplacer le 2ème','Annuler'],
-                    defaultId : 2
-                  });
-
-                  if (index == 2) return;
-
-                  if (index == 1) target = that.__subMenuFunc[1];
-                    else target = that.__subMenuFunc[0];
-                }
-
-  */
-            });
         },
 
         createMenu: function() {
