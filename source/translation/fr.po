@@ -77,3 +77,43 @@ msgstr "Seuil"
 #: eduAnat2/FuncLayer.js
 msgid "Color map:"
 msgstr "Echelle de couleur"
+
+#: eduAnat2/Container.js
+msgid "EduAnat2 is a 3D visualization tool made for teaching neurosciences and anatomy. EduAnat2 uses the AnaPeda image database built for teaching."
+msgstr "EduAnat2 est un visualiseur 3D conçu pour enseigner les neurosciences et l’anatomie. EduAnat2 utilise la banque d’images AnaPeda spécialement développée pour des usages pédagogiques."
+
+#: eduAnat2/Container.js
+msgid "Warning:"
+msgstr "Avertissement:"
+
+#: eduAnat2/Container.js
+msgid "EduAnat2 is only for education. It is not for medical or self-medical use. The authors decline any responsability in case of incorrect usage of the software."
+msgstr "EduAnat2 est uniquement destiné à un usage pédagogique. Il n’est pas destiné à un usage médical ou auto médical. Nous déclinons toute responsabilité en cas d'utilisation incorrecte du logiciel."
+
+#: eduAnat2/Container.js
+msgid "Contributors:"
+msgstr "Contributeurs:"
+
+#: eduAnat2/Container.js
+msgid "Acknowledgments:"
+msgstr "Soutiens:"
+
+#: eduAnat2/Container.js
+msgid "EduAnat2 has been developped with financial support from the LabEx Cortex and LabEx Primes from Lyon university, from Institut français de l’éducation and from Ecole normale supérieure de Lyon."
+msgstr "EduAnat2 a reçu le soutien financier  des LabEx Cortex et LabEx Primes de l’Université de Lyon, de l’Institut français de l’éducation et de l’Ecole normale supérieure de Lyon."
+
+#: eduAnat2/Container.js
+msgid "License:"
+msgstr "Information de licence:"
+
+#: eduAnat2/Container.js
+msgid "Eduanat2 is based on the DESK framework"
+msgstr "Eduanat2 est basé sur l'infrastructure DESK"
+
+#: eduAnat2/Container.js
+msgid "which source code is distributed under the CeCILL-B (BSD-compatible) license."
+msgstr "dont le code source est distribué sous licence CeCILL-B (BSD-compatible)."
+
+#: eduAnat2/Container.js
+msgid "Teaching resources:"
+msgstr ">Informations pédagogiques"

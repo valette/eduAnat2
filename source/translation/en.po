@@ -77,3 +77,43 @@ msgstr ""
 #: eduAnat2/FuncLayer.js
 msgid "Color map:"
 msgstr ""
+
+#: eduAnat2/Container.js
+msgid "EduAnat2 is a 3D visualization tool made for teaching neurosciences and anatomy. EduAnat2 uses the AnaPeda image database built for teaching."
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Warning:"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "EduAnat2 is only for education. It is not for medical or self-medical use. The authors decline any responsability in case of incorrect usage of the software."
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Contributors:"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Acknowledgments:"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "EduAnat2 has been developped with financial support from the LabEx Cortex and LabEx Primes from Lyon university, from Institut français de l’éducation and from Ecole normale supérieure de Lyon."
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "License:"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Eduanat2 is based on the DESK framework"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "which source code is distributed under the CeCILL-B (BSD-compatible) license."
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Teaching resources:"
+msgstr ""
