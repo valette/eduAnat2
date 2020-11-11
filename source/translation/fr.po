@@ -141,3 +141,15 @@ msgstr "avant"
 #: eduAnat2/Container.js
 msgid "inferior"
 msgstr "arrière"
+
+#: eduAnat2/FuncLayer.js
+msgid "More transparent"
+msgstr "Rendre transparent"
+
+#: eduAnat2/FuncLayer.js
+msgid "Show"
+msgstr "Montrer"
+
+#: eduAnat2/FuncLayer.js
+msgid "Hide"
+msgstr "Cacher"

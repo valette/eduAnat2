@@ -15,70 +15,6 @@ msgid "About "
 msgstr ""
 
 #: eduAnat2/Container.js
-msgid "Open anatomical image"
-msgstr ""
-
-#: eduAnat2/Container.js
-msgid "Open functional map"
-msgstr ""
-
-#: eduAnat2/Container.js
-msgid "Close this image"
-msgstr ""
-
-#: eduAnat2/Container.js
-msgid "Compare two images"
-msgstr ""
-
-#: eduAnat2/Container.js
-msgid "Close comparison"
-msgstr ""
-
-#: eduAnat2/Container.js
-msgid "Share with link"
-msgstr ""
-
-#: eduAnat2/Container.js
-msgid "Anatomical image"
-msgstr ""
-
-#: eduAnat2/Container.js
-msgid "Contrast"
-msgstr ""
-
-#: eduAnat2/Container.js
-msgid "Brightness"
-msgstr ""
-
-#: eduAnat2/FileSelector.js
-msgid "Open local file"
-msgstr ""
-
-#: eduAnat2/FileSelector.js
-msgid "Open"
-msgstr ""
-
-#: eduAnat2/FileSelector.js
-msgid "Select one functional map"
-msgstr ""
-
-#: eduAnat2/FileSelector.js
-msgid "Select one image"
-msgstr ""
-
-#: eduAnat2/FuncLayer.js
-msgid "Functional map"
-msgstr ""
-
-#: eduAnat2/FuncLayer.js
-msgid "Threshold"
-msgstr ""
-
-#: eduAnat2/FuncLayer.js
-msgid "Color map:"
-msgstr ""
-
-#: eduAnat2/Container.js
 msgid "EduAnat2 is a 3D visualization tool made for teaching neurosciences and anatomy. EduAnat2 uses the AnaPeda image database built for teaching."
 msgstr ""
 
@@ -140,4 +76,80 @@ msgstr ""
 
 #: eduAnat2/Container.js
 msgid "inferior"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Open anatomical image"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Open functional map"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Close this image"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Compare two images"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Close comparison"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Share with link"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Anatomical image"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Contrast"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Brightness"
+msgstr ""
+
+#: eduAnat2/FileSelector.js
+msgid "Open local file"
+msgstr ""
+
+#: eduAnat2/FileSelector.js
+msgid "Open"
+msgstr ""
+
+#: eduAnat2/FileSelector.js
+msgid "Select one functional map"
+msgstr ""
+
+#: eduAnat2/FileSelector.js
+msgid "Select one image"
+msgstr ""
+
+#: eduAnat2/FuncLayer.js
+msgid "Functional map"
+msgstr ""
+
+#: eduAnat2/FuncLayer.js
+msgid "More transparent"
+msgstr ""
+
+#: eduAnat2/FuncLayer.js
+msgid "Hide"
+msgstr ""
+
+#: eduAnat2/FuncLayer.js
+msgid "Show"
+msgstr ""
+
+#: eduAnat2/FuncLayer.js
+msgid "Threshold"
+msgstr ""
+
+#: eduAnat2/FuncLayer.js
+msgid "Color map:"
 msgstr ""

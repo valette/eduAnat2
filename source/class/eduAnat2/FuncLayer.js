@@ -76,7 +76,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 				decorator: null
 			});
 
-			var tooltip = new qx.ui.tooltip.ToolTip("Rendre transparent");
+			var tooltip = new qx.ui.tooltip.ToolTip( this.tr( "More transparent") );
 			button_hide.setToolTip(tooltip);
 
 			titleContainer.add(button_hide);
@@ -88,21 +88,21 @@ qx.Class.define("eduAnat2.FuncLayer", {
 						imageVisible = 1;
 						this.__MPR.setVolumeOpacity(this.volumeFunc, 0.25);
 						button_hide.getChildControl('icon').setSource('eduAnat2/transparent.png');
-						button_hide.getToolTip().setLabel("Masquer");
+						button_hide.getToolTip().setLabel( this.tr( "Hide") );
 						break;
 
 					case 1:
 						imageVisible = 0;
 						this.__MPR.setVolumeOpacity(this.volumeFunc, 0);
 						button_hide.getChildControl('icon').setSource('eduAnat2/hide.png');
-						button_hide.getToolTip().setLabel("Masquer");
+						button_hide.getToolTip().setLabel( this.tr( "Show" ) );
 						break;
 
 					case 0:
 						imageVisible = 2;
 						this.__MPR.setVolumeOpacity(this.volumeFunc, 0.7);
 						button_hide.getChildControl('icon').setSource('eduAnat2/show.png');
-						button_hide.getToolTip().setLabel("Rendre transpaent");
+						button_hide.getToolTip().setLabel( this.tr( "More transparent") );
 
 				}
 
