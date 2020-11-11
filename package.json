@@ -53,7 +53,7 @@
     "compile": "qx compile --target source && qx compile --target build",
     "setDate": "date > source/resource/eduAnat2/buildDate.txt",
     "deploy": "qx deploy --clean --out compiled/dist",
-    "dev": "qx compile --target source --watch",
+    "dev": "qx compile --target source --watch --update-po-files",
     "package": "npm run package-bin && npm run package-exe-deb-rpm && npm run zip",
     "package-bin": "electron-packager --all --overwrite --prune=true --icon=icon.ico --azar=true compiled/dist/ EduAnat2",
     "package-exe-deb-rpm": "electron-builder build -wl --config builder-effective-config.yaml",
