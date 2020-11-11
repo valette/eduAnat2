@@ -117,3 +117,27 @@ msgstr ""
 #: eduAnat2/Container.js
 msgid "Teaching resources:"
 msgstr ""
+
+#: eduAnat2/Container.js
+msgid "right"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "left"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "front"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "back"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "superior"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "inferior"
+msgstr ""

@@ -117,3 +117,27 @@ msgstr "dont le code source est distribué sous licence CeCILL-B (BSD-compatible
 #: eduAnat2/Container.js
 msgid "Teaching resources:"
 msgstr ">Informations pédagogiques"
+
+#: eduAnat2/Container.js
+msgid "right"
+msgstr "droite"
+
+#: eduAnat2/Container.js
+msgid "left"
+msgstr "gauche"
+
+#: eduAnat2/Container.js
+msgid "front"
+msgstr "ventre"
+
+#: eduAnat2/Container.js
+msgid "back"
+msgstr "dos"
+
+#: eduAnat2/Container.js
+msgid "superior"
+msgstr "avant"
+
+#: eduAnat2/Container.js
+msgid "inferior"
+msgstr "arrière"

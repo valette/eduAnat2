@@ -543,12 +543,12 @@ qx.Class.define("eduAnat2.Container", {
 			var size = 0.2 * maxSize;
 			var sSize = 0.5 * size;
 
-			group.add(this.createSprite("droite", sSize, new THREE.Vector3(bbox.max.x + size, center.y, center.z)));
-			group.add(this.createSprite("gauche", sSize, new THREE.Vector3(bbox.min.x - size, center.y, center.z)));
-			group.add(this.createSprite("ventre", sSize, new THREE.Vector3(center.x, bbox.max.y + size, center.z)));
-			group.add(this.createSprite("dos", sSize, new THREE.Vector3(center.x, bbox.min.y - size, center.z)));
-			group.add(this.createSprite("avant", sSize, new THREE.Vector3(center.x, center.y, bbox.max.z + size)));
-			group.add(this.createSprite("arrière", sSize, new THREE.Vector3(center.x, center.y, bbox.min.z - size)));
+			group.add(this.createSprite( this.tr("right"), sSize, new THREE.Vector3(bbox.max.x + size, center.y, center.z)));
+			group.add(this.createSprite( this.tr("left"), sSize, new THREE.Vector3(bbox.min.x - size, center.y, center.z)));
+			group.add(this.createSprite( this.tr("front"), sSize, new THREE.Vector3(center.x, bbox.max.y + size, center.z)));
+			group.add(this.createSprite( this.tr("back"), sSize, new THREE.Vector3(center.x, bbox.min.y - size, center.z)));
+			group.add(this.createSprite( this.tr("superior"), sSize, new THREE.Vector3(center.x, center.y, bbox.max.z + size)));
+			group.add(this.createSprite( this.tr("inferior"), sSize, new THREE.Vector3(center.x, center.y, bbox.min.z - size)));
 
 			//Update Zoom Limite
 			this.__MPR.getViewers().concat(this.__meshViewer).forEach(function(viewer) {
