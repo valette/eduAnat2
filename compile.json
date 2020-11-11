@@ -12,7 +12,7 @@
   ],
   "defaultTarget": "source",
   "locales": [
-    "en"
+    "en", "fr"
   ],
   "environment": {
     "qx.icontheme": "Tango"

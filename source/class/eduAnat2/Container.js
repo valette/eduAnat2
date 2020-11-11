@@ -214,7 +214,7 @@ qx.Class.define("eduAnat2.Container", {
 			// create the window instance
 			var root = qx.core.Init.getApplication().getRoot();
 
-			if (title === undefined) title = this.tr("Erreur : type de fichier");
+			if (title === undefined) title = this.tr("Error : file type");
 
 			var win = new qx.ui.window.Window(title);
 			win.setLayout(new qx.ui.layout.VBox(10));
@@ -271,7 +271,7 @@ qx.Class.define("eduAnat2.Container", {
 			const version = await eduAnat2.Quircks.getVersion();
 			const buildDate = await (await fetch('resource/eduAnat2/buildDate.txt')).text();
 
-			var txt = this.tr("A propos de ") + " EduAnat2 v" + version;
+			var txt = this.tr("About ") + " EduAnat2 v" + version;
 			var win = this.__aboutWindow = new qx.ui.window.Window(txt);
 
 			win.set({
@@ -376,7 +376,7 @@ qx.Class.define("eduAnat2.Container", {
 
 		createAbout: function() {
 
-			var txt = this.tr("A propos de ") + " EduAnat2";
+			var txt = this.tr("About ") + " EduAnat2";
 
 			const button = new qx.ui.form.Button(txt, "eduAnat2/about.png")
 				.set({
@@ -586,8 +586,8 @@ qx.Class.define("eduAnat2.Container", {
 			if (name.substr(name.length - 4) !== ".stl") {
 				require('electron').remote.dialog.showMessageBox({
 					type: "error",
-					title: "Erreur : type de fichier",
-					message: "Ne sont acceptés que les maillages au format .stl",
+					title: this.tr( "Error : file type" ),
+					message: "Only stl format meshes are accepted",
 					buttons: ['Ok']
 				});
 
@@ -846,7 +846,7 @@ qx.Class.define("eduAnat2.Container", {
 
 			/* Button Open Anat */
 
-			var buttonOpenAnat = this.__buttonOpenAnat = new qx.ui.form.Button(this.tr("Ouvrir une image anatomique"), 'eduAnat2/anat.png');
+			var buttonOpenAnat = this.__buttonOpenAnat = new qx.ui.form.Button(this.tr("Open anatomical image"), 'eduAnat2/anat.png');
 
 			buttonOpenAnat.getChildControl("label").setAllowGrowX(true);
 			buttonOpenAnat.getChildControl("label").setTextAlign("left");
@@ -855,7 +855,7 @@ qx.Class.define("eduAnat2.Container", {
 
 			container.add(buttonOpenAnat);
 
-			var buttonOpenFunc = this.__buttonOpenFunc = new qx.ui.form.Button(this.tr("Ouvrir un calque fonctionnel"), 'eduAnat2/func.png');
+			var buttonOpenFunc = this.__buttonOpenFunc = new qx.ui.form.Button(this.tr("Open functional map"), 'eduAnat2/func.png');
 
 			buttonOpenFunc.getChildControl("label").setAllowGrowX(true);
 			buttonOpenFunc.getChildControl("label").setTextAlign("left");
@@ -863,7 +863,7 @@ qx.Class.define("eduAnat2.Container", {
 			container.add(buttonOpenFunc);
 
 			/* Button Close all */
-			var buttonCloseAll = this.__buttonCloseAll = new qx.ui.form.Button(this.tr("Fermer cette image"), 'eduAnat2/close.png');
+			var buttonCloseAll = this.__buttonCloseAll = new qx.ui.form.Button(this.tr("Close this image"), 'eduAnat2/close.png');
 			buttonCloseAll.getChildControl("label").setAllowGrowX(true);
 			buttonCloseAll.getChildControl("label").setTextAlign("left");
 			buttonCloseAll.addListener("execute", this.removeAll.bind(this));
@@ -874,14 +874,14 @@ qx.Class.define("eduAnat2.Container", {
 
 			/* Button compare */
 			if (this.__sideViewer) {
-				var buttonCompare = this.compareButton = new qx.ui.form.Button(this.tr("Comparer deux images"), 'eduAnat2/compare.png');
+				var buttonCompare = this.compareButton = new qx.ui.form.Button(this.tr("Compare two images"), 'eduAnat2/compare.png');
 				buttonCompare.getChildControl("label").setAllowGrowX(true);
 				buttonCompare.getChildControl("label").setTextAlign("left");
 
 				buttonCompare.addListener("execute", () => {
 					if (this.__sideViewer.isVisible()) {
 						this.__sideViewer.exclude();
-						buttonCompare.setLabel(this.tr("Comparer deux images"));
+						buttonCompare.setLabel(this.tr("Compare two images"));
 						//this.unlink();
 
 						this.switchMenu(true);
@@ -890,7 +890,7 @@ qx.Class.define("eduAnat2.Container", {
 					} else {
 						this.__sideViewer.__MPR.resetMaximize();
 						this.__sideViewer.show();
-						buttonCompare.setLabel(this.tr("Fermer la comparaison"));
+						buttonCompare.setLabel(this.tr("Close comparison"));
 						//this.link(this.__sideViewer);
 
 						this.switchMenu(false);
@@ -902,7 +902,7 @@ qx.Class.define("eduAnat2.Container", {
 				container.add(buttonCompare);
 			}
 
-			var buttonShare = this.__buttonShare = new qx.ui.form.Button(this.tr("Partager via un lien"), 'eduAnat2/share.png');
+			var buttonShare = this.__buttonShare = new qx.ui.form.Button(this.tr("Share with link"), 'eduAnat2/share.png');
 			buttonShare.getChildControl("label").setAllowGrowX(true);
 			buttonShare.getChildControl("label").setTextAlign("left");
 			container.add(buttonShare);
@@ -1045,7 +1045,7 @@ qx.Class.define("eduAnat2.Container", {
 			var titleContainer = new qx.ui.container.Composite(new qx.ui.layout.HBox());
 
 			titleContainer.add(new qx.ui.basic.Label().set({
-				value: "<b>" + this.tr("Image anatomique") + " : </b>",
+				value: "<b>" + this.tr("Anatomical image") + " : </b>",
 				rich: true
 			}));
 
@@ -1074,7 +1074,7 @@ qx.Class.define("eduAnat2.Container", {
 			container.add(this.__IRMAnatName);
 
 			/* Gestion du contraste */
-			var contrastLabel = new qx.ui.basic.Label(this.tr("Contraste") + " : <b>1.00</b>").set({
+			var contrastLabel = new qx.ui.basic.Label(this.tr("Contrast") + " : <b>1.00</b>").set({
 				rich: true
 			});
 			container.add(contrastLabel);
@@ -1089,7 +1089,7 @@ qx.Class.define("eduAnat2.Container", {
 
 			contrastSlider.addListener("changeValue", e => {
 				var value = Math.pow(10, e.getData() / 40);
-				contrastLabel.setValue(this.tr("Contraste") + " : <b>" + value.toFixed(2) + "</b>");
+				contrastLabel.setValue(this.tr("Contrast") + " : <b>" + value.toFixed(2) + "</b>");
 				if (this.__volumeAnat) {
 					this.__volumeAnat.getUserData('slices').forEach(function(volumeSlice) {
 						volumeSlice.setContrast(value);
@@ -1099,7 +1099,7 @@ qx.Class.define("eduAnat2.Container", {
 			container.add( contrastSlider );
 
 			/* Gestion de la luminosité */
-			var brightnessLabel = new qx.ui.basic.Label(this.tr("Luminosité") + " : <b>0.5</b>").set({ rich: true } );
+			var brightnessLabel = new qx.ui.basic.Label(this.tr("Brightness") + " : <b>0.5</b>").set({ rich: true } );
 			container.add(brightnessLabel);
 			const brightnessSlider = this.brightnessSlider = new qx.ui.form.Slider();
 
@@ -1113,7 +1113,7 @@ qx.Class.define("eduAnat2.Container", {
 
 			brightnessSlider.addListener("changeValue", e => {
 				var value = e.getData() / 100;
-				brightnessLabel.setValue(this.tr("Luminosité") + " : <b>" + value.toFixed(2) + "</b>");
+				brightnessLabel.setValue(this.tr("Brightness") + " : <b>" + value.toFixed(2) + "</b>");
 				if (this.__volumeAnat) {
 					this.__volumeAnat.getUserData('slices').forEach(function(volumeSlice) {
 						volumeSlice.setBrightness((value - 0.5) * 2);

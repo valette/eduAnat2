@@ -1,0 +1,79 @@
+#: eduAnat2/Application.js
+msgid "Error : WebGL not supported"
+msgstr "Erreur : WebGL non supporté"
+
+#: eduAnat2/Application.js
+msgid "WebGL is not supported by your system"
+msgstr "WebGL n'est pas supporté par votre système"
+
+#: eduAnat2/FuncLayer.js
+msgid "Error : file type"
+msgstr "Erreur : type de fichier"
+
+#: eduAnat2/Container.js
+msgid "About "
+msgstr "A propos de "
+
+#: eduAnat2/Container.js
+msgid "Open anatomical image"
+msgstr "Ouvrir image anatomique"
+
+#: eduAnat2/Container.js
+msgid "Open functional map"
+msgstr "Ouvrir calque fonctionnel"
+
+#: eduAnat2/Container.js
+msgid "Close this image"
+msgstr "Fermer cette image"
+
+#: eduAnat2/Container.js
+msgid "Compare two images"
+msgstr "Comparer deux images"
+
+#: eduAnat2/Container.js
+msgid "Close comparison"
+msgstr "Fermer la coparaison"
+
+#: eduAnat2/Container.js
+msgid "Share with link"
+msgstr "Partager via un lien"
+
+#: eduAnat2/Container.js
+msgid "Anatomical image"
+msgstr "Image anatomique"
+
+#: eduAnat2/Container.js
+msgid "Contrast"
+msgstr "Contraste"
+
+#: eduAnat2/Container.js
+msgid "Brightness"
+msgstr "Luminosité"
+
+#: eduAnat2/FileSelector.js
+msgid "Open local file"
+msgstr "Ouvrir un fichier local"
+
+#: eduAnat2/FileSelector.js
+msgid "Open"
+msgstr "Ouvrir"
+
+#: eduAnat2/FileSelector.js
+msgid "Select one functional map"
+msgstr "Séléctionnez un calque fonctionnel"
+
+#: eduAnat2/FileSelector.js
+msgid "Select one image"
+msgstr "Séléctionnez une image"
+
+#: eduAnat2/FuncLayer.js
+msgid "Functional map"
+msgstr "Calque fonctionnel"
+
+#: eduAnat2/FuncLayer.js
+msgid "Threshold"
+msgstr "Seuil"
+
+#: eduAnat2/FuncLayer.js
+msgid "Color map:"
+msgstr "Echelle de couleur"

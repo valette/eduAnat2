@@ -58,7 +58,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			const titleContainer = new qx.ui.container.Composite(new qx.ui.layout.HBox());
 
 			titleContainer.add(new qx.ui.basic.Label().set({
-				value: "<b>" + this.tr("Calque fonctionnel") + " : </b>",
+				value: "<b>" + this.tr("Functional map") + " : </b>",
 				rich: true
 			}));
 
@@ -125,7 +125,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
 			this.add(this.__IRMFuncName);
 
-			var seuilLabel = new qx.ui.basic.Label(this.tr("Seuil") + " : <b></b>").set({
+			var seuilLabel = new qx.ui.basic.Label(this.tr("Threshold") + " : <b></b>").set({
 				rich: true
 			});
 			this.add(seuilLabel);
@@ -134,7 +134,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
 			tresholdSlider.addListener("changeValue", e => {
 				var val = (tresholdSlider.getValue() - tresholdSlider.getMinimum()) / (tresholdSlider.getMaximum() - tresholdSlider.getMinimum()) * 100;
-				seuilLabel.setValue(this.tr("Seuil") + " : <b>" + Math.floor(val) + "</b>");
+				seuilLabel.setValue(this.tr("Threshold") + " : <b>" + Math.floor(val) + "</b>");
 
 				function updateSlice(slice) {
 					slice.material.uniforms.thresholdMin.value = tresholdSlider.getValue() / 100;
@@ -146,7 +146,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			});
 
 			this.add(tresholdSlider);
-			this.add(new qx.ui.basic.Label(this.tr("Echelle de couleur : ")));
+			this.add(new qx.ui.basic.Label(this.tr("Color map:")));
 
 			const generateChroma = scale => {
 				return imgData => {
@@ -378,7 +378,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			// create the window instance
 			var root = qx.core.Init.getApplication().getRoot();
 
-			if (title === undefined) title = this.tr("Erreur : type de fichier");
+			if (title === undefined) title = this.tr("Error : file type");
 
 			var win = new qx.ui.window.Window(title);
 			win.setLayout(new qx.ui.layout.VBox(10));

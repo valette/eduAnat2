@@ -57,12 +57,13 @@ qx.Class.define("eduAnat2.Application", {
 
 				//desk.auto = true;
 				const qxRoot = qx.core.Init.getApplication().getRoot();
-				//qx.locale.Manager.getInstance().setLocale("en");
+				const locale = getParameter( "lang" );
+				if ( locale ) qx.locale.Manager.getInstance().setLocale( locale );
 
 				if (!WEBGL.isWebGLAvailable()) {
 
 					console.log("WebGLUnavalable");
-					const win = new qx.ui.window.Window(qxRoot.tr("Erreur : WebGL non supporté"));
+					const win = new qx.ui.window.Window(this.tr("Error : WebGL not supported"));
 					win.setLayout(new qx.ui.layout.VBox(10));
 
 					win.set({
@@ -81,7 +82,7 @@ qx.Class.define("eduAnat2.Application", {
 					});
 
 					// label to show the e.g. the alert message
-					win.add(new qx.ui.basic.Label(qxRoot.tr("WebGL n'est pas supporté par votre système.")));
+					win.add(new qx.ui.basic.Label(this.tr("WebGL is not supported by your system")));
 					qxRoot.add(win);
 					win.open();
 					return;

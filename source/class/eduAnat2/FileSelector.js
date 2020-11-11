@@ -19,7 +19,7 @@ qx.Class.define("eduAnat2.FileSelector", {
 			showMinimize: false
 		});
 
-		const selectButton = this.__selectButton = new qx.ui.form.Button('Lire un fichier local');
+		const selectButton = this.__selectButton = new qx.ui.form.Button( this.tr('Open local file' ));
 		this.add(selectButton);
 
 		const fileBrowser = this.__fileBrowser = new desk.FileBrowser(eduAnat2.Quircks.getInstance().anaPedaRoot);
@@ -33,7 +33,7 @@ qx.Class.define("eduAnat2.FileSelector", {
 		const font = new qx.bom.Font(20, ["sans-serif"])
 		tree.setFont(font);
 		fileBrowser.setFileHandler(() => {});
-		const okButton = this.__okButton = new qx.ui.form.Button("Ouvrir");
+		const okButton = this.__okButton = new qx.ui.form.Button( this.tr( "Open" ) );
 
 		for (let button of [okButton, selectButton]) {
 			button.getChildControl("label").setFont(font);
@@ -91,8 +91,8 @@ qx.Class.define("eduAnat2.FileSelector", {
 			const tree = fileBrowser.getTree();
 			tree.refresh();
 
-			const caption = func ? "Sélectionnez un calque" :
-				"Sélectionnez une image";
+			const caption = func ? this.tr( "Select one functional map" ) :
+				this.tr( "Select one image" );
 
 			function onChange() {
 				const file = fileBrowser.getSelectedFiles()[0];
