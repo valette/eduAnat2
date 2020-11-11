@@ -4,7 +4,7 @@
   "description": "EduAnat2",
   "author": "Remi AGIER <remi@aigen.fr> (http://www.aigen.fr), Sebastien Valette <sebastien.valette@creatis.insa-lyon.fr> (http://www.creatis.insa-lyon.fr/~valette)",
   "license": "CECILL-B",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/valette/eduAnat2.git"
