@@ -16,7 +16,7 @@ self.io = require('socket.io-client');
 self.async            = require('async');
 self._ = self.lodash  = require('lodash');
 self.EventEmitter     = require('events');
-self.jsSHA            = require("jssha").default;
+self.jsSHA            = require("jssha");
 self.randomJS         = require('random-js');
 self.THREE            =	require('three');
 	require('desk-ui/source/ext/CTMLoader.js');
