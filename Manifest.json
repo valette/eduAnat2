@@ -26,8 +26,8 @@
     "translation": "source/translation"
   },
   "requires": {
-    "@qooxdoo/framework": "6.0.0-beta-20201003-1033",
-    "@qooxdoo/compiler": "1.0.0-beta-20201003-1033",
+    "@qooxdoo/framework": "^6.0.0-beta-20201203-1458",
+    "@qooxdoo/compiler": "^1.0.0-beta-20201203-1458",
     "bidefi-irhs/qxfileio": "0.4.1"
   }
 }
