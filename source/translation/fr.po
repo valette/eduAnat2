@@ -153,3 +153,7 @@ msgstr "Montrer"
 #: eduAnat2/FuncLayer.js
 msgid "Hide"
 msgstr "Cacher"
+
+#: eduAnat2/Container.js
+msgid "More info on the AnaPéda image database here"
+msgstr "Plus d'informations sur la base d'image Anapéda ici"

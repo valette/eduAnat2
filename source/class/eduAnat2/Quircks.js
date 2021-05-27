@@ -15,7 +15,7 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		this.base(arguments);
 
-		const root = qx.core.Init.getApplication().getRoot()
+		const root = qx.core.Init.getApplication().getRoot();
 		const blocker = this.__blocker = new qx.ui.core.Blocker(root);
 		blocker.setOpacity(0.5);
 		blocker.setColor("black");
@@ -104,6 +104,11 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		selectFile: null,
 
+		getBlocker : function () {
+
+			return eduAnat2.Quircks.getInstance().__blocker;
+
+		},
 
 		getFileURL: function(path) {
 
@@ -269,8 +274,9 @@ qx.Class.define("eduAnat2.Quircks", {
 			const self = eduAnat2.Quircks.getInstance();
 			self.__blocker.block();
 			const selector = eduAnat2.FileSelector.getInstance();
+			const file = await selector.getFile(func);
 			self.__blocker.unblock();
-			return await selector.getFile(func);
+			return file;
 
 		},
 

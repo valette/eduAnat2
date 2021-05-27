@@ -22,7 +22,7 @@ self.THREE            =	require('three');
 	require('desk-ui/source/ext/CTMLoader.js');
 	require('desk-ui/source/ext/VTKLoader.js');
 	require('desk-ui/source/ext/TrackballControls2.js');
-
+	require('three/examples/js/utils/BufferGeometryUtils.js');
 self.THREE.STLLoader = STLLoader;
 self.THREE.TransformControls = TransformControls;
 

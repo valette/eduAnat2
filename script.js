@@ -20,6 +20,7 @@ electron.app.on('ready', () => {
 		webPreferences: {
 			nodeIntegration: true,
 			enableRemoteModule: true,
+			contextIsolation: false
 		},
 		show:false
 

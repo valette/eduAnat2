@@ -73,7 +73,7 @@ qx.Class.define("eduAnat2.Container", {
 		__brightnessSlider: null,
 
 		__colors: null,
-		__widthMenu: 220,
+		__widthMenu: 230,
 
 		__sideViewer: null,
 
@@ -83,10 +83,11 @@ qx.Class.define("eduAnat2.Container", {
 		createUI: function() {
 
 			var MPR = this.createMPR();
-			const scroll = this.__scroll = new qx.ui.container.Scroll();
+//			const scroll = this.__scroll = new qx.ui.container.Scroll();
 			var menu = this.__menu = this.createMenu();
-			scroll.add(menu);
-			this.add(scroll, { flex: 0 } );
+//			scroll.add(menu);
+//			scroll.setMinWidth( this.__widthMenu );// + 50 );
+//			this.add(scroll, { flex: 0 } );
 			this.add(MPR, { flex: 6 } );
 
 			this.__buttonOpenFunc.addListener("execute", async () => {
@@ -116,6 +117,8 @@ qx.Class.define("eduAnat2.Container", {
 
 			});
 
+			this.switchMenu( true );
+
 		},
 
 		createMenu: function() {
@@ -127,7 +130,7 @@ qx.Class.define("eduAnat2.Container", {
 
 
 			container.set({
-				width: this.__widthMenu + 50,
+				width: this.__widthMenu,// + 50,
 				backgroundColor: this.__backgroundColor
 			})
 			container.setPadding(5);
@@ -299,11 +302,13 @@ qx.Class.define("eduAnat2.Container", {
 				spacing: 20
 			}));
 			scroll.add(scrollContainer);
-			win.add(scroll);
+			win.add(scroll, { flex : 1 });
 
 			scrollContainer.add(new qx.ui.basic.Label([
 				"<h3>EduAnat2</h3><em>Version " + version + " " + buildDate + "</em><br>",
 				this.tr( "EduAnat2 is a 3D visualization tool made for teaching neurosciences and anatomy. EduAnat2 uses the AnaPeda image database built for teaching."),
+				"",
+				"<a href=\"http://acces.ens-lyon.fr/acces/thematiques/neurosciences/outils-numeriques/eduanat2-et-anapeda/informations-sur-les-images-anapeda\">" + this.tr("More info on the AnaPéda image database here" ) + "</a>",
 				"",
 				"<u>" + this.tr( "Warning:" ) + "</u>",
 				this.tr( "EduAnat2 is only for education. It is not for medical or self-medical use. The authors decline any responsability in case of incorrect usage of the software."),
@@ -326,7 +331,7 @@ qx.Class.define("eduAnat2.Container", {
 				this.tr( "Eduanat2 is based on the DESK framework" ) +" (<a href=\"https://www.creatis.insa-lyon.fr/~valette/desk.html\">https://www.creatis.insa-lyon.fr/~valette/desk.html</a>) " + this.tr( "which source code is distributed under the CeCILL-B (BSD-compatible) license." ),
 				"",
 				"<a>" + this.tr( "Teaching resources:" ) + "</a>",
-				"<a href=\"http://acces.ens-lyon.fr/acces/thematiques/neurosciences/outils-numeriques\">http://acces.ens-lyon.fr/acces/thematiques/neurosciences/outils-numeriques",
+				"<a href=\"http://acces.ens-lyon.fr/acces/thematiques/neurosciences/outils-numeriques\">http://acces.ens-lyon.fr/acces/thematiques/neurosciences/outils-numeriques</a>",
 				"",
 			].join('<br>')).set({
 				rich: true
@@ -388,7 +393,11 @@ qx.Class.define("eduAnat2.Container", {
 
 			button.addListener("execute", async () => {
 
-				(await this.getAboutWindow()).open();
+				const win = await this.getAboutWindow();
+				win.open();
+				const blocker = eduAnat2.Quircks.getBlocker();
+				blocker.block();
+				win.addListener( "close", () => blocker.unblock() );
 
 			});
 
@@ -565,6 +574,8 @@ qx.Class.define("eduAnat2.Container", {
 				meshPath = fileName.substr(0, fileName.length - 7) + ".stl";
 			}
 
+			if ( !await desk.FileSystem.existsAsync( meshPath ) ) return;
+
 			var oReq = new XMLHttpRequest();
 			oReq.responseType = "arraybuffer";
 			oReq.onload = res => {
@@ -607,13 +618,16 @@ qx.Class.define("eduAnat2.Container", {
 			var loader = new THREE.STLLoader();
 			var geometry = loader.parse(arrayBuffer);
 
-			//https://stackoverflow.com/questions/35843167/three-js-smoothing-normals-using-mergevertices
-			var tempGeo = new THREE.Geometry().fromBufferGeometry(geometry);
-			tempGeo.mergeVertices();
-			// after only mergeVertices my textrues were turning black so this fixed normals issues
-			tempGeo.computeVertexNormals();
+//https://stackoverflow.com/questions/35843167/three-js-smoothing-normals-using-mergevertices
+			for ( let field of Object.keys( geometry.attributes ) ) {
+				if ( field == "position" ) continue;
+				delete geometry.attributes[ field ];
+			}
+			var tempGeo = THREE.BufferGeometryUtils.mergeVertices( geometry )
+			// after only mergeVertices my textures were turning black so this fixed normals issues
 			tempGeo.computeFaceNormals();
-			geometry = new THREE.BufferGeometry().fromGeometry(tempGeo);
+			tempGeo.computeVertexNormals();
+			geometry = tempGeo;
 
 			//Rendering BackSide & Scale -1 pour être raccord avec les vues (hack : inversion des normales)
 			var material = new THREE.MeshPhongMaterial({
@@ -697,7 +711,6 @@ qx.Class.define("eduAnat2.Container", {
 			this.__meshViewer.addMesh(mesh);
 			this.__mesh3DModel = mesh;
 			this.resetMeshView();
-			this.__buttonCloseAll.setEnabled(true);
 		},
 
 		removeMesh: function() {
@@ -949,6 +962,9 @@ qx.Class.define("eduAnat2.Container", {
 				});
 				win.open();
 				win.center();
+				const blocker = eduAnat2.Quircks.getBlocker();
+				blocker.block();
+				win.addListener( "close", () => blocker.unblock() );
 
 
 			}, this);
@@ -961,14 +977,17 @@ qx.Class.define("eduAnat2.Container", {
 			var layout = vertical ? new qx.ui.layout.HBox() : new qx.ui.layout.VBox();
 			this.setLayout(layout);
 
-			this.remove(this.__scroll);
+			if ( this.__scroll ) this.remove(this.__scroll);
 
 			var menu = this.__menu = new qx.ui.container.Composite(vertical ? new qx.ui.layout.VBox() : new qx.ui.layout.HBox()).set({
-				height: 210,
+//				height: 210,
 				backgroundColor: this.__backgroundColor
 			});
 			const scroll = this.__scroll = new qx.ui.container.Scroll();
+//			scroll.setMinWidth( this.__widthMenu );//+10 );
 			scroll.add(menu);
+			console.log( "size hint : ");
+			console.log( this.__subMenuButtons.getLayout().getSizeHint() );
 			menu.add(new qx.ui.core.Spacer(), {
 				flex: 1
 			});
@@ -981,26 +1000,23 @@ qx.Class.define("eduAnat2.Container", {
 
 				menu.addAt(this.__burger, 0);
 				this.__burger.setSource("eduAnat2/menu_left.png");
-				parent = new qx.ui.container.Scroll().set({});
-				target = new qx.ui.container.Composite(new qx.ui.layout.VBox().set({
-					spacing: 20
-				}));
-				parent.add(target, {
-					flex: 1
-				});
+				//parent = new qx.ui.container.Scroll().set({});
+				target = new qx.ui.container.Composite(new qx.ui.layout.VBox().set( { spacing: 20 } ) );
+				parent = target;
+				//parent.add( target, { flex: 1 } );
 			} else { //compare mode
 				if (this.__sideViewer) this.__buttonShare.setVisibility("excluded");
 				this.__burger.setSource("eduAnat2/menu_bottom.png");
 				parent = new qx.ui.container.Scroll().set({
-					maxHeight: 200
+					//minHeight: 200
+					minWidth : this.__widthMenu
 				});
 				target = new qx.ui.container.Composite(new qx.ui.layout.VBox().set({
 					spacing: 10
 				}));
+				//parent = target;
 
-				parent.add(target, {
-					flex: 1
-				});
+				parent.add(target, { flex: 1 } );
 			}
 
 			target.add(this.__subMenuAnat);
@@ -1009,17 +1025,19 @@ qx.Class.define("eduAnat2.Container", {
 			target.add(this.__subMenuFunc[2]);
 
 
+			menu.add(new qx.ui.core.Spacer(), { flex: 1 });
+
+			if (parent !== menu) {
+//				console.log( "added" );
+				if ( vertical ) menu.add(parent);
+				else menu.add( parent , { flex : 1 } );
+			}
+
 			menu.add(new qx.ui.core.Spacer(), {
 				flex: 1
 			});
 
-			if (parent !== menu) menu.add(parent);
-
-			menu.add(new qx.ui.core.Spacer(), {
-				flex: 1
-			});
-
-			this.addAt(scroll, vertical ? 0 : 1);
+			this.addAt(scroll, vertical ? 0 : 1 );//, { flex : 1.8 });
 
 			if (vertical) {
 				menu.add(this.createAbout());
@@ -1029,6 +1047,15 @@ qx.Class.define("eduAnat2.Container", {
 				this.__burger.setAlignY("middle");
 				menu.add(this.__burger);
 			}
+
+//			const lay = ( this.getMainViewer() || this ).__subMenuButtons.getLayout();
+			const lay = this.__subMenuButtons.getLayout();
+			//lay.renderLayout();
+			if ( !vertical ) scroll.setMinHeight( lay.getSizeHint().height );
+			else scroll.setMinWidth( menu.getLayout().getSizeHint().width );
+//			scroll.setMinWidth( 10 + lay.getSizeHint().width );
+			
+
 		},
 
 
