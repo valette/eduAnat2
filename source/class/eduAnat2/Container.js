@@ -548,7 +548,7 @@ qx.Class.define("eduAnat2.Container", {
 				meshPath = fileName.substr(0, fileName.length - 7) + ".stl";
 			}
 
-			if ( !await desk.FileSystem.existsAsync( meshPath ) ) return;
+			//if ( !await desk.FileSystem.existsAsync( meshPath ) ) return;
 
 			var oReq = new XMLHttpRequest();
 			oReq.responseType = "arraybuffer";
