@@ -32,7 +32,7 @@ msgstr "Comparer deux images"
 
 #: eduAnat2/Container.js
 msgid "Close comparison"
-msgstr "Fermer la coparaison"
+msgstr "Fermer la comparaison"
 
 #: eduAnat2/Container.js
 msgid "Share with link"
@@ -157,3 +157,15 @@ msgstr "Cacher"
 #: eduAnat2/Container.js
 msgid "More info on the AnaPéda image database here"
 msgstr "Plus d'informations sur la base d'image Anapéda ici"
+
+#: eduAnat2/Container.js
+msgid "Hide menu"
+msgstr "Réduire le menu"
+
+#: eduAnat2/Container.js
+msgid "Show menu"
+msgstr "Afficher le menu"
+
+#: eduAnat2/Container.js
+msgid "Erreur : 3 maps are already open, remove one to be able to load an other one."
+msgstr "Erreur : 3 calques sont déjà ouverts, supprimer un calque afin de pouvoir en ouvrir un autre."

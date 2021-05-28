@@ -73,7 +73,8 @@ qx.Class.define("eduAnat2.Container", {
 		__brightnessSlider: null,
 
 		__colors: null,
-		__widthMenu: 230,
+		__menuWidth: 260,
+		__menuHeight: 240,
 
 		__sideViewer: null,
 
@@ -84,9 +85,8 @@ qx.Class.define("eduAnat2.Container", {
 
 			var MPR = this.createMPR();
 //			const scroll = this.__scroll = new qx.ui.container.Scroll();
-			var menu = this.__menu = this.createMenu();
+			var menu = this.__menu = this.createMenuItems();
 //			scroll.add(menu);
-//			scroll.setMinWidth( this.__widthMenu );// + 50 );
 //			this.add(scroll, { flex: 0 } );
 			this.add(MPR, { flex: 6 } );
 
@@ -96,12 +96,20 @@ qx.Class.define("eduAnat2.Container", {
 
 				if (target === undefined) {
 
-					require('electron').remote.dialog.showMessageBox( {
-						type: "warning",
-						title: "Echec de l'ouverture d'un nouveau calque",
-						message: "3 calques sont déjà ouverts, supprimer un calque afin de pouvoir en ouvrir un autre.",
-						buttons: ['Ok']
-					} );
+					try {
+
+						require('electron').remote.dialog.showMessageBox( {
+							type: "warning",
+							title: "Echec de l'ouverture d'un nouveau calque",
+							message: "3 calques sont déjà ouverts, supprimer un calque afin de pouvoir en ouvrir un autre.",
+							buttons: ['Ok']
+						} );
+
+					} catch (e) {
+
+						alert( this.tr( "Erreur : 3 maps are already open, remove one to be able to load an other one." ) );
+
+					}
 
 				} else {
 
@@ -117,43 +125,26 @@ qx.Class.define("eduAnat2.Container", {
 
 			});
 
-			this.switchMenu( true );
+			this.buildMenu( true );
 
 		},
 
-		createMenu: function() {
-
-			//Menu container
-			var layout = new qx.ui.layout.VBox();
-			layout.setSpacing(10);
-			var container = new qx.ui.container.Composite(layout);
-
-
-			container.set({
-				width: this.__widthMenu,// + 50,
-				backgroundColor: this.__backgroundColor
-			})
-			container.setPadding(5);
-			//container.setPaddingRight(0);
-
-			//container.add(new qx.ui.core.Widget().set({height:1, backgroundColor:"gray"}));
+		createMenuItems: function() {
 
 			var burger = this.__burger = new qx.ui.basic.Image("eduAnat2/menu_left.png");
 			burger.setAlignX("right");
 			burger.setCursor("pointer");
-			var tooltip = new qx.ui.tooltip.ToolTip("Réduire le menu");
+			var tooltip = new qx.ui.tooltip.ToolTip( this.tr( "Hide menu" ));
 			burger.setToolTip(tooltip);
 
-			container.add(burger);
 			var menuVisible = true;
 			const phantom = new qx.ui.core.Widget();
-			phantom.setHeight(32);
-
+			phantom.setHeight( 32 );
 
 			burger.addListener("click", () => {
 				if (menuVisible) { //Hide menu
 					menuVisible = false;
-					burger.getToolTip().setLabel("Afficher le menu");
+					burger.getToolTip().setLabel(this.tr( "Show menu" ));
 
 					if (this.__sideViewer.isVisible()) { //compare mode
 						burger.setSource("eduAnat2/menu_top.png");
@@ -168,7 +159,7 @@ qx.Class.define("eduAnat2.Container", {
 					}
 				} else { // Show menu
 					menuVisible = true;
-					burger.getToolTip().setLabel("Réduire le menu");
+					burger.getToolTip().setLabel( this.tr( "Hide menu" ) );
 					if (this.__sideViewer.isVisible()) { //compare mode
 						burger.setSource("eduAnat2/menu_bottom.png");
 						this.__scroll.show();
@@ -186,29 +177,12 @@ qx.Class.define("eduAnat2.Container", {
 
 			});
 
-			container.add(new qx.ui.core.Spacer(), { flex: 1 } );
 			this.__subMenuButtons = this.createSubMenuButtons();
-			container.add(this.__subMenuButtons);
-			container.add(new qx.ui.core.Spacer(), { flex: 1 } );
-			var scroll = new qx.ui.container.Scroll();
-			var target = new qx.ui.container.Composite( new qx.ui.layout.VBox().set({
-				spacing: 20
-			}));
-
-			scroll.add(target);
 			this.__subMenuAnat = this.createSubMenuAnat();
-			target.add(this.__subMenuAnat);
 			this.__subMenuFunc = this.funcLayers = [];
 			this.__subMenuFunc[0] = new eduAnat2.FuncLayer(this.__MPR, this.__meshViewer);
-			target.add(this.__subMenuFunc[0], {	flex: 1	} );
 			this.__subMenuFunc[1] = new eduAnat2.FuncLayer(this.__MPR, this.__meshViewer);
-			target.add(this.__subMenuFunc[1], {	flex: 1 } );
 			this.__subMenuFunc[2] = new eduAnat2.FuncLayer(this.__MPR, this.__meshViewer);
-			target.add(this.__subMenuFunc[2], { flex: 1	} );
-			container.add(scroll);
-			container.add(new qx.ui.core.Spacer(), { flex: 1 } );
-			if (this.__sideViewer) container.add(this.createAbout());
-			return container;
 
 		},
 
@@ -897,8 +871,8 @@ qx.Class.define("eduAnat2.Container", {
 						buttonCompare.setLabel(this.tr("Compare two images"));
 						//this.unlink();
 
-						this.switchMenu(true);
-						this.__sideViewer.switchMenu(true);
+						this.buildMenu(true);
+						this.__sideViewer.buildMenu(true);
 
 					} else {
 						this.__sideViewer.__MPR.resetMaximize();
@@ -906,8 +880,8 @@ qx.Class.define("eduAnat2.Container", {
 						buttonCompare.setLabel(this.tr("Close comparison"));
 						//this.link(this.__sideViewer);
 
-						this.switchMenu(false);
-						this.__sideViewer.switchMenu(false);
+						this.buildMenu(false);
+						this.__sideViewer.buildMenu(false);
 
 					}
 				});
@@ -973,24 +947,20 @@ qx.Class.define("eduAnat2.Container", {
 
 		},
 
-		switchMenu: function(vertical) {
+		buildMenu: function(vertical) {
+
 			var layout = vertical ? new qx.ui.layout.HBox() : new qx.ui.layout.VBox();
 			this.setLayout(layout);
 
-			if ( this.__scroll ) this.remove(this.__scroll);
+			if ( this.__scroll ) this.remove( this.__scroll );
 
 			var menu = this.__menu = new qx.ui.container.Composite(vertical ? new qx.ui.layout.VBox() : new qx.ui.layout.HBox()).set({
-//				height: 210,
 				backgroundColor: this.__backgroundColor
 			});
+
 			const scroll = this.__scroll = new qx.ui.container.Scroll();
-//			scroll.setMinWidth( this.__widthMenu );//+10 );
 			scroll.add(menu);
-			console.log( "size hint : ");
-			console.log( this.__subMenuButtons.getLayout().getSizeHint() );
-			menu.add(new qx.ui.core.Spacer(), {
-				flex: 1
-			});
+			menu.add(new qx.ui.core.Spacer(), { flex: 1 } );
 			menu.add(this.__subMenuButtons);
 
 			var target, parent;
@@ -1009,7 +979,6 @@ qx.Class.define("eduAnat2.Container", {
 				this.__burger.setSource("eduAnat2/menu_bottom.png");
 				parent = new qx.ui.container.Scroll().set({
 					//minHeight: 200
-					minWidth : this.__widthMenu
 				});
 				target = new qx.ui.container.Composite(new qx.ui.layout.VBox().set({
 					spacing: 10
@@ -1019,25 +988,17 @@ qx.Class.define("eduAnat2.Container", {
 				parent.add(target, { flex: 1 } );
 			}
 
-			target.add(this.__subMenuAnat);
-			target.add(this.__subMenuFunc[0]);
-			target.add(this.__subMenuFunc[1]);
-			target.add(this.__subMenuFunc[2]);
-
-
+			for ( let widget of [ this.__subMenuAnat, ...this.__subMenuFunc ] )
+				target.add( widget );
 			menu.add(new qx.ui.core.Spacer(), { flex: 1 });
 
 			if (parent !== menu) {
-//				console.log( "added" );
 				if ( vertical ) menu.add(parent);
 				else menu.add( parent , { flex : 1 } );
 			}
 
-			menu.add(new qx.ui.core.Spacer(), {
-				flex: 1
-			});
-
-			this.addAt(scroll, vertical ? 0 : 1 );//, { flex : 1.8 });
+			menu.add(new qx.ui.core.Spacer(), { flex: 1 } );
+			this.addAt( scroll, vertical ? 0 : 1 );
 
 			if (vertical) {
 				menu.add(this.createAbout());
@@ -1048,13 +1009,8 @@ qx.Class.define("eduAnat2.Container", {
 				menu.add(this.__burger);
 			}
 
-//			const lay = ( this.getMainViewer() || this ).__subMenuButtons.getLayout();
-			const lay = this.__subMenuButtons.getLayout();
-			//lay.renderLayout();
-			if ( !vertical ) scroll.setMinHeight( lay.getSizeHint().height );
-			else scroll.setMinWidth( menu.getLayout().getSizeHint().width );
-//			scroll.setMinWidth( 10 + lay.getSizeHint().width );
-			
+			if ( !vertical ) scroll.setMinHeight( this.__menuHeight );
+			else scroll.setMinWidth( this.__menuWidth );
 
 		},
 

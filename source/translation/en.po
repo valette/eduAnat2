@@ -6,6 +6,18 @@ msgstr ""
 msgid "WebGL is not supported by your system"
 msgstr ""
 
+#: eduAnat2/Container.js
+msgid "Erreur : 3 maps are already open, remove one to be able to load an other one."
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Hide menu"
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "Show menu"
+msgstr ""
+
 #: eduAnat2/FuncLayer.js
 msgid "Error : file type"
 msgstr ""
@@ -16,6 +28,10 @@ msgstr ""
 
 #: eduAnat2/Container.js
 msgid "EduAnat2 is a 3D visualization tool made for teaching neurosciences and anatomy. EduAnat2 uses the AnaPeda image database built for teaching."
+msgstr ""
+
+#: eduAnat2/Container.js
+msgid "More info on the AnaPéda image database here"
 msgstr ""
 
 #: eduAnat2/Container.js
@@ -152,12 +168,4 @@ msgstr ""
 
 #: eduAnat2/FuncLayer.js
 msgid "Color map:"
-msgstr ""
-
-#. NO LONGER USED
-msgid "More info on the image database here"
-msgstr ""
-
-#: eduAnat2/Container.js
-msgid "More info on the AnaPéda image database here"
 msgstr ""
