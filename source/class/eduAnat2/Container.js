@@ -74,7 +74,7 @@ qx.Class.define("eduAnat2.Container", {
 
 		__colors: null,
 		__menuWidth: 260,
-		__menuHeight: 240,
+		__menuHeight: 210,
 
 		__sideViewer: null,
 
@@ -965,6 +965,7 @@ qx.Class.define("eduAnat2.Container", {
 
 			var target, parent;
 			if (vertical) {
+
 				this.__buttonShare.setVisibility("visible");
 				menu.setPadding(5);
 
@@ -974,18 +975,19 @@ qx.Class.define("eduAnat2.Container", {
 				target = new qx.ui.container.Composite(new qx.ui.layout.VBox().set( { spacing: 20 } ) );
 				parent = target;
 				//parent.add( target, { flex: 1 } );
+
 			} else { //compare mode
+
 				if (this.__sideViewer) this.__buttonShare.setVisibility("excluded");
 				this.__burger.setSource("eduAnat2/menu_bottom.png");
-				parent = new qx.ui.container.Scroll().set({
-					//minHeight: 200
-				});
+				parent = new qx.ui.container.Scroll();
+				parent.setMinWidth( 5 + this.__subMenuFunc[ 0 ].getSizeHint().width );
 				target = new qx.ui.container.Composite(new qx.ui.layout.VBox().set({
 					spacing: 10
 				}));
-				//parent = target;
-
+				target.setPadding( 10 );
 				parent.add(target, { flex: 1 } );
+
 			}
 
 			for ( let widget of [ this.__subMenuAnat, ...this.__subMenuFunc ] )
@@ -1169,7 +1171,6 @@ qx.Class.define("eduAnat2.Container", {
 			var oReq = new XMLHttpRequest();
 			oReq.onload = function(res) {
 				volume.setUserData("metadonnees", this.responseText);
-				console.log("HERE !!!");
 				callback(null, this.responseText);
 			};
 
