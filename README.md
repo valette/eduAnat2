@@ -4,7 +4,7 @@ EduAnat2
   <img src="https://www.creatis.insa-lyon.fr/~valette/public/project/eduanat2/featured_hu8684937c3e81b81cc700f0e8c08ddf0b_175994_720x0_resize_q90_lanczos.jpg">
 </p>
 
-Eduanat2 allows easy visualization of medical images, ideal for teaching life sciences at school. Based on [qooxdoo](https://www.qooxdoo.org/), [DESK](../desk) and [electron.js](https://electronjs.org/), Eduanat2 has been developed with ease of use as a primary objective, in cooperation with the [French Institute for Education (IFE)](http://acces.ens-lyon.fr/acces/thematiques/neurosciences/outils-numeriques/eduanat2-et-anapeda).
+Eduanat2 allows easy visualization of medical images, ideal for teaching life sciences at school. Based on [qooxdoo](https://www.qooxdoo.org/), [THREE.js](https://threejs.org/), [DESK](https://github.com/valette/desk) and [electron.js for the desktop version](https://electronjs.org/), Eduanat2 has been developed with ease of use as a primary objective, in cooperation with the [French Institute for Education (IFE)](http://acces.ens-lyon.fr/acces/thematiques/neurosciences/outils-numeriques/eduanat2-et-anapeda).
 
 ### Online version ###
 A feature-complete online version is available here:
