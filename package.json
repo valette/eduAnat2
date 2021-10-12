@@ -22,7 +22,7 @@
     "crypto-browserify": "3.12.0",
     "css-loader": "5.2.6",
     "desk-ui": "valette/desk-ui",
-    "electron": "13.0.1",
+    "electron": "13.3.0",
     "electron-builder": "22.10.5",
     "electron-packager": "15.2.0",
     "jssha": "3.2.0",
