@@ -202,7 +202,7 @@ qx.Class.define("eduAnat2.Quircks", {
 			var rect = el.getBoundingClientRect();
 			rect.y = rect.top;
 			rect.x = rect.left;
-			var remote = require('electron').remote;
+			var remote = require('@electron/remote');
 			var webContents = remote.getCurrentWebContents();
 			var image = await webContents.capturePage(rect);
 			var dialog = remote.dialog;
@@ -314,7 +314,7 @@ qx.Class.define("eduAnat2.Quircks", {
 
 				];
 
-			const dialog = require('electron').remote.dialog;
+			const dialog = require('@electron/remote').dialog;
 			const win = await dialog.showOpenDialog({
 				filters,
 				properties: ['openFile']

@@ -98,7 +98,7 @@ qx.Class.define("eduAnat2.Container", {
 
 					try {
 
-						require('electron').remote.dialog.showMessageBox( {
+						require('@electron/remote').dialog.showMessageBox( {
 							type: "warning",
 							title: "Echec de l'ouverture d'un nouveau calque",
 							message: "3 calques sont déjà ouverts, supprimer un calque afin de pouvoir en ouvrir un autre.",
@@ -569,7 +569,7 @@ qx.Class.define("eduAnat2.Container", {
 			var name = file.getBrowserObject().name;
 
 			if (name.substr(name.length - 4) !== ".stl") {
-				require('electron').remote.dialog.showMessageBox({
+				require('@electron/remote').dialog.showMessageBox({
 					type: "error",
 					title: this.tr( "Error : file type" ),
 					message: "Only stl format meshes are accepted",
@@ -599,7 +599,6 @@ qx.Class.define("eduAnat2.Container", {
 			}
 			var tempGeo = THREE.BufferGeometryUtils.mergeVertices( geometry )
 			// after only mergeVertices my textures were turning black so this fixed normals issues
-			tempGeo.computeFaceNormals();
 			tempGeo.computeVertexNormals();
 			geometry = tempGeo;
 
@@ -1116,7 +1115,7 @@ qx.Class.define("eduAnat2.Container", {
 			var metadonnees = volume.getUserData("metadonnees");
 
 			if (!metadonnees) {
-				require('electron').remote.dialog.showMessageBox({
+				require('@electron/remote').dialog.showMessageBox({
 					type: "error",
 					title: "Erreur",
 					message: "Métadonnées indisponibles",

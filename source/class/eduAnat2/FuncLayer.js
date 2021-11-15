@@ -313,7 +313,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			const metadonnees = volume.getUserData("metadonnees");
 
 			if (!metadonnees) {
-				require('electron').remote.dialog.showMessageBox({
+				require('@electron/remote').dialog.showMessageBox({
 					type: "error",
 					title: "Erreur",
 					message: "Métadonnées indisponibles",

@@ -3,6 +3,8 @@
 const electron = require( 'electron' ),
       fs       = require( 'fs' );
 
+require('@electron/remote/main').initialize()
+
 const debug = process.argv[2] === "debug";
 electron.app.commandLine.appendSwitch('ignore-gpu-blacklist', 'true');
 electron.Menu.setApplicationMenu( null );
@@ -25,7 +27,7 @@ electron.app.on('ready', () => {
 		show:false
 
 	} );
-
+	require("@electron/remote/main").enable(win.webContents)
 	const url = basePath + 'index.html';
 
 	win.loadURL( url );
