@@ -3,9 +3,9 @@
 
 /* global desk*/
 
-const newStaticDir = "public/eduOnline/";
-const oldStaticDir = "public/eduAnat2LowRes/";
-const diffDir = "public/diff/";
+const oldStaticDir = "code/EduAnat2-v2.2-update1/";
+const newStaticDir = "code/EduAnat2-v2.2-update2/";
+const diffDir = "code/diff/";
 console.clear();
 
 async function getCacheDirs( dir ) {
@@ -66,6 +66,7 @@ async function run() {
 
     }
 
+    console.log( 'done3' );
 
 }
 
