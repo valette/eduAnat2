@@ -1,3 +1,5 @@
+[![Node.js CI](https://github.com/valette/eduAnat2/actions/workflows/node.js.yml/badge.svg)](https://github.com/valette/eduAnat2/actions/workflows/node.js.yml)
+
 EduAnat2
 ======
 <p align="center">
