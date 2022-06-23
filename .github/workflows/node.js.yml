@@ -26,12 +26,18 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-
-    - run: sudo dpkg --add-architecture i386
-    - run: wget -qO - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
-    - run: sudo add-apt-repository ppa:cybermax-dexter/sdl2-backport
-    - run: sudo apt-add-repository "deb https://dl.winehq.org/wine-builds/ubuntu $(lsb_release -cs) main"
-    - run: sudo apt install --install-recommends winehq-stable
+# from https://github.com/actions/virtual-environments/issues/4589#issuecomment-1111584151
+    - name: Fix GitHub's mess
+      run: |
+        sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
+        sudo apt-get update -qq
+        sudo apt-get install -yqq --allow-downgrades libpcre2-8-0/focal libpcre2-16-0/focal libpcre2-32-0/focal libpcre2-posix2/focal
+      # now this works as usual
+    - name: Set up dependencies
+      run: |
+        sudo dpkg --add-architecture i386
+        sudo apt-get update -qq
+        sudo apt-get install -yqq wine-stable
     - run: npm install
     - run: npm run build
 #    - run: npm test
