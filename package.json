@@ -48,7 +48,8 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "build": "npm run clean && npm run buildApps && npm run package",
+    "build": "npm run clean && npm run buildApps",
+    "buildAll": "npm run build && npm run package",
     "buildApps": "npm run buildCore && cp script.js compiled/dist",
     "buildCore": "node node_modules/desk-ui/source/build-worker.js && webpack && npm run qooxdoo",
     "clean": "rm -rf compiled && rm -rf dist && rm -rf EduAnat2-*",

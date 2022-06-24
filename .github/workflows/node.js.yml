@@ -27,18 +27,18 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 # from https://github.com/actions/virtual-environments/issues/4589#issuecomment-1111584151
-    - name: Fix GitHub's mess
-      run: |
-        sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
-        sudo apt-get update -qq
-        sudo apt-get install -yqq --allow-downgrades libpcre2-8-0/focal libpcre2-16-0/focal libpcre2-32-0/focal libpcre2-posix2/focal
+#    - name: Fix GitHub's mess
+#      run: |
+#        sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
+#        sudo apt-get update -qq
+#        sudo apt-get install -yqq --allow-downgrades libpcre2-8-0/focal libpcre2-16-0/focal libpcre2-32-0/focal libpcre2-posix2/focal
       # now this works as usual
-    - name: Set up dependencies
-      run: |
-        sudo dpkg --add-architecture i386
-        sudo apt-get update -qq
-        sudo apt-get install -yqq wine-stable
-        sudo apt-get install rpm
-    - run: npm install
+#    - name: Set up dependencies
+#      run: |
+#        sudo dpkg --add-architecture i386
+#        sudo apt-get update -qq
+#        sudo apt-get install -yqq wine-stable
+#        sudo apt-get install rpm
+#    - run: npm install
     - run: npm run build
 #    - run: npm test
