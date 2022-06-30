@@ -1,6 +1,6 @@
 import work from 'webworkify-webpack'
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
-import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
+import { STLLoader } from '../node_modules/three/examples/jsm/loaders/STLLoader.js';
+import { TransformControls } from '../node_modules/three/examples/jsm/controls/TransformControls.js';
 
 require( 'desk-ui/source/ext/WebGL.js');
 self.chroma = require( 'chroma-js' );
@@ -22,7 +22,7 @@ self.THREE            =	require('three');
 	require('desk-ui/source/ext/CTMLoader.js');
 	require('desk-ui/source/ext/VTKLoader.js');
 	require('desk-ui/source/ext/TrackballControls2.js');
-	require('three/examples/js/utils/BufferGeometryUtils.js');
+	require('../node_modules/three/examples/js/utils/BufferGeometryUtils.js');
 self.THREE.STLLoader = STLLoader;
 self.THREE.TransformControls = TransformControls;
 
