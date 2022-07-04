@@ -45,7 +45,7 @@
     "xterm": "4.19.0"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=12.0.0"
   },
   "scripts": {
     "build": "npm run clean && npm run buildApps",
@@ -59,14 +59,10 @@
     "dev": "qx compile --target source --watch --update-po-files",
     "package": "npm run package-exe-deb-rpm && npm run package-bin && npm run zip",
     "package-bin": "electron-packager --arch x64,arm64 --platform darwin,linux,mas,win32 --overwrite --prune=true --icon=icon.ico --azar=true compiled/dist/ EduAnat2",
-    "package-binOLD": "electron-packager --arch x64,arm64 --platform darwin,linux,mas,win32 --overwrite --prune=true --icon=icon.ico --azar=true compiled/dist/ EduAnat2",
     "package-exe-deb-rpm": "electron-builder build -wl --config builder-effective-config.yaml",
     "qooxdoo": "npm run setDate && qx package update && qx package install && npm run compile && npm run deploy && ./extra.sh",
     "start": "electron .",
     "updateAll": "rm -rf node_modules && git pull && npm install && npm run build",
     "zip": "for i in ./EduAnat2-*; do zip -rqy \"dist/${i%/}.zip\" \"$i\"; done"
-  },
-  "extraResources": [
-      "./node_modules/@electron/remote/**"
-    ]
+  }
 }

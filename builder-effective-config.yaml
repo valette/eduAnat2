@@ -6,9 +6,6 @@ appId: com.ife.eduanat2
 compression: maximum
 productName: Eduanat2
 
-extraResources:
-  - "./node_modules/@electron/remote/**"
-
 win:
   target:
     - target: nsis
