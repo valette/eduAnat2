@@ -4,13 +4,14 @@
   "description": "EduAnat2",
   "author": "Remi AGIER <remi@aigen.fr> (http://www.aigen.fr), Sebastien Valette <sebastien.valette@creatis.insa-lyon.fr> (http://www.creatis.insa-lyon.fr/~valette)",
   "license": "CECILL-B",
-  "version": "2.2.0",
+  "version": "2.3.0-dev",
   "repository": {
     "type": "git",
     "url": "git://github.com/valette/eduAnat2.git"
   },
   "main": "script.js",
   "dependencies": {
+    "@electron/remote":"2.0.8"
   },
   "devDependencies": {
     "@qooxdoo/compiler": "1.0.3",
@@ -23,8 +24,7 @@
     "crypto-browserify": "3.12.0",
     "css-loader": "6.7.1",
     "desk-ui": "valette/desk-ui",
-    "electron": "19.0.6",
-    "@electron/remote": "2.0.8",
+    "electron": "19.0.7",
     "electron-builder": "23.1.0",
     "electron-packager": "15.5.1",
     "jssha": "3.2.0",
@@ -57,12 +57,16 @@
     "setDate": "date > source/resource/eduAnat2/buildDate.txt",
     "deploy": "qx deploy --clean --out compiled/dist",
     "dev": "qx compile --target source --watch --update-po-files",
-    "package": "npm run package-bin && npm run package-exe-deb-rpm && npm run zip",
-    "package-bin": "electron-packager --all --overwrite --prune=true --icon=icon.ico --azar=true compiled/dist/ EduAnat2",
+    "package": "npm run package-exe-deb-rpm && npm run package-bin && npm run zip",
+    "package-bin": "electron-packager --arch x64,arm64 --platform darwin,linux,mas,win32 --overwrite --prune=true --icon=icon.ico --azar=true compiled/dist/ EduAnat2",
+    "package-binOLD": "electron-packager --arch x64,arm64 --platform darwin,linux,mas,win32 --overwrite --prune=true --icon=icon.ico --azar=true compiled/dist/ EduAnat2",
     "package-exe-deb-rpm": "electron-builder build -wl --config builder-effective-config.yaml",
     "qooxdoo": "npm run setDate && qx package update && qx package install && npm run compile && npm run deploy && ./extra.sh",
     "start": "electron .",
     "updateAll": "rm -rf node_modules && git pull && npm install && npm run build",
     "zip": "for i in ./EduAnat2-*; do zip -rqy \"dist/${i%/}.zip\" \"$i\"; done"
-  }
+  },
+  "extraResources": [
+      "./node_modules/@electron/remote/**"
+    ]
 }
