@@ -1,5 +1,5 @@
 {
-  "$schema": "https://qooxdoo.org/schema/Manifest-1-0-0.json",
+  "$schema": "https://qooxdoo.org/schema/Manifest-2-0-0.json",
   "info": {
     "name": "eduAnat2",
     "summary": "Medical Image Visualization for education",
@@ -16,7 +16,7 @@
         "email": "remi@aigen.fr"
       }
     ],
-    "version": "1.0.0"
+    "version": "3.0.0"
   },
   "provides": {
     "namespace": "eduAnat2",
@@ -26,8 +26,6 @@
     "translation": "source/translation"
   },
   "requires": {
-    "@qooxdoo/framework": "^6.0.0-beta-20201203-1458",
-    "@qooxdoo/compiler": "^1.0.0-beta-20201203-1458",
-    "bidefi-irhs/qxfileio": "0.4.1"
+    "@qooxdoo/framework": "^7.2.1"
   }
 }

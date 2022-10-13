@@ -27,8 +27,6 @@ qx.Class.define("eduAnat2.Application", {
 
 			try {
 
-				THREE.useWebGL1 = true;
-
 				function getParameter(parameterName) {
 					parameterName = parameterName.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
 					var regex = new RegExp("[\\?&]" + parameterName + "=([^&#]*)");
@@ -50,10 +48,12 @@ qx.Class.define("eduAnat2.Application", {
 					// support additional cross-browser console. Press F7 to toggle visibility
 					qx.log.appender.Console;
 				}
-
+console.log( desk.AddLibs );
+				desk.AddLibs.getInstance();
 				desk.AddPromises.getInstance();
 				await desk.Actions.initAsync();
 				eduAnat2.Quircks.getInstance();
+				THREE.useWebGL1 = true;
 
 				//desk.auto = true;
 				const qxRoot = qx.core.Init.getApplication().getRoot();
@@ -187,7 +187,8 @@ qx.Class.define("eduAnat2.Application", {
 			}
 
 			try {
-				require("electron").ipcRenderer.send('qx-ready');
+				const el = "electron";
+				require( el ).ipcRenderer.send('qx-ready');
 			} catch (e) {}
 
 		}

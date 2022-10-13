@@ -26,7 +26,8 @@
       "class": "eduAnat2.Application",
       "theme": "eduAnat2.theme.Theme",
       "name": "eduAnat2",
-      "bootPath": "source/boot"
+      "bootPath": "source/boot",
+      "type" :  "browser"
     }
   ]
 }

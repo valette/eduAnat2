@@ -22,7 +22,8 @@ qx.Class.define("eduAnat2.Quircks", {
 
 		try {
 
-			const electron = require('electron');
+			const el = "electron";
+			const electron = require( el );
 			eduAnat2.Quircks.slicer = true;
 			eduAnat2.Quircks.selectFile = this.__selectFileElectron;
 			return;
@@ -113,7 +114,8 @@ qx.Class.define("eduAnat2.Quircks", {
 		getFileURL: function(path) {
 
 			try {
-				require("electron")
+				const el = "electron";
+				require( el );
 				return path;
 			} catch (e) {};
 
@@ -125,7 +127,8 @@ qx.Class.define("eduAnat2.Quircks", {
 
 			try {
 
-				require('electron');
+				const el = 'electron';
+				require( el );
 				return {
 					file
 				};
@@ -175,7 +178,8 @@ qx.Class.define("eduAnat2.Quircks", {
 		capture: async function(element) {
 
 			try {
-				require("electron");
+				const el = "electron";
+				require( el );
 
 			} catch (e) {
 
@@ -202,7 +206,8 @@ qx.Class.define("eduAnat2.Quircks", {
 			var rect = el.getBoundingClientRect();
 			rect.y = rect.top;
 			rect.x = rect.left;
-			var remote = require('@electron/remote');
+			const rem = '@electron/remote';
+			var remote = require( rem );
 			var webContents = remote.getCurrentWebContents();
 			var image = await webContents.capturePage(rect);
 			var dialog = remote.dialog;
@@ -314,7 +319,8 @@ qx.Class.define("eduAnat2.Quircks", {
 
 				];
 
-			const dialog = require('@electron/remote').dialog;
+			const rem = '@electron/remote';
+			const dialog = require( rem ).dialog;
 			const win = await dialog.showOpenDialog({
 				filters,
 				properties: ['openFile']

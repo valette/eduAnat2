@@ -270,7 +270,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 							}
 						  });
 			*/
-			this.__meshesFunc = this.__meshViewer.attachVolumeSlices(this.__MPR.getVolumeSlices(volume));
+			this.__meshesFunc = this.__meshViewer.attachVolumeSlices(this.__MPR.getVolumeSlices(volume), { colorFrame : false });
 			this.__IRMFuncName.setValue(name.split(".")[0]);
 
 
@@ -313,7 +313,8 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			const metadonnees = volume.getUserData("metadonnees");
 
 			if (!metadonnees) {
-				require('@electron/remote').dialog.showMessageBox({
+				const rem = '@electron/remote';
+				require( rem ).dialog.showMessageBox({
 					type: "error",
 					title: "Erreur",
 					message: "Métadonnées indisponibles",
@@ -433,6 +434,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 
 			for ( let slice of meshes ) {
 
+				slice.material.depthWrite = false;
 				const shader = slice.material.baseShader;
 				slice.material.polygonOffset = true;
 				slice.material.polygonOffsetFactor = -1;

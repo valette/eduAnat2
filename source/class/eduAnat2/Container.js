@@ -98,7 +98,8 @@ qx.Class.define("eduAnat2.Container", {
 
 					try {
 
-						require('@electron/remote').dialog.showMessageBox( {
+						const rem = '@electron/remote';
+						require( rem ).dialog.showMessageBox( {
 							type: "warning",
 							title: "Echec de l'ouverture d'un nouveau calque",
 							message: "3 calques sont déjà ouverts, supprimer un calque afin de pouvoir en ouvrir un autre.",
@@ -569,7 +570,8 @@ qx.Class.define("eduAnat2.Container", {
 			var name = file.getBrowserObject().name;
 
 			if (name.substr(name.length - 4) !== ".stl") {
-				require('@electron/remote').dialog.showMessageBox({
+				const rem = '@electron/remote';
+				require( rem ).dialog.showMessageBox({
 					type: "error",
 					title: this.tr( "Error : file type" ),
 					message: "Only stl format meshes are accepted",
@@ -763,7 +765,8 @@ qx.Class.define("eduAnat2.Container", {
 
 			try { // create snapshot button only for electron version for now...
 
-				require('electron');
+				const el = "electron";
+				require( el );
 				// screenshot button for mesh viewer;
 				var screenshot = new qx.ui.form.Button(null, "eduAnat2/screenshot.png").set({
 					decorator: null
@@ -1115,7 +1118,8 @@ qx.Class.define("eduAnat2.Container", {
 			var metadonnees = volume.getUserData("metadonnees");
 
 			if (!metadonnees) {
-				require('@electron/remote').dialog.showMessageBox({
+				const rem = '@electron/remote';
+				require( rem ).dialog.showMessageBox({
 					type: "error",
 					title: "Erreur",
 					message: "Métadonnées indisponibles",
