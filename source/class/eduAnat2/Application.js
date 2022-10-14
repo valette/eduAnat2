@@ -48,9 +48,7 @@ qx.Class.define("eduAnat2.Application", {
 					// support additional cross-browser console. Press F7 to toggle visibility
 					qx.log.appender.Console;
 				}
-console.log( desk.AddLibs );
-				desk.AddLibs.getInstance();
-				desk.AddPromises.getInstance();
+
 				await desk.Actions.initAsync();
 				eduAnat2.Quircks.getInstance();
 				THREE.useWebGL1 = true;
