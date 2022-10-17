@@ -824,6 +824,60 @@ qx.Class.define("eduAnat2.Container", {
 		},
 
 
+		__shareButton : null,
+
+		__getShareButton : function () {
+
+			const button = this.__shareButton = new qx.ui.form.Button(this.tr("Share with link"), 'eduAnat2/share.png');
+			button.getChildControl("label").setAllowGrowX(true);
+			button.getChildControl("label").setTextAlign("left");
+			button.addListener('execute', () => {
+
+				const mainViewer = this.getMainViewer() || this;
+				console.log(mainViewer.openedFile, mainViewer.__sideViewer.openedFile)
+				const files = [];
+
+				for (let viewer of [mainViewer, mainViewer.__sideViewer]) {
+
+					if (!viewer.isVisible()) continue;
+					if (!viewer.openedFile) continue;
+					files.push( viewer.openedFile );
+					const container = viewer.funcLayers[0].getLayoutParent();
+
+					for (let layer of container.getChildren()) {
+
+						if (!layer.isVisible()) continue;
+						if (!layer.openedFile) continue;
+						files.push(layer.openedFile);
+
+					}
+
+				}
+
+				const h = window.location.href.split("?")[0] + "?fichiers=" + files.join(',');
+				const win = new qx.ui.window.Window("Lien pour partage");
+				win.setLayout(new qx.ui.layout.VBox());
+				const text = "Ce lien vous permet de charger automatiquement les images actuelles : ";
+				const label = new qx.ui.embed.Html(
+					'<P><a href="' + h + '"> ' + text + "</a></p>" +
+					'<p><a class="dont-break-out" href="' + h + '"> ' + h + "</a></p>" +
+					" <p>Note : il est possible de copier le lien avec un clic droit.<p>");
+				label.setNativeContextMenu(true);
+				label.setWidth(600);
+				label.setHeight(200);
+				win.add(label, { flex: 1 });
+				win.open();
+				win.center();
+				const blocker = eduAnat2.Quircks.getBlocker();
+				blocker.block();
+				win.addListener( "close", () => blocker.unblock() );
+
+			} );
+
+			return button;
+
+		},
+
 		createSubMenuButtons: function() {
 
 			var layout = new qx.ui.layout.VBox();
@@ -891,59 +945,8 @@ qx.Class.define("eduAnat2.Container", {
 				container.add(buttonCompare);
 			}
 
-			var buttonShare = this.__buttonShare = new qx.ui.form.Button(this.tr("Share with link"), 'eduAnat2/share.png');
-			buttonShare.getChildControl("label").setAllowGrowX(true);
-			buttonShare.getChildControl("label").setTextAlign("left");
-			container.add(buttonShare);
-			buttonShare.addListener('execute', function() {
-
-				const mainViewer = this.getMainViewer() || this;
-				console.log(mainViewer.openedFile, mainViewer.__sideViewer.openedFile)
-
-				const files = [];
-
-
-				for (let viewer of [mainViewer, mainViewer.__sideViewer]) {
-
-					if (!viewer.isVisible()) continue;
-					if (!viewer.openedFile) continue;
-					files.push(viewer.openedFile);
-
-					const container = viewer.funcLayers[0].getLayoutParent();
-
-					for (let layer of container.getChildren()) {
-
-						if (!layer.isVisible()) continue;
-						if (!layer.openedFile) continue;
-						files.push(layer.openedFile);
-
-					}
-
-				}
-
-				const h = window.location.href.split("?")[0] + "?fichiers=" + files.join(',');
-
-				const win = new qx.ui.window.Window("Lien pour partage");
-				win.setLayout(new qx.ui.layout.VBox());
-				const text = "Ce lien vous permet de charger automatiquement les images actuelles : ";
-				const label = new qx.ui.embed.Html(
-					'<P><a href="' + h + '"> ' + text + "</a></p>" +
-					'<p><a class="dont-break-out" href="' + h + '"> ' + h + "</a></p>" +
-					" <p>Note : il est possible de copier le lien avec un clic droit.<p>");
-				label.setNativeContextMenu(true);
-				label.setWidth(600);
-				label.setHeight(200);
-				win.add(label, {
-					flex: 1
-				});
-				win.open();
-				win.center();
-				const blocker = eduAnat2.Quircks.getBlocker();
-				blocker.block();
-				win.addListener( "close", () => blocker.unblock() );
-
-
-			}, this);
+			if ( !eduAnat2.Quircks.isElectron() )
+				container.add( this.__getShareButton() );
 
 			return container;
 
@@ -968,9 +971,10 @@ qx.Class.define("eduAnat2.Container", {
 			var target, parent;
 			if (vertical) {
 
-				this.__buttonShare.setVisibility("visible");
-				menu.setPadding(5);
+				if ( this.__shareButton )
+					this.__shareButton.setVisibility("visible");
 
+				menu.setPadding(5);
 				menu.addAt(this.__burger, 0);
 				this.__burger.setSource("eduAnat2/menu_left.png");
 				//parent = new qx.ui.container.Scroll().set({});
@@ -980,7 +984,9 @@ qx.Class.define("eduAnat2.Container", {
 
 			} else { //compare mode
 
-				if (this.__sideViewer) this.__buttonShare.setVisibility("excluded");
+				if (this.__sideViewer && this.__shareButton )
+					this.__shareButton.setVisibility("excluded");
+
 				this.__burger.setSource("eduAnat2/menu_bottom.png");
 				parent = new qx.ui.container.Scroll();
 				parent.setMinWidth( 5 + this.__subMenuFunc[ 0 ].getSizeHint().width );
