@@ -26,9 +26,14 @@ qx.Class.define("eduAnat2.Quircks", {
 			const electron = require( el );
 			eduAnat2.Quircks.slicer = true;
 			eduAnat2.Quircks.selectFile = this.__selectFileElectron;
+			eduAnat2.Quircks.__isElectron = true;
 			return;
 
-		} catch (e) {}
+		} catch (e) {
+
+			eduAnat2.Quircks.__isElectron = false;
+
+		}
 
 		let formatButton;
 
@@ -95,6 +100,9 @@ qx.Class.define("eduAnat2.Quircks", {
 	},
 
 	statics: {
+
+		__isElectron : null,
+		isElectron : () => eduAnat2.Quircks.__isElectron,
 
 		formatFile: "data/format.json",
 		getVersion: async function() {
