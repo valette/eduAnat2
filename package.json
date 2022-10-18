@@ -4,7 +4,7 @@
   "description": "EduAnat2",
   "author": "Remi AGIER <remi@aigen.fr> (http://www.aigen.fr), Sebastien Valette <sebastien.valette@creatis.insa-lyon.fr> (http://www.creatis.insa-lyon.fr/~valette)",
   "license": "CECILL-B",
-  "version": "2.3.0-dev",
+  "version": "3.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/valette/eduAnat2.git"
@@ -21,7 +21,7 @@
     "buffer": "6.0.3",
     "chroma-js": "2.4.2",
     "crypto-browserify": "3.12.0",
-    "desk-ui": "github:valette/desk-ui",
+    "desk-ui": "3.0.1",
     "electron": "21.1.1",
     "electron-builder": "23.6.0",
     "electron-packager": "16.0.0",
