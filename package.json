@@ -18,7 +18,7 @@
     "async": "3.2.4",
     "bowser": "2.11.0",
     "chroma-js": "2.4.2",
-    "desk-ui": "3.0.1",
+    "desk-ui": "3.0.3",
     "electron": "21.1.1",
     "electron-builder": "23.6.0",
     "electron-packager": "16.0.0",
@@ -27,7 +27,7 @@
     "numeric": "1.2.6",
     "papaya-viewer": "1.0.1449",
     "random-js": "2.1.0",
-    "socket.io-client": "4.5.2",
+    "socket.io-client": "4.5.3",
     "three": "0.145.0",
     "xterm": "5.0.0"
   },
