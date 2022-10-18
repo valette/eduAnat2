@@ -15,12 +15,9 @@
   },
   "devDependencies": {
     "@qooxdoo/framework": "7.2.1",
-    "acorn": "8.8.0",
     "async": "3.2.4",
     "bowser": "2.11.0",
-    "buffer": "6.0.3",
     "chroma-js": "2.4.2",
-    "crypto-browserify": "3.12.0",
     "desk-ui": "3.0.1",
     "electron": "21.1.1",
     "electron-builder": "23.6.0",
@@ -31,7 +28,6 @@
     "papaya-viewer": "1.0.1449",
     "random-js": "2.1.0",
     "socket.io-client": "4.5.2",
-    "stream-browserify": "3.0.0",
     "three": "0.145.0",
     "xterm": "5.0.0"
   },
