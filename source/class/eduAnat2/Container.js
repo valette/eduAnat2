@@ -866,6 +866,7 @@ qx.Class.define("eduAnat2.Container", {
 				label.setWidth(600);
 				label.setHeight(200);
 				win.add(label, { flex: 1 });
+				win.setMovable( false );
 				win.open();
 				win.center();
 				const blocker = eduAnat2.Quircks.getBlocker();

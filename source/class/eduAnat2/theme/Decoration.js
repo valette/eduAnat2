@@ -30,6 +30,22 @@ qx.Theme.define("eduAnat2.theme.Decoration",
 			width: 1
 		  }
 		},
+		"window" :
+		{
+		  decorator : [
+			qx.ui.decoration.MSingleBorder,
+			qx.ui.decoration.MBorderRadius,
+			qx.ui.decoration.MBackgroundColor
+		  ],
+
+		  style :
+		  {
+			radius: 6,
+			color: "#6c757d",
+			backgroundColor:"white",
+			width: 1
+		  }
+		},
 		"button-box-pressed" :
 		{
 		  include : "button-box",

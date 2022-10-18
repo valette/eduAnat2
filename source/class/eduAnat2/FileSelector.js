@@ -16,7 +16,8 @@ qx.Class.define("eduAnat2.FileSelector", {
 		this.base(arguments);
 		this.set({
 			layout: new qx.ui.layout.VBox(),
-			showMinimize: false
+			showMinimize: false,
+			movable : false
 		});
 
 		const selectButton = this.__selectButton = new qx.ui.form.Button( this.tr('Open local file' ));
