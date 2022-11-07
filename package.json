@@ -4,7 +4,7 @@
   "description": "EduAnat2",
   "author": "Remi AGIER <remi@aigen.fr> (http://www.aigen.fr), Sebastien Valette <sebastien.valette@creatis.insa-lyon.fr> (http://www.creatis.insa-lyon.fr/~valette)",
   "license": "CECILL-B",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/valette/eduAnat2.git"
@@ -14,20 +14,21 @@
     "@electron/remote": "2.0.8"
   },
   "devDependencies": {
-    "@qooxdoo/framework": "7.2.1",
+    "@qooxdoo/framework": "7.3.3",
     "async": "3.2.4",
     "bowser": "2.11.0",
     "chroma-js": "2.4.2",
-    "desk-ui": "3.0.3",
-    "electron": "21.1.1",
+    "desk-ui": "3.0.4",
+    "electron": "21.2.2",
     "electron-builder": "23.6.0",
-    "electron-packager": "16.0.0",
+    "electron-packager": "17.1.1",
     "lodash": "4.17.21",
     "papaya-viewer": "1.0.1449",
     "random-js": "2.1.0",
     "socket.io-client": "4.5.3",
-    "three": "0.145.0",
-    "xterm": "5.0.0"
+    "three": "0.146.0",
+    "xterm": "5.0.0",
+    "xterm-addon-fit": "^0.6.0"
   },
   "engines": {
     "node": ">=12.0.0"

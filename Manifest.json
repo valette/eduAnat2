@@ -16,7 +16,7 @@
         "email": "remi@aigen.fr"
       }
     ],
-    "version": "3.0.0"
+    "version": "3.0.1"
   },
   "provides": {
     "namespace": "eduAnat2",
@@ -26,6 +26,6 @@
     "translation": "source/translation"
   },
   "requires": {
-    "@qooxdoo/framework": "^7.2.1"
+    "@qooxdoo/framework": "^7.3.3"
   }
 }
