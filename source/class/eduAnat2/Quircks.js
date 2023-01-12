@@ -56,7 +56,7 @@ qx.Class.define("eduAnat2.Quircks", {
 					top: 200
 				});
 				button.addListener('execute', this.__loop, this);
-				desk.Actions.getInstance().statifyCode = "home/git/eduAnat2/compiled/build";
+				desk.Actions.statifyCode = "home/git/eduAnat2/compiled/build";
 				formatButton = new qx.ui.form.Button("Hi Res Anat");
 				updateFormatButtonLabel();
 
