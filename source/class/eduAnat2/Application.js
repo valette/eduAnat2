@@ -51,7 +51,7 @@ qx.Class.define("eduAnat2.Application", {
 
 				await desk.Actions.initAsync();
 				eduAnat2.Quircks.getInstance();
-				THREE.useWebGL1 = true;
+//				THREE.useWebGL1 = true;
 
 				//desk.auto = true;
 				const qxRoot = qx.core.Init.getApplication().getRoot();

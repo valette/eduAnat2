@@ -139,7 +139,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 				function updateSlice(slice) {
 					slice.material.uniforms.thresholdMin.value = tresholdSlider.getValue() / 100;
 				}
-				this.__MPR.getVolumeMeshes(this.volumeFunc).forEach(updateSlice);
+				this.volumeFunc.getMeshes().forEach(updateSlice);
 				this.__meshesFunc.forEach(updateSlice);
 				this.__meshViewer.render();
 				this.__MPR.render();
@@ -253,7 +253,7 @@ qx.Class.define("eduAnat2.FuncLayer", {
 			}
 
 			const volume = await this.__MPR.addVolumeAsync(fixedFile, opts);
-			const scalarBounds = this.__MPR.getVolumeSlices( volume )[0]
+			const scalarBounds = volume.getSlices()[0]
 				.getScalarBounds();
 
 			const prop = { scalarBounds };
@@ -270,14 +270,17 @@ qx.Class.define("eduAnat2.FuncLayer", {
 							}
 						  });
 			*/
-			this.__meshesFunc = this.__meshViewer.attachVolumeSlices(this.__MPR.getVolumeSlices(volume), { colorFrame : false });
+
+			const volumeSlices = volume.getSlices();
+			this.__meshesFunc = this.__meshViewer.attachVolumeSlices( volumeSlices, { colorFrame : false });
+			for ( let funcMesh of this.__meshesFunc ) funcMesh.renderOrder =1;
+
 			this.__IRMFuncName.setValue(name.split(".")[0]);
 
-
-			var volumeSlice = this.__MPR.getVolumeSlices(volume)[0];
-			var slices = this.__MPR.getVolumeMeshes(volume);
-			this.hackShaders(volumeSlice, slices);
-			this.hackShaders(volumeSlice, this.__meshesFunc);
+			const meshes = volume.getMeshes();
+			const slice = volumeSlices[0];
+			this.hackShaders(slice, meshes);
+			this.hackShaders(slice, this.__meshesFunc);
 
 			this.__tresholdSlider.set({
 				minimum: Math.floor(prop.scalarBounds[0] * 100),
@@ -286,12 +289,11 @@ qx.Class.define("eduAnat2.FuncLayer", {
 				value: Math.floor((prop.scalarBounds[0] + prop.scalarBounds[1]) * 50)
 			} );
 
-
-			for ( let target of [...slices, ...this.__meshesFunc ] )
+			for ( let target of [...meshes, ...this.__meshesFunc ] )
 				target.material.uniforms.thresholdMax.value = prop.scalarBounds[1];
 
 			for ( let slice of 
-				[ ...this.__MPR.getVolumeMeshes( this.volumeFunc ), ...this.__meshesFunc ] ) {
+				[ ...this.volumeFunc.getMeshes(), ...this.__meshesFunc ] ) {
 				slice.material.uniforms.thresholdMin.value = this.__tresholdSlider.getValue() / 100;
 
 			}

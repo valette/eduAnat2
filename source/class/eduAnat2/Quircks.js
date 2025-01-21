@@ -259,7 +259,7 @@ qx.Class.define("eduAnat2.Quircks", {
 			});
 			for (let mesh of meshes) desk.FileSystem.getFileURL(mesh);
 
-			const volumeViewer = new desk.VolumeViewer();
+			const volumeViewer = new desk.MPR.Viewer();
 
 			for (let volume of volumes) {
 

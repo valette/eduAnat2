@@ -502,7 +502,7 @@ qx.Class.define("eduAnat2.Container", {
 						});
 			*/
 
-			var volSlice = this.__MPR.getVolumeSlices(volume);
+			var volSlice = volume.getSlices();
 			var meshes = this.__meshViewer.attachVolumeSlices(volSlice);
 
 			this.__IRMAnatName.setValue(name.split(".")[0]);
@@ -626,7 +626,7 @@ qx.Class.define("eduAnat2.Container", {
 				mesh.position.set(offsetX, 0, 0);
 			} else {
 
-				const volumeSlice = this.__MPR.getVolumeSlices(volume)[0];
+				const volumeSlice = volume.getSlices()[ 0 ];
 				const spacing = volumeSlice.getSpacing();
 				const dimensions = volumeSlice.getDimensions();
 				const origin = volumeSlice.getOrigin();
@@ -733,13 +733,13 @@ qx.Class.define("eduAnat2.Container", {
 				minZoom: 30
 			};
 
-			var MPR = new desk.MPRContainer(null, options);
+			var MPR = new desk.MPR.Container(null, options);
 
 			for (let sliceView of MPR.getViewers())
 				sliceView.getRightContainer().getChildren()[1].setOpacity(1);
 
-			var meshViewer = this.__meshViewer = new desk.SceneContainer({
-				noOpts: true,
+			var meshViewer = this.__meshViewer = new desk.THREE.Container({
+				//noOpts: true,
 				sliceOnWheel: false,
 				maxZoom: 2000,
 				minZoom: 30,
