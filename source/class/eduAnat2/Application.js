@@ -49,6 +49,8 @@ qx.Class.define("eduAnat2.Application", {
 					qx.log.appender.Console;
 				}
 
+				require( "xss" );
+
 				await desk.Actions.initAsync();
 				eduAnat2.Quircks.getInstance();
 //				THREE.useWebGL1 = true;
